@@ -1,0 +1,11 @@
+Mineral,Element1,abundance1,Element2,abundance2,Element3,abundance3,Element4,abundance4,Element5,abundance5,Element6,abundance6,Element7,abundance7,Element8,abundance8
+Ferrosilite,Mg,10.46,Fe,24.04,Si,24.18,O,41.32,,,,,,,,
+Enstatite,Mg,24.21,Si,27.98,O,47.81,,,,,,,,,,
+Fayalite,Fe,54.81,Si,13.78,O,31.41,,,,,,,,,,
+Forsterite,Mg,34.55,Si,19.96,O,45.49,,,,,,,,,,
+Anorthite,Na,0.41,Ca,13.72,Al,18.97,Si,20.75,O,46.14,,,,,,
+Albite,Na,8.3,Ca,0.76,Al,10.77,Si,31.5,O,48.66,,,,,,
+Magnesiohornblende,Ca,9.76,Mg,11.54,Al,5.75,Fe,1.7,Si,23.94,H,0.25,O,46.46,,
+Ferrohornblende,Ca,8.46,Al,4.98,Fe,25.05,Si,20.75,H,0.21,O,40.53,,,,
+Spinel,Mg,17.08,Al,37.93,O,44.98,,,,,,,,,,
+Anorthite_real,Na,0.12,Mg,0.02,Al,19.63,Si,20.02,K,0.05,Ca,14.01,Fe,0.03,O,46.17

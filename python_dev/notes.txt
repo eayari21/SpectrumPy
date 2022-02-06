@@ -1,0 +1,2 @@
+- Plot a single electron trajectory (example for paper, different L shells)
+- Thesis: using a laser to simulate large impact charges

@@ -1,0 +1,12 @@
+Spectral analysis on real data:
+
+- Take a fourier transform and add a random number generator to each phase
+- Look at transfer functions of real electronics on the instrument
+- See if there's some frequency component to add
+- Look at "ringing" due to MCP electronics
+- There are single ion signals, try to add those in intermittently (if we can find out what a single ion signal looks like)
+- Take a look at very low frequency sources
+- single ion signals would be small deltas
+- Ringing will be obvious
+- Can be due to too high of gain set on MCP detector
+- Threshold trigger for ringing-like wiggles 
