@@ -1,0 +1,259 @@
+\hypertarget{namespaceobject__spectra}{}\doxysection{object\+\_\+spectra Namespace Reference}
+\label{namespaceobject__spectra}\index{object\_spectra@{object\_spectra}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classobject__spectra_1_1_spectra}{Spectra}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespaceobject__spectra_aa802be587eebfc9c37a931569df3730c}{safe\+\_\+div}} (\mbox{\hyperlink{namespaceobject__spectra_a9336ebf25087d91c818ee6e9ec29f8c1}{x}}, \mbox{\hyperlink{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}{y}})
+\item 
+def \mbox{\hyperlink{namespaceobject__spectra_a60b3342022c4a9ef7f01f84a1d700a32}{fetch\+\_\+abundances}} ()
+\item 
+def \mbox{\hyperlink{namespaceobject__spectra_a39d97064e89438e4c3c7b5f982c69229}{fetch\+\_\+rsfs}} ()
+\item 
+def \mbox{\hyperlink{namespaceobject__spectra_a0ad725a7ad0f4deba10660c64bb2b052}{fetch\+\_\+rocks}} ()
+\item 
+def \mbox{\hyperlink{namespaceobject__spectra_a6471081ac7b42e92257a836abe377d38}{add\+\_\+gaussian\+\_\+noise}} (signal)
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{namespaceobject__spectra_afb909e6872e797546f77b5d6b0bead37}{N\+\_\+spectra}} = 1
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a7ae489b18f5cdc21302b4a3248cfeeda}{mineral\+\_\+names}}
+\item 
+list \mbox{\hyperlink{namespaceobject__spectra_ad8f9b3a82ae306c146366862ec3c0a00}{velarr}} = \mbox{[}$\,$\mbox{]}
+\item 
+string \mbox{\hyperlink{namespaceobject__spectra_a49f278883b9af424a82b097b8c85b242}{min\+\_\+name}} = \char`\"{}\char`\"{}
+\item 
+int \mbox{\hyperlink{namespaceobject__spectra_a2e839d402befe03988451b3a1f6f80cf}{vel}} = 18$\ast$random.\+uniform(0, 1)+7
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a03bf533a50e61517108f17455a82fa31}{For\+Spec}} = \mbox{\hyperlink{classobject__spectra_1_1_spectra}{Spectra}}(\mbox{[}\char`\"{}Fayalite\char`\"{}, \char`\"{}Spinel\char`\"{}\mbox{]}, \mbox{[}50.\+0, 50.\+0\mbox{]}, vel)
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a9336ebf25087d91c818ee6e9ec29f8c1}{x}} = For\+Spec.\+domain
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}{y}} = For\+Spec.\+mass\+\_\+spectrum
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a5f275402fe7e3f672eab8b802e8913ca}{noise}} = np.\+random.\+normal(0, 10e-\/20, len(\mbox{\hyperlink{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}{y}}))
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a64aa603bc3c6c1587e7c6542452481ac}{fig}} = plt.\+figure(\mbox{\hyperlink{namespaceobject__spectra_ab4024db5b48e2ddd9bcd43847f10f016}{dpi}}=2000)
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a8fa675eb2fcec5b95d9d21c670da7f30}{ax}} = fig.\+add\+\_\+subplot()
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a250a5d2f03fc812bbbbe6311276875f5}{fontsize}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_af18bb9025627467c42857f6b57902a47}{font}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a0a1822801f742d74bd2105834a1d3ba8}{fontweight}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_aea01c649994f33fb3a83b427bec999bc}{lw}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_ae0323a9039add2978bf5b49550572c7c}{c}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a21ad0bd836b90d08f4cf640b4c298e7c}{b}}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_ab4024db5b48e2ddd9bcd43847f10f016}{dpi}}
+\item 
+dictionary \mbox{\hyperlink{namespaceobject__spectra_ae3d6647fd0936aa8c12641d96b9ed725}{Spec\+Dict}} = \{\char`\"{}Mass\char`\"{}\+: x, \char`\"{}Amplitude\char`\"{}\+: y\}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a98682a50d3ecbd0950bcd420c6f309c2}{Spec\+Frame}} = pd.\+Data\+Frame(\{\char`\"{}Mass\char`\"{}\+: x, \char`\"{}Amplitude\char`\"{}\+: y\})
+\item 
+string \mbox{\hyperlink{namespaceobject__spectra_a33f35b09d1db8073a79c50f717e47c88}{spec\+\_\+save}} = str(k+1) + \char`\"{}.csv\char`\"{}
+\item 
+\mbox{\hyperlink{namespaceobject__spectra_a46420880a743b84984d25cc134101880}{sep}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceobject__spectra_a6471081ac7b42e92257a836abe377d38}\label{namespaceobject__spectra_a6471081ac7b42e92257a836abe377d38}} 
+\index{object\_spectra@{object\_spectra}!add\_gaussian\_noise@{add\_gaussian\_noise}}
+\index{add\_gaussian\_noise@{add\_gaussian\_noise}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{add\_gaussian\_noise()}{add\_gaussian\_noise()}}
+{\footnotesize\ttfamily def object\+\_\+spectra.\+add\+\_\+gaussian\+\_\+noise (\begin{DoxyParamCaption}\item[{}]{signal }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parameters
+----------
+signal : Float64 Array
+    An initial numerical spectra free from noise.
+
+Returns
+-------
+A synthetic TOF or mass spectra with  optional gaussian "white"
+noise added throughout.
+This white noise was derived via fourier analysis of Peridot impact
+spectra on the Hyperdust instrument.\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceobject__spectra_a60b3342022c4a9ef7f01f84a1d700a32}\label{namespaceobject__spectra_a60b3342022c4a9ef7f01f84a1d700a32}} 
+\index{object\_spectra@{object\_spectra}!fetch\_abundances@{fetch\_abundances}}
+\index{fetch\_abundances@{fetch\_abundances}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fetch\_abundances()}{fetch\_abundances()}}
+{\footnotesize\ttfamily def object\+\_\+spectra.\+fetch\+\_\+abundances (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a0ad725a7ad0f4deba10660c64bb2b052}\label{namespaceobject__spectra_a0ad725a7ad0f4deba10660c64bb2b052}} 
+\index{object\_spectra@{object\_spectra}!fetch\_rocks@{fetch\_rocks}}
+\index{fetch\_rocks@{fetch\_rocks}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fetch\_rocks()}{fetch\_rocks()}}
+{\footnotesize\ttfamily def object\+\_\+spectra.\+fetch\+\_\+rocks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a39d97064e89438e4c3c7b5f982c69229}\label{namespaceobject__spectra_a39d97064e89438e4c3c7b5f982c69229}} 
+\index{object\_spectra@{object\_spectra}!fetch\_rsfs@{fetch\_rsfs}}
+\index{fetch\_rsfs@{fetch\_rsfs}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fetch\_rsfs()}{fetch\_rsfs()}}
+{\footnotesize\ttfamily def object\+\_\+spectra.\+fetch\+\_\+rsfs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceobject__spectra_aa802be587eebfc9c37a931569df3730c}\label{namespaceobject__spectra_aa802be587eebfc9c37a931569df3730c}} 
+\index{object\_spectra@{object\_spectra}!safe\_div@{safe\_div}}
+\index{safe\_div@{safe\_div}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{safe\_div()}{safe\_div()}}
+{\footnotesize\ttfamily def object\+\_\+spectra.\+safe\+\_\+div (\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceobject__spectra_a8fa675eb2fcec5b95d9d21c670da7f30}\label{namespaceobject__spectra_a8fa675eb2fcec5b95d9d21c670da7f30}} 
+\index{object\_spectra@{object\_spectra}!ax@{ax}}
+\index{ax@{ax}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{ax}{ax}}
+{\footnotesize\ttfamily ax = fig.\+add\+\_\+subplot()}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a21ad0bd836b90d08f4cf640b4c298e7c}\label{namespaceobject__spectra_a21ad0bd836b90d08f4cf640b4c298e7c}} 
+\index{object\_spectra@{object\_spectra}!b@{b}}
+\index{b@{b}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{b}{b}}
+{\footnotesize\ttfamily b}
+
+\mbox{\Hypertarget{namespaceobject__spectra_ae0323a9039add2978bf5b49550572c7c}\label{namespaceobject__spectra_ae0323a9039add2978bf5b49550572c7c}} 
+\index{object\_spectra@{object\_spectra}!c@{c}}
+\index{c@{c}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{c}{c}}
+{\footnotesize\ttfamily c}
+
+\mbox{\Hypertarget{namespaceobject__spectra_ab4024db5b48e2ddd9bcd43847f10f016}\label{namespaceobject__spectra_ab4024db5b48e2ddd9bcd43847f10f016}} 
+\index{object\_spectra@{object\_spectra}!dpi@{dpi}}
+\index{dpi@{dpi}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{dpi}{dpi}}
+{\footnotesize\ttfamily dpi}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a64aa603bc3c6c1587e7c6542452481ac}\label{namespaceobject__spectra_a64aa603bc3c6c1587e7c6542452481ac}} 
+\index{object\_spectra@{object\_spectra}!fig@{fig}}
+\index{fig@{fig}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fig}{fig}}
+{\footnotesize\ttfamily fig = plt.\+figure(\mbox{\hyperlink{namespaceobject__spectra_ab4024db5b48e2ddd9bcd43847f10f016}{dpi}}=2000)}
+
+\mbox{\Hypertarget{namespaceobject__spectra_af18bb9025627467c42857f6b57902a47}\label{namespaceobject__spectra_af18bb9025627467c42857f6b57902a47}} 
+\index{object\_spectra@{object\_spectra}!font@{font}}
+\index{font@{font}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{font}{font}}
+{\footnotesize\ttfamily font}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a250a5d2f03fc812bbbbe6311276875f5}\label{namespaceobject__spectra_a250a5d2f03fc812bbbbe6311276875f5}} 
+\index{object\_spectra@{object\_spectra}!fontsize@{fontsize}}
+\index{fontsize@{fontsize}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fontsize}{fontsize}}
+{\footnotesize\ttfamily fontsize}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a0a1822801f742d74bd2105834a1d3ba8}\label{namespaceobject__spectra_a0a1822801f742d74bd2105834a1d3ba8}} 
+\index{object\_spectra@{object\_spectra}!fontweight@{fontweight}}
+\index{fontweight@{fontweight}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{fontweight}{fontweight}}
+{\footnotesize\ttfamily fontweight}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a03bf533a50e61517108f17455a82fa31}\label{namespaceobject__spectra_a03bf533a50e61517108f17455a82fa31}} 
+\index{object\_spectra@{object\_spectra}!ForSpec@{ForSpec}}
+\index{ForSpec@{ForSpec}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{ForSpec}{ForSpec}}
+{\footnotesize\ttfamily For\+Spec = \mbox{\hyperlink{classobject__spectra_1_1_spectra}{Spectra}}(\mbox{[}\char`\"{}Fayalite\char`\"{}, \char`\"{}Spinel\char`\"{}\mbox{]}, \mbox{[}50.\+0, 50.\+0\mbox{]}, vel)}
+
+\mbox{\Hypertarget{namespaceobject__spectra_aea01c649994f33fb3a83b427bec999bc}\label{namespaceobject__spectra_aea01c649994f33fb3a83b427bec999bc}} 
+\index{object\_spectra@{object\_spectra}!lw@{lw}}
+\index{lw@{lw}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{lw}{lw}}
+{\footnotesize\ttfamily lw}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a49f278883b9af424a82b097b8c85b242}\label{namespaceobject__spectra_a49f278883b9af424a82b097b8c85b242}} 
+\index{object\_spectra@{object\_spectra}!min\_name@{min\_name}}
+\index{min\_name@{min\_name}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{min\_name}{min\_name}}
+{\footnotesize\ttfamily string min\+\_\+name = \char`\"{}\char`\"{}}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a7ae489b18f5cdc21302b4a3248cfeeda}\label{namespaceobject__spectra_a7ae489b18f5cdc21302b4a3248cfeeda}} 
+\index{object\_spectra@{object\_spectra}!mineral\_names@{mineral\_names}}
+\index{mineral\_names@{mineral\_names}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{mineral\_names}{mineral\_names}}
+{\footnotesize\ttfamily mineral\+\_\+names}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 =  np.array([\textcolor{stringliteral}{'Albite'},}
+\DoxyCodeLine{2                               \textcolor{stringliteral}{'Anorthite'},}
+\DoxyCodeLine{3                               \textcolor{stringliteral}{'Enstatite'},}
+\DoxyCodeLine{4                               \textcolor{stringliteral}{'Fayalite'},}
+\DoxyCodeLine{5                               \textcolor{stringliteral}{'Ferrohornblende'},}
+\DoxyCodeLine{6                               \textcolor{stringliteral}{'Ferrosilite'},}
+\DoxyCodeLine{7                               \textcolor{stringliteral}{'Forsterite'},}
+\DoxyCodeLine{8                               \textcolor{stringliteral}{'Magnesiohornblende'},}
+\DoxyCodeLine{9                               \textcolor{stringliteral}{'Spinel'}])}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceobject__spectra_afb909e6872e797546f77b5d6b0bead37}\label{namespaceobject__spectra_afb909e6872e797546f77b5d6b0bead37}} 
+\index{object\_spectra@{object\_spectra}!N\_spectra@{N\_spectra}}
+\index{N\_spectra@{N\_spectra}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{N\_spectra}{N\_spectra}}
+{\footnotesize\ttfamily int N\+\_\+spectra = 1}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a5f275402fe7e3f672eab8b802e8913ca}\label{namespaceobject__spectra_a5f275402fe7e3f672eab8b802e8913ca}} 
+\index{object\_spectra@{object\_spectra}!noise@{noise}}
+\index{noise@{noise}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{noise}{noise}}
+{\footnotesize\ttfamily noise = np.\+random.\+normal(0, 10e-\/20, len(\mbox{\hyperlink{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}{y}}))}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a46420880a743b84984d25cc134101880}\label{namespaceobject__spectra_a46420880a743b84984d25cc134101880}} 
+\index{object\_spectra@{object\_spectra}!sep@{sep}}
+\index{sep@{sep}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{sep}{sep}}
+{\footnotesize\ttfamily sep}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a33f35b09d1db8073a79c50f717e47c88}\label{namespaceobject__spectra_a33f35b09d1db8073a79c50f717e47c88}} 
+\index{object\_spectra@{object\_spectra}!spec\_save@{spec\_save}}
+\index{spec\_save@{spec\_save}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{spec\_save}{spec\_save}}
+{\footnotesize\ttfamily spec\+\_\+save = str(k+1) + \char`\"{}.csv\char`\"{}}
+
+\mbox{\Hypertarget{namespaceobject__spectra_ae3d6647fd0936aa8c12641d96b9ed725}\label{namespaceobject__spectra_ae3d6647fd0936aa8c12641d96b9ed725}} 
+\index{object\_spectra@{object\_spectra}!SpecDict@{SpecDict}}
+\index{SpecDict@{SpecDict}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{SpecDict}{SpecDict}}
+{\footnotesize\ttfamily dictionary Spec\+Dict = \{\char`\"{}Mass\char`\"{}\+: x, \char`\"{}Amplitude\char`\"{}\+: y\}}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a98682a50d3ecbd0950bcd420c6f309c2}\label{namespaceobject__spectra_a98682a50d3ecbd0950bcd420c6f309c2}} 
+\index{object\_spectra@{object\_spectra}!SpecFrame@{SpecFrame}}
+\index{SpecFrame@{SpecFrame}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{SpecFrame}{SpecFrame}}
+{\footnotesize\ttfamily Spec\+Frame = pd.\+Data\+Frame(\{\char`\"{}Mass\char`\"{}\+: x, \char`\"{}Amplitude\char`\"{}\+: y\})}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a2e839d402befe03988451b3a1f6f80cf}\label{namespaceobject__spectra_a2e839d402befe03988451b3a1f6f80cf}} 
+\index{object\_spectra@{object\_spectra}!vel@{vel}}
+\index{vel@{vel}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{vel}{vel}}
+{\footnotesize\ttfamily int vel = 18$\ast$random.\+uniform(0, 1)+7}
+
+\mbox{\Hypertarget{namespaceobject__spectra_ad8f9b3a82ae306c146366862ec3c0a00}\label{namespaceobject__spectra_ad8f9b3a82ae306c146366862ec3c0a00}} 
+\index{object\_spectra@{object\_spectra}!velarr@{velarr}}
+\index{velarr@{velarr}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{velarr}{velarr}}
+{\footnotesize\ttfamily velarr = \mbox{[}$\,$\mbox{]}}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a9336ebf25087d91c818ee6e9ec29f8c1}\label{namespaceobject__spectra_a9336ebf25087d91c818ee6e9ec29f8c1}} 
+\index{object\_spectra@{object\_spectra}!x@{x}}
+\index{x@{x}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily x = For\+Spec.\+domain}
+
+\mbox{\Hypertarget{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}\label{namespaceobject__spectra_a2fb1c5cf58867b5bbc9a1b145a86f3a0}} 
+\index{object\_spectra@{object\_spectra}!y@{y}}
+\index{y@{y}!object\_spectra@{object\_spectra}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily y = For\+Spec.\+mass\+\_\+spectrum}
+

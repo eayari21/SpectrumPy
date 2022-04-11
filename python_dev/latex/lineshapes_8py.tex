@@ -1,0 +1,54 @@
+\hypertarget{lineshapes_8py}{}\doxysection{lineshapes.\+py File Reference}
+\label{lineshapes_8py}\index{lineshapes.py@{lineshapes.py}}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelineshapes}{lineshapes}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacelineshapes_a58d51773e65b1d6d4e52e7d07b58f5a5}{gx}}
+\item 
+\mbox{\hyperlink{namespacelineshapes_a9336ebf25087d91c818ee6e9ec29f8c1}{x}} = np.\+linspace(0,10,len(gx))
+\item 
+float \mbox{\hyperlink{namespacelineshapes_ab508ded41392ee86a2a619d3e93d2373}{amp}} = 3.\+7$\ast$exponnorm.\+pdf(x-\/4, 1.\+5)
+\item 
+\mbox{\hyperlink{namespacelineshapes_a640d58cad737c5606fa12a13d3281557}{ring}} = float(5.\+0)$\ast$np.\+exp(-\/1$\ast$float(3.\+0)$\ast$x)$\ast$np.\+sin(float(5)$\ast$x + 3.\+14)
+\item 
+int \mbox{\hyperlink{namespacelineshapes_a56a52f73797a8d06045cf5bc1ab831bf}{A}} = 1
+\item 
+int \mbox{\hyperlink{namespacelineshapes_a12857102343f2f2a198414bdcc70e51b}{B}} = 1
+\item 
+int \mbox{\hyperlink{namespacelineshapes_aac374e320caaadeca4874add33b62af2}{w}} = 1
+\item 
+int \mbox{\hyperlink{namespacelineshapes_a533391314665d6bf1b5575e9a9cd8552}{p}} = 1
+\item 
+\mbox{\hyperlink{namespacelineshapes_aaccc9105df5383111407fd5b41255e23}{t}} = np.\+array\+\_\+split(ring,5)
+\item 
+\mbox{\hyperlink{namespacelineshapes_a7766450d35e03a7b5c6939d8a088d5fa}{ringnext}} = np.\+concatenate((t\mbox{[}1\mbox{]},t\mbox{[}2\mbox{]},t\mbox{[}3\mbox{]},t\mbox{[}4\mbox{]},t\mbox{[}0\mbox{]}))
+\item 
+float \mbox{\hyperlink{namespacelineshapes_aa49862f401f74e5f3e5d3d29205e2c6c}{test2}} = amp + 1.\+2$\ast$ringnext$\ast$amp
+\item 
+\mbox{\hyperlink{namespacelineshapes_a8b3b38bf829fcd2082cc87b572b3056b}{sinc}} = np.\+sin(2$\ast$x)/x
+\item 
+\mbox{\hyperlink{namespacelineshapes_aab2463cd078f7c5368f6eb80f5a549b8}{x2}} = np.\+linspace(0,10, 5$\ast$len(x))
+\item 
+float \mbox{\hyperlink{namespacelineshapes_a87b59cd08df50227408d29ee25ed28f5}{amp2}} = 3.\+7$\ast$exponnorm.\+pdf(x2-\/4, 1.\+5)
+\item 
+\mbox{\hyperlink{namespacelineshapes_a24aeadb733f27244ec14e4cba82eeee9}{t2}} = np.\+array\+\_\+split(amp2,5)
+\item 
+\mbox{\hyperlink{namespacelineshapes_a05a671c66aefea124cc08b76ea6d30bb}{test}} = t2\mbox{[}4\mbox{]}$\ast$sinc
+\item 
+\mbox{\hyperlink{namespacelineshapes_a5e36941b3d856737e81516acd45edc50}{h}} = np.\+concatenate((t2\mbox{[}0\mbox{]}, t2\mbox{[}1\mbox{]}, t2\mbox{[}2\mbox{]}, t2\mbox{[}3\mbox{]}, test))
+\item 
+\mbox{\hyperlink{namespacelineshapes_ae0323a9039add2978bf5b49550572c7c}{c}}
+\item 
+\mbox{\hyperlink{namespacelineshapes_a22f45a3cb4f074e609f58ebaeef0ecf9}{label}}
+\item 
+\mbox{\hyperlink{namespacelineshapes_aea01c649994f33fb3a83b427bec999bc}{lw}}
+\item 
+\mbox{\hyperlink{namespacelineshapes_a0a1822801f742d74bd2105834a1d3ba8}{fontweight}}
+\item 
+\mbox{\hyperlink{namespacelineshapes_a250a5d2f03fc812bbbbe6311276875f5}{fontsize}}
+\end{DoxyCompactItemize}
