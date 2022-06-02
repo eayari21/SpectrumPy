@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 28 13:53:19 2022
+
+@author: ethanayari
+"""
+import re
+import tkinter
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from object_spectra import Spectra
+from tkinter import Tk, Frame, TOP, BOTH
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+# Implement the default Matplotlib key bindings.
+from matplotlib.backend_bases import key_press_handler
+from ipywidgets import widgets, interactive
+from sys import platform as sys_pf
+if sys_pf == 'darwin':
+    import matplotlib
+    matplotlib.use("TkAgg")
+
+# Improve figure resolution
+plt.rcParams["figure.figsize"] = [7.50, 10]
+plt.rcParams["figure.autolayout"] = True
+plt.style.use("seaborn-bright")
+root = tkinter.Tk()
+fig = plt.figure(figsize=(5, 4), dpi=2000)
+
+root.wm_title("Root Window")
+root.geometry('1500x1000')
+    # fig.set_figheight(5)
+    # fig.set_figwidth(5)
+ax = fig.add_subplot(111)
+
+canvas_frame = Frame(root)
+canvas = FigureCanvasTkAgg(fig, master=canvas_frame)
+toolbar = NavigationToolbar2Tk(canvas, root)
+
+# %%FETCH MINERAL ELEMENTAL ABUNDNCES
+def fetch_rocks():
+    # Retrieve the available elements from the heidelberg experiment and
+    # their compositions (up to 8 elements)
+    rocks = pd.read_csv("rocks.csv", header=0)
+    rocks.columns = ['Mineral', 'Element1', 'abundance1', 'Element2',
+                     'abundance2', 'Element3', 'abundance3', 'Element4',
+                     'abundance4', 'Element5', 'abundance5', 'Element6',
+                     'abundance6', 'Element7', 'abundance7', 'Element8',
+                     'abundance8']
+    return rocks
+
+
+# %%DISPLAY ELEMENTAL ABUNDANCES
+def display_els(ForSpec):
+    min_name = "Enstatite"
+    pres_abunds = ForSpec.pres_abunds
+    x = np.arange(1, len(pres_abunds)+1)
+    # print(x)
+    ax1 = plt.subplot()
+    ax1.set_xticks(x)
+
+    y = pres_abunds
+
+    # plot bar chart
+
+    plt.bar(x, y)
+
+    # Define tick labels
+
+    ax1.set_xticklabels(str(ForSpec.els))
+    plt.xlabel("Element Name")
+    plt.ylabel(r"Abundance $(\%)$")
+    plt.title(min_name, fontsize=20, fontweight='bold')
+
+    # Display graph
+
+    plt.show()
+
+
+# %%GENERATE INTERACTIVE PLOT
+def spectrumGUI():
+    min_names = ["Ferrosilite", "Enstatite", "Fayalite", "Forsterite",
+                 "Anorthite", "Albite", "Magnesiohornblende",
+                 "Ferrohornblende", "Spinel"]
+    # Create two bounded text boxes for the mineral abundances
+    mineral_one_abundance = widgets.BoundedFloatText(
+        value=50.0,
+        min=0.0,
+        max=100.0,
+        step=1.0,
+        description=r'Mineral 1 Abundance $(%)$',
+        disabled=False,
+        color='black'
+    )
+    mineral_two_abundance = widgets.BoundedFloatText(
+        value=100.0 - float(mineral_one_abundance.value),
+        min=0.0,
+        max=100.0,
+        step=1.0,
+        description=r'Mineral 1 Abundance $(%)$',
+        disabled=False,
+        color='black'
+    )
+
+    # Make a dropdown to select the Area, or "All"
+    min_one_name = widgets.Dropdown(
+        options=min_names,
+        value=min_names[2],
+        description='Mineral one:',
+    )
+    # Make a dropdown to select the Area, or "All"
+    min_two_name = widgets.Dropdown(
+        options=min_names,
+        value=min_names[0],
+        description='Mineral two:',
+    )
+
+    vel = widgets.BoundedFloatText(
+        value=20.0,
+        min=0.0,
+        max=100.0,
+        step=0.1,
+        description='Impact Velocity (km/s)',
+        disabled=False,
+        color='black'
+    )
+    ForSpec = Spectra([min_one_name.value, min_two_name.value],
+                      [mineral_one_abundance.value,
+                       mineral_two_abundance.value], vel.value)
+
+    # One spectra object attribute is a suitable domain for plotting
+    x = ForSpec.domain
+
+    # The spectrum is another accesible attribute
+    y = ForSpec.mass_spectrum
+    y = y[:-62]
+    y = y - min(y)
+    # Display the spectrum with high-resolution
+    # plt.style.use('dark_background')
+
+    # Display spectrum in log
+    ax.set_yscale('log')
+    ax.set_xlabel("Mass(u)", fontsize=15)
+    ax.set_ylabel("Amplitude", fontsize=15)
+    # ax.set_title("{:.2f}%/{:.2f}% Fayalite-Spinel Mixture".format(fay_abun,
+    #              spin_abun),
+    #             font="Times New Roman", fontweight="bold", fontsize=20)
+    ax.set_title("Tester", font="Times New Roman", fontweight="bold",
+                 fontsize=20)
+    ax.set_facecolor("white")
+    plt.plot(x, y, lw=1, c='r')
+    plt.grid(b=None)
+    fig.tight_layout()
+    fig.subplots_adjust(left=0.05, bottom=0.07, right=0.95,
+                        top=0.95, wspace=0, hspace=0)
+
+    # mng = plt.get_current_fig_manager()
+    # mng.full_screen_toggle()
+    canvas_frame.pack(side=TOP, expand=True)
+
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
+
+    toolbar.update()
+    canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
+    button = tkinter.Button(master=root, text="Quit", command=_quit)
+    button.pack(side=tkinter.BOTTOM)
+
+    tkinter.mainloop()
+
+
+def on_key_press(event):
+    print("you pressed {}".format(event.key))
+    key_press_handler(event, canvas, toolbar)
+
+
+canvas.mpl_connect("key_press_event", on_key_press)
+
+
+def _quit():
+    root.quit()     # stops mainloop
+    root.destroy()  # this is necessary on Windows to prevent
+
+
+
+# %%GENERATE ABUNDANCE CHARTS
+if __name__ == "__main__":
+    """
+    ==========================================================================
+    Test code: Enter the mineral you want to you want to see the spectra of.
+
+    **NOTE: Minerals must be written just as they are below
+    in order to set the "min_name" variable properly**
+
+    Currently available minerals include:
+    1. Ferrosilite
+    2. Enstatite
+    3. Fayalite
+    4. Forsterite
+    5. Anorthite
+    6. Albite
+    7. Magnesiohornblende
+    8. Ferrohornblende
+    9. Spinel
+    ==========================================================================
+"""
+    spectrumGUI()
