@@ -9,7 +9,11 @@ Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 """
 
 import re
+<<<<<<< HEAD
 import sys
+=======
+import random
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
 import pandas as pd
 import numpy as np
@@ -24,7 +28,10 @@ from utils import create_fracs
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 plt.style.use("seaborn-bright")
+<<<<<<< HEAD
 sys.path.insert(0, "/Users/ethanayari/Desktop/Peridot_Jan_'21")
+=======
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
 
 # %%WRAPPER FOR EVERY SPECTRA
@@ -54,7 +61,11 @@ class Spectra():
             return None
 
         rockarray_s = np.sort(rockarray)
+<<<<<<< HEAD
         percentarray_s = np.array(percentarray)
+=======
+        percentarray_s = np.sort(percentarray)
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
         # Make sure each mineral is only entered once
         if(len(np.unique(rockarray)) != len(rockarray)):
@@ -205,8 +216,12 @@ class Spectra():
 
         peak_times = []
         for lp in range(len(self.iso_mass)):
+<<<<<<< HEAD
             peak_times.append((stretch * np.sqrt(self.iso_mass[lp] +
                                                  shift)).astype(float))
+=======
+            peak_times.append((stretch*np.sqrt(self.iso_mass[lp]+shift)).astype(float))
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
             # in nanoseconds
         peak_times = np.array(peak_times)
 
@@ -282,8 +297,13 @@ class Spectra():
                 if not (min_pres['Element{}'.format(str(t))].empty):
                     elems_present.append(min_pres['Element{}'.format(str(t))].to_string())
                 if not (min_pres['abundance{}'.format(str(t))].empty):
+<<<<<<< HEAD
                     self.pres_abunds.append(float(percentarray_s[i]*min_pres['abundance{}'.format(str(t))]))
                     #                              + (percentarray_s[i]*min_pres['abundance{}'.format(str(t))])))
+=======
+                    self.pres_abunds.append(float(min_pres['abundance{}'.format(str(t))]
+                                                  + (percentarray_s[i]*min_pres['abundance{}'.format(str(t))])))
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
         self.els = []
 
@@ -294,6 +314,10 @@ class Spectra():
             tmp2 = re.sub(r'^.*?    ', "", tmp1)
             self.els.append(tmp2)
 
+<<<<<<< HEAD
+=======
+        # print(self.els)
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
         """
         elstemp = pd.Series(elems_present)
         for val in elstemp:
@@ -404,6 +428,7 @@ def fetch_rocks():
     return rocks
 
 
+<<<<<<< HEAD
 # %%ADD REALISTIC NOISE TO A SIGNAL
 def add_real_noise(signal, SNR):
     from peakdecayscript import generate_noise
@@ -416,6 +441,8 @@ def add_real_noise(signal, SNR):
     return signal
 
 
+=======
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 # %%ADD GAUSSIAN (WHITE) NOISE TO A SIGNAL
 def add_gaussian_noise(signal):
     """
@@ -436,8 +463,13 @@ def add_gaussian_noise(signal):
     # from a gaussian sample whose mean corresponds to the ratio.
 
     # Set a target SNR
+<<<<<<< HEAD
     target_snr_db = 100
     peak_sig = np.where(signal[signal > 2.7*10e-5])
+=======
+    target_snr_db = 5
+    peak_sig = np.where(signal[signal > 2.7*10e-1])
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
     # Calculate signal power and convert to dB
     sig_avg_watts = np.mean(signal)
     sig_avg_db = 10 * np.log10(sig_avg_watts)
@@ -447,7 +479,11 @@ def add_gaussian_noise(signal):
     # Generate an sample of white noise
     mean_noise = 0
     noise_volts = .1*np.random.normal(mean_noise,
+<<<<<<< HEAD
                                       np.sqrt(noise_avg_watts), len(signal))
+=======
+                                      np.sqrt(noise_avg_watts), len(y))
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
     noise_volts[peak_sig] = 0
     # Noise up the original signal
@@ -489,7 +525,11 @@ if __name__ == "__main__":
     ==========================================================================
     """
 
+<<<<<<< HEAD
     N_spectra = 100
+=======
+    N_spectra = 1
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -504,6 +544,7 @@ if __name__ == "__main__":
 
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
+<<<<<<< HEAD
     mixarr = []
     min_name = ""
     for k in range(N_spectra):
@@ -511,6 +552,14 @@ if __name__ == "__main__":
             min_name = "Magnesiohornblende"
         elif(k <= 99):
             min_name = "Enstatite"
+=======
+    min_name = ""
+    for k in range(N_spectra):
+        if(k <= 49):
+            min_name = mineral_names[0]
+        elif(k <= 99):
+            min_name = mineral_names[1]
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
         elif(k <= 149):
             min_name = mineral_names[2]
         elif(k <= 199):
@@ -525,6 +574,7 @@ if __name__ == "__main__":
             min_name = mineral_names[7]
         elif(k <= 449):
             min_name = mineral_names[8]
+<<<<<<< HEAD
         # min_name = "Fayalite"
         # min_name = str(min_name)
         # print(min_name)
@@ -550,6 +600,18 @@ if __name__ == "__main__":
         # Render spectrum object
         ForSpec = Spectra([min_name], [100], vel)
         # ForSpec = Spectra(["Fayalite", "Spinel"], [fay_abun, spin_abun], vel)
+=======
+        min_name = "Fayalite-Spinel"
+        # min_name = str(min_name)
+        # print(min_name)
+        vel = 18*random.uniform(0, 1)+7
+        velarr.append(vel)
+        # print(vel)
+
+        # Render spectrum object
+        # ForSpec = Spectra([min_name], [100], vel)
+        ForSpec = Spectra(["Fayalite", "Spinel"], [50.0, 50.0], vel)
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
         # ForSpec = Spectra(["Fayalite"],[100.0], 22.0)
 
         # One spectra object attribute is a suitable domain for plotting
@@ -562,6 +624,7 @@ if __name__ == "__main__":
 
         # print(ForSpec.pres_min)
 
+<<<<<<< HEAD
         y = add_real_noise(y, 2)
         """
         noise = np.random.normal(0, 10e-5, len(y))
@@ -570,6 +633,15 @@ if __name__ == "__main__":
             if(j % 15 == 0):
                 y[j] = y[j]+noise[j]
 """
+=======
+        # y = add_gaussian_noise(y)
+        noise = np.random.normal(0, 10e-20, len(y))
+
+        for k in range(len(y)):
+            if(k % 15 == 0):
+                y[k] = y[k]+noise[k]
+
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
         # Display the spectrum with high-resolution
         # plt.style.use('dark_background')
         fig = plt.figure(dpi=2000)
@@ -579,11 +651,16 @@ if __name__ == "__main__":
         ax.set_yscale('log')
         ax.set_xlabel("Mass(u)", fontsize=15)
         ax.set_ylabel("Amplitude", fontsize=15)
+<<<<<<< HEAD
         # ax.set_title("{:.2f}%/{:.2f}%
         # Fayalite-Spinel Mixture".format(fay_abun,
         #              spin_abun),
         #             font="Times New Roman", fontweight="bold", fontsize=20)
         ax.set_title(min_name, font="Times New Roman", fontweight="bold",
+=======
+        ax.set_title("100% " + "50/50 Fayalite Spinel Mixture",
+                     font="Times New Roman", fontweight="bold",
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
                      fontsize=20)
         ax.set_facecolor("white")
         ax.plot(x, y, lw=1, c='r')
@@ -602,10 +679,14 @@ if __name__ == "__main__":
         SpecFrame.to_csv(spec_save, sep=",")
 
 velarr = np.array(velarr)
+<<<<<<< HEAD
 np.savetxt("Velocities.txt", velarr)
 
 mixarr = np.array(mixarr)
 np.savetxt("Mixtures.txt", mixarr)
+=======
+np.savetxt("Velocity.txt", velarr)
+>>>>>>> ccfedb388ec8292995174084695cc56bfb22ae55
 
 # Copy every file with a spectra number in its name
 # call(['cp', '/Users/ethanayari/Documents/GitHub/SpectrumPy
