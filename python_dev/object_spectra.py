@@ -3,7 +3,6 @@
 
 """
 This is a python rendition of Jon Hillier's synthetic spectra IDL script
-
 __author__      = Ethan Ayari,
 Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 """
@@ -40,7 +39,6 @@ class Spectra():
         A list of what minerals are contained in the sample
     percentarray : Float Array
         The relative abundance of each mineral in the sample
-
     Returns
     -------
     A synthetic TOF or Mass spectra"""
@@ -56,7 +54,7 @@ class Spectra():
             return None
 
         rockarray_s = np.sort(rockarray)
-        percentarray_s = np.array(percentarray)
+        percentarray_s = np.sort(percentarray)
 
         # Make sure each mineral is only entered once
         if(len(np.unique(rockarray)) != len(rockarray)):
@@ -207,8 +205,6 @@ class Spectra():
 
         peak_times = []
         for lp in range(len(self.iso_mass)):
-            peak_times.append((stretch * np.sqrt(self.iso_mass[lp] +
-                                                 shift)).astype(float))
             peak_times.append((stretch*np.sqrt(self.iso_mass[lp]+shift)).astype(float))
             # in nanoseconds
         peak_times = np.array(peak_times)
@@ -285,8 +281,6 @@ class Spectra():
                 if not (min_pres['Element{}'.format(str(t))].empty):
                     elems_present.append(min_pres['Element{}'.format(str(t))].to_string())
                 if not (min_pres['abundance{}'.format(str(t))].empty):
-                    self.pres_abunds.append(float(percentarray_s[i]*min_pres['abundance{}'.format(str(t))]))
-                    #                              + (percentarray_s[i]*min_pres['abundance{}'.format(str(t))])))
                     self.pres_abunds.append(float(min_pres['abundance{}'.format(str(t))]
                                                   + (percentarray_s[i]*min_pres['abundance{}'.format(str(t))])))
 
@@ -299,14 +293,11 @@ class Spectra():
             tmp2 = re.sub(r'^.*?    ', "", tmp1)
             self.els.append(tmp2)
 
-
-
         # print(self.els)
         """
         elstemp = pd.Series(elems_present)
         for val in elstemp:
             self.els.append(val)
-
         print(self.els)
         """
 
@@ -412,15 +403,20 @@ def fetch_rocks():
     return rocks
 
 
+# %%FETCH MINERAL ELEMENTAL ABUNDNCES
+def rms_val(signal):
+    rms = np.sqrt(np.mean(signal**2))
+    return rms
+
+
 # %%ADD REALISTIC NOISE TO A SIGNAL
 def add_real_noise(signal, SNR):
     from peakdecayscript import generate_noise
-    noise = generate_noise()
-    scaling = np.abs(max(signal)/max(noise))/(SNR**4)
+    noise = generate_noise().astype(float)
+    scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
     for k in range(len(signal)):
         if(signal[k] < .2):
             signal[k] += np.random.choice(noise*scaling, size=1)
-
     return signal
 
 
@@ -431,21 +427,17 @@ def add_gaussian_noise(signal):
     ----------
     signal : Float64 Array
         An initial numerical spectra free from noise.
-
     Returns
     -------
     A synthetic TOF or mass spectra with  optional gaussian "white"
     noise added throughout.
     This white noise was derived via fourier analysis of Peridot impact
     spectra on the Hyperdust instrument.
-
     """
     # Based on a specified signal to noise ratio (SNR), select values
     # from a gaussian sample whose mean corresponds to the ratio.
 
     # Set a target SNR
-    target_snr_db = 100
-    peak_sig = np.where(signal[signal > 2.7*10e-5])
     target_snr_db = 5
     peak_sig = np.where(signal[signal > 2.7*10e-1])
     # Calculate signal power and convert to dB
@@ -457,25 +449,12 @@ def add_gaussian_noise(signal):
     # Generate an sample of white noise
     mean_noise = 0
     noise_volts = .1*np.random.normal(mean_noise,
-                                      np.sqrt(noise_avg_watts), len(signal))
-    # np.sqrt(noise_avg_watts), len(y))
+                                      np.sqrt(noise_avg_watts), len(y))
 
     noise_volts[peak_sig] = 0
     # Noise up the original signal
-    # y_volts = signal - noise_volts
-
-    PSD = np.real(np.loadtxt("Powerspectrum.txt"))
-    # freq = np.real(np.loadtxt("Frequencies.txt"))
-
-    amps = np.random.choice(PSD, len(signal))
-
-    peak_ratio = np.abs(max(signal)/max(amps))
-
-    for k in range(len(signal)):
-        # t = int(np.random.normal(len(amps/2), len(amps)/2, 1))
-        # s = int(np.random.normal(len(signal/2), len(signal)/2, 1))
-        signal[k] += peak_ratio * amps[len(amps)-k-1] / target_snr_db**4
-    return signal
+    y_volts = signal - noise_volts
+    return y_volts
 
 
 # %%
@@ -483,10 +462,8 @@ if __name__ == "__main__":
     """
     ==========================================================================
     Test code: Enter the mineral you want to you want to see the spectra of.
-
     **NOTE: Minerals must be written just as they are below
     in order to set the "min_name" variable properly**
-
     Currently available minerals include:
     1. Ferrosilite
     2. Enstatite
@@ -497,13 +474,12 @@ if __name__ == "__main__":
     7. Magnesiohornblende
     8. Ferrohornblende
     9. Spinel
+    10. Peridot
+    11. Silica
     ==========================================================================
     """
 
-    N_spectra = 100
-
-    N_spectra = 1
-
+    N_spectra = 200
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -512,31 +488,26 @@ if __name__ == "__main__":
                               'Ferrosilite',
                               'Forsterite',
                               'Magnesiohornblende',
-                              'Spinel'])
+                              'Spinel',
+                              'Peridot',
+                              'Silica'])
 
     # x,y = Spectra(['Albite','Anorthite'],[200/3,100/3])
 
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
-
-    mixarr = []
+    SNRarr = []
+    SNRchoice = [2, 50, 100, 200]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
-            min_name = "Magnesiohornblende"
+            min_name = mineral_names[9]
         elif(k <= 99):
-            min_name = "Enstatite"
-
-    min_name = ""
-    for k in range(N_spectra):
-        if(k <= 49):
-            min_name = mineral_names[0]
-        elif(k <= 99):
-            min_name = mineral_names[1]
+            min_name = mineral_names[9]
         elif(k <= 149):
-            min_name = mineral_names[2]
+            min_name = mineral_names[10]
         elif(k <= 199):
-            min_name = mineral_names[3]
+            min_name = mineral_names[10]
         elif(k <= 249):
             min_name = mineral_names[4]
         elif(k <= 299):
@@ -547,34 +518,8 @@ if __name__ == "__main__":
             min_name = mineral_names[7]
         elif(k <= 449):
             min_name = mineral_names[8]
-
-        # min_name = "Fayalite"
-        # min_name = str(min_name)
-        # print(min_name)
-        # vel = 18*random.uniform(0, 1)+7
-        vel = 20.0
-        velarr.append(vel)
-        # print(vel)
-
-        # fay_abun = 100.0 * random.uniform(0, 1)
-        # spin_abun = 100.0 - fay_abun
-        # fayanums = [2, 23, 66, 100, 133, 155, 177]
-        # spinums = [6, 56, 87, 105, 123, 158, 192]
-        # if(k in fayanums):
-        #     fay_abun = 100.0
-        #     spin_abun = 0.0
-
-        # if(k in spinums):
-        #     fay_abun = 0.0
-        #     spin_abun = 100.0
-        # mixarr.append((fay_abun, spin_abun))
-
-        # print(fay_abun, spin_abun)
-        # Render spectrum object
-        ForSpec = Spectra([min_name], [100], vel)
-        # ForSpec = Spectra(["Fayalite", "Spinel"], [fay_abun, spin_abun], vel)
-
-        min_name = "Fayalite-Spinel"
+        # min_name = "Fayalite-Spinel"
+        # min_name = "Peridot"
         # min_name = str(min_name)
         # print(min_name)
         vel = 18*random.uniform(0, 1)+7
@@ -582,9 +527,8 @@ if __name__ == "__main__":
         # print(vel)
 
         # Render spectrum object
-        # ForSpec = Spectra([min_name], [100], vel)
-        ForSpec = Spectra(["Fayalite", "Spinel"], [50.0, 50.0], vel)
-
+        ForSpec = Spectra([min_name], [100], 20.0)
+        # ForSpec = Spectra(["Fayalite", "Spinel"], [50.0, 50.0], vel)
         # ForSpec = Spectra(["Fayalite"],[100.0], 22.0)
 
         # One spectra object attribute is a suitable domain for plotting
@@ -597,21 +541,14 @@ if __name__ == "__main__":
 
         # print(ForSpec.pres_min)
 
-        y = add_real_noise(y, 100)
-        """
-        noise = np.random.normal(0, 10e-5, len(y))
+        SNR_tmp = np.random.choice(SNRchoice, size=1)
+        SNRarr.append(SNR_tmp)
+        y = add_real_noise(y, SNR_tmp)
+        # noise = np.random.normal(0, 10e-20, len(y))
 
-        for j in range(len(y)):
-            if(j % 15 == 0):
-                y[j] = y[j]+noise[j]
-"""
-
-        # y = add_gaussian_noise(y)
-        noise = np.random.normal(0, 10e-20, len(y))
-
-        for k in range(len(y)):
-            if(k % 15 == 0):
-                y[k] = y[k]+noise[k]
+        # for k in range(len(y)):
+        #    if(k % 15 == 0):
+        #        y[k] = y[k]+noise[k]
 
         # Display the spectrum with high-resolution
         # plt.style.use('dark_background')
@@ -622,11 +559,8 @@ if __name__ == "__main__":
         ax.set_yscale('log')
         ax.set_xlabel("Mass(u)", fontsize=15)
         ax.set_ylabel("Amplitude", fontsize=15)
-        # ax.set_title("{:.2f}%/{:.2f}%
-        # Fayalite-Spinel Mixture".format(fay_abun,
-        #              spin_abun),
-        #             font="Times New Roman", fontweight="bold", fontsize=20)
-        ax.set_title(min_name, font="Times New Roman", fontweight="bold",
+        ax.set_title(min_name,
+                     font="Times New Roman", fontweight="bold",
                      fontsize=20)
         ax.set_facecolor("white")
         ax.plot(x, y, lw=1, c='r')
@@ -645,13 +579,9 @@ if __name__ == "__main__":
         SpecFrame.to_csv(spec_save, sep=",")
 
 velarr = np.array(velarr)
-
 np.savetxt("Velocities.txt", velarr)
-
-mixarr = np.array(mixarr)
-np.savetxt("Mixtures.txt", mixarr)
-
-np.savetxt("Velocity.txt", velarr)
+SNRarr = np.array(SNRarr)
+np.savetxt("SignaltoNoise.txt", SNRarr)
 
 # Copy every file with a spectra number in its name
 # call(['cp', '/Users/ethanayari/Documents/GitHub/SpectrumPy
