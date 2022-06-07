@@ -449,7 +449,7 @@ def add_gaussian_noise(signal):
     # Generate an sample of white noise
     mean_noise = 0
     noise_volts = .1*np.random.normal(mean_noise,
-                                      np.sqrt(noise_avg_watts), len(y))
+                                      np.sqrt(noise_avg_watts), len(signal))
 
     noise_volts[peak_sig] = 0
     # Noise up the original signal
@@ -478,7 +478,7 @@ if __name__ == "__main__":
     11. Silica
     ==========================================================================
     """
-
+"""
     N_spectra = 200
     mineral_names = np.array(['Albite',
                               'Anorthite',
@@ -587,3 +587,4 @@ np.savetxt("SignaltoNoise.txt", SNRarr)
 # call(['cp', '/Users/ethanayari/Documents/GitHub/SpectrumPy
 # copy/python_dev/*{1..450}*', '/Users/ethanayari/Dropbox/IDEX
 # Pipeline/python/Training_Sets/trainingset4'])
+"""

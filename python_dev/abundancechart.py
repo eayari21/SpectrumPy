@@ -1,45 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 28 13:53:19 2022
-
-@author: ethanayari
+This is a GUI wrapper for SpectrumPY
+__author__      = Ethan Ayari,
+Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 """
-import re
-import tkinter
+
+# import re
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import tkinter as tk
 
 from object_spectra import Spectra
-from tkinter import Tk, Frame, TOP, BOTH
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-# Implement the default Matplotlib key bindings.
-from matplotlib.backend_bases import key_press_handler
-from ipywidgets import widgets, interactive
-from sys import platform as sys_pf
-if sys_pf == 'darwin':
-    import matplotlib
-    matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
 
-# Improve figure resolution
-plt.rcParams["figure.figsize"] = [7.50, 10]
-plt.rcParams["figure.autolayout"] = True
-plt.style.use("seaborn-bright")
-root = tkinter.Tk()
-fig = plt.figure(figsize=(5, 4), dpi=2000)
+# %%SET GLOBAL PLOT VARIABLES
+window = tk.Tk()
 
-root.wm_title("Root Window")
-root.geometry('1500x1000')
-    # fig.set_figheight(5)
-    # fig.set_figwidth(5)
-ax = fig.add_subplot(111)
+min_one_name = tk.StringVar()
+min_two_name = tk.StringVar()
+min_one_abundance = tk.Scale(window, from_=0, to=100)
+min_one_abundance.set(50)
 
-canvas_frame = Frame(root)
-canvas = FigureCanvasTkAgg(fig, master=canvas_frame)
-toolbar = NavigationToolbar2Tk(canvas, root)
+min_two_abundance = tk.Scale(window, from_=0, to=100)
+min_two_abundance.set(50)
+
+fig = plt.figure()
+ax = plt.axes()
+# ax = plt.axes()
+# Display spectrum in log
+ax.set_yscale('log')
+ax.set_xlabel("Mass(u)", fontsize=15)
+ax.set_ylabel("Amplitude", fontsize=15)
+ax.set_facecolor("white")
+
+canvas = FigureCanvasTkAgg(fig, master=window)
+# creating the Matplotlib toolbar
+toolbar = NavigationToolbar2Tk(canvas, window)
+
 
 # %%FETCH MINERAL ELEMENTAL ABUNDNCES
 def fetch_rocks():
@@ -81,6 +82,110 @@ def display_els(ForSpec):
     plt.show()
 
 
+# %%UPDATE INTERACTIVE PLOT
+def generate_spectra():
+    try:
+        canvas.get_tk_widget().pack_forget()
+    except AttributeError:
+        pass
+    one_name = min_one_name.get()
+    two_name = min_two_name.get()
+    one_abun = min_one_abundance.get()
+    two_abun = min_two_abundance.get()
+
+    print("Mineral one : " + one_name, one_abun, "%")
+    print("Mineral two : " + two_name, two_abun, "%")
+
+    min_name = np.array([one_name, two_name])
+    pres_abunds = np.array([float(one_abun), float(two_abun)])
+
+    spectra = Spectra(min_name, pres_abunds, 20.0)
+
+    # One spectra object attribute is a suitable domain for plotting
+    x = spectra.domain
+
+    # The spectrum is another accesible attribute
+    y = spectra.mass_spectrum
+    y = y[:-62]
+    y = y - min(y)
+    ax.set_title("{} % {} and {}% {}".format(str(one_abun), one_name,
+                                             str(two_abun), two_name),
+                 font="Times New Roman", fontweight="bold", fontsize=20)
+
+    ax.plot(x, y, lw=1, c='r')
+    plt.grid(b=None)
+    # creating the Tkinter canvas
+    # containing the Matplotlib figure
+
+    canvas.draw()
+
+    # placing the canvas on the Tkinter window
+    canvas.get_tk_widget().pack()
+    toolbar.update()
+
+    # placing the toolbar on the Tkinter window
+    canvas.get_tk_widget().pack()
+
+
+# %%GENERATE BASIC GUI
+def basic_gui():
+    # window = tk.Tk()
+    window.title("SpectrumPY GUI")
+    window.configure(background='blue')
+
+    quit_button = tk.Button(window, text='Quit App',
+                            command=window.destroy)
+
+    # creating a label for
+    # name using widget Label
+    name_one_label = tk.Label(window, text='Mineral One Name',
+                              font=('calibre', 10, 'bold'), fg="black",
+                              bg="orange")
+
+    # creating a entry for input
+    # name using widget Entry
+    name_one_entry = tk.Entry(window, textvariable=min_one_name,
+                              font=('calibre', 10, 'normal'), fg="blue",
+                              bg="orange")
+
+    # creating a label for password
+    name_two_label = tk.Label(window, text='Mineral Two Name',
+                              font=('calibre', 10, 'bold'), fg="black",
+                              bg="orange")
+
+    # creating a entry for password
+    name_two_entry = tk.Entry(window, textvariable=min_two_name,
+                              font=('calibre', 10, 'normal'), fg="blue",
+                              bg="orange")
+
+    # creating a button using the widget
+    # Button that will call the generate_spectra function
+    sub_btn = tk.Button(window, text='Generate Spectra',
+                        command=generate_spectra, fg="blue", bg="white")
+
+    # placing the label and entry in the required position using grid method
+    # name_one_label.grid(row=0, column=0)
+    # name_one_entry.grid(row=0, column=1)
+    # name_two_label.grid(row=1, column=0)
+    # name_two_entry.grid(row=1, column=1)
+    # sub_btn.grid(row=2, column=1)
+
+    name_one_label.pack(side="left")
+    name_one_entry.pack(side="left")
+    min_two_abundance.pack(side="right")
+
+    name_two_entry.pack(side="right")
+    name_two_label.pack(side="right")
+
+    sub_btn.pack(side="bottom")
+    min_one_abundance.pack(side="left")
+
+    quit_button.pack(side="bottom")
+
+    window.mainloop()
+
+
+"""
 # %%GENERATE INTERACTIVE PLOT
 def spectrumGUI():
     min_names = ["Ferrosilite", "Enstatite", "Fayalite", "Forsterite",
@@ -167,11 +272,10 @@ def spectrumGUI():
 
     toolbar.update()
     canvas.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-    button = tkinter.Button(master=root, text="Quit", command=_quit)
+    button = tkinter.Button(master=window, text="Quit", command=_quit)
     button.pack(side=tkinter.BOTTOM)
 
     tkinter.mainloop()
-
 
 def on_key_press(event):
     print("you pressed {}".format(event.key))
@@ -182,9 +286,9 @@ canvas.mpl_connect("key_press_event", on_key_press)
 
 
 def _quit():
-    root.quit()     # stops mainloop
-    root.destroy()  # this is necessary on Windows to prevent
-
+    window.quit()     # stops mainloop
+    window.destroy()  # this is necessary on Windows to prevent
+"""
 
 
 # %%GENERATE ABUNDANCE CHARTS
@@ -208,4 +312,5 @@ if __name__ == "__main__":
     9. Spinel
     ==========================================================================
 """
-    spectrumGUI()
+    # spectrumGUI()
+    basic_gui()
