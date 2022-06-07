@@ -131,37 +131,41 @@ def generate_spectra():
 def basic_gui():
     # window = tk.Tk()
     window.title("SpectrumPY GUI")
-    window.configure(background='blue')
+    window.configure(background='#00008B')
 
     quit_button = tk.Button(window, text='Quit App',
-                            command=window.destroy)
+                            command=window.destroy,
+                            font=('calibre', 20, 'bold'), fg="black",
+                            bg="orange")
 
     # creating a label for
     # name using widget Label
     name_one_label = tk.Label(window, text='Mineral One Name',
-                              font=('calibre', 10, 'bold'), fg="black",
+                              font=('calibre', 20, 'bold'), fg="black",
                               bg="orange")
 
     # creating a entry for input
     # name using widget Entry
     name_one_entry = tk.Entry(window, textvariable=min_one_name,
-                              font=('calibre', 10, 'normal'), fg="blue",
+                              font=('calibre', 20, 'normal'), fg="blue",
                               bg="orange")
 
     # creating a label for password
     name_two_label = tk.Label(window, text='Mineral Two Name',
-                              font=('calibre', 10, 'bold'), fg="black",
+                              font=('calibre', 20, 'bold'), fg="black",
                               bg="orange")
 
     # creating a entry for password
     name_two_entry = tk.Entry(window, textvariable=min_two_name,
-                              font=('calibre', 10, 'normal'), fg="blue",
+                              font=('calibre', 20, 'normal'), fg="blue",
                               bg="orange")
 
     # creating a button using the widget
     # Button that will call the generate_spectra function
     sub_btn = tk.Button(window, text='Generate Spectra',
-                        command=generate_spectra, fg="blue", bg="white")
+                        command=generate_spectra, font=('calibre', 20,
+                                                        'bold'), fg="blue",
+                        bg="red")
 
     # placing the label and entry in the required position using grid method
     # name_one_label.grid(row=0, column=0)
@@ -177,7 +181,7 @@ def basic_gui():
     name_two_entry.pack(side="right")
     name_two_label.pack(side="right")
 
-    sub_btn.pack(side="bottom")
+    sub_btn.pack(side="top")
     min_one_abundance.pack(side="left")
 
     quit_button.pack(side="bottom")
