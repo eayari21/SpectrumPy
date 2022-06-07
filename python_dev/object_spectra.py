@@ -250,6 +250,7 @@ class Spectra():
         t2 = np.array_split(amp, 5)
         x_l = np.linspace(0, 10, len(t2[4]))
 
+        np.seterr(divide='ignore', invalid='ignore')
         sinc = np.sin(2*x_l)/x_l
         sinc[0] = 1.0
         sinc = sinc/max(sinc)

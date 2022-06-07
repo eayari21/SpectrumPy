@@ -13,22 +13,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
 
-from object_spectra import Spectra
+from object_spectra import Spectra, add_real_noise
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
 
 # %%SET GLOBAL PLOT VARIABLES
 window = tk.Tk()
+window.attributes('-fullscreen', True)
 
 min_one_name = tk.StringVar()
 min_two_name = tk.StringVar()
-min_one_abundance = tk.Scale(window, from_=0, to=100)
+snr_val = tk.StringVar()
+noise_present = tk.BooleanVar()
+noise_present.set(False)
+
+min_one_abundance = tk.Scale(window, label="Abundance One",
+                             from_=0, to=100)
 min_one_abundance.set(50)
 
-min_two_abundance = tk.Scale(window, from_=0, to=100)
+min_two_abundance = tk.Scale(window, label="Abundance Two",
+                             from_=0, to=100)
 min_two_abundance.set(50)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(8, 4))
 ax = plt.axes()
 # ax = plt.axes()
 # Display spectrum in log
@@ -82,6 +89,16 @@ def display_els(ForSpec):
     plt.show()
 
 
+# %%COMMAND TO ADD NOISE
+def noise_switch():
+    if(noise_present):
+        print("Noise has been turned on")
+    else:
+        print("Noise has been turned off")
+    # noise_present.set(True)
+    generate_spectra()
+
+
 # %%UPDATE INTERACTIVE PLOT
 def generate_spectra():
     try:
@@ -93,8 +110,8 @@ def generate_spectra():
     one_abun = min_one_abundance.get()
     two_abun = min_two_abundance.get()
 
-    print("Mineral one : " + one_name, one_abun, "%")
-    print("Mineral two : " + two_name, two_abun, "%")
+    # print("Mineral one : " + one_name, one_abun, "%")
+    # print("Mineral two : " + two_name, two_abun, "%")
 
     min_name = np.array([one_name, two_name])
     pres_abunds = np.array([float(one_abun), float(two_abun)])
@@ -108,6 +125,11 @@ def generate_spectra():
     y = spectra.mass_spectrum
     y = y[:-62]
     y = y - min(y)
+
+    if(noise_present.get()):
+        print("Adding Noise")
+        y = add_real_noise(y, float(snr_val.get()))
+
     ax.set_title("{} % {} and {}% {}".format(str(one_abun), one_name,
                                              str(two_abun), two_name),
                  font="Times New Roman", fontweight="bold", fontsize=20)
@@ -167,6 +189,22 @@ def basic_gui():
                                                         'bold'), fg="blue",
                         bg="red")
 
+    noise_btn = tk.Checkbutton(window, text='Generate Noise',
+                               variable=noise_present,
+                               command=noise_switch, onvalue=True,
+                               offvalue=False, font=('calibre', 20, 'bold'),
+                               fg="blue", bg="red")
+    noise_present.set(False)
+
+    # creating a label for
+    # snr using widget Label
+    snr_label = tk.Label(window, text='Signal to Noise Ratio',
+                         font=('calibre', 20, 'bold'), fg="black",
+                         bg="orange")
+
+    snr_entry = tk.Entry(window, textvariable=snr_val,
+                         font=('calibre', 20, 'normal'), fg="blue",
+                         bg="orange")
     # placing the label and entry in the required position using grid method
     # name_one_label.grid(row=0, column=0)
     # name_one_entry.grid(row=0, column=1)
@@ -181,10 +219,14 @@ def basic_gui():
     name_two_entry.pack(side="right")
     name_two_label.pack(side="right")
 
-    sub_btn.pack(side="top")
+    snr_label.pack(side="top", anchor="e")
+    snr_entry.pack(side="top", anchor="e")
+
+    sub_btn.pack(side="bottom", anchor="n", fill="both")
     min_one_abundance.pack(side="left")
 
-    quit_button.pack(side="bottom")
+    quit_button.pack(side="bottom", anchor="s", fill="both")
+    noise_btn.pack(side="top", anchor="w")
 
     window.mainloop()
 
