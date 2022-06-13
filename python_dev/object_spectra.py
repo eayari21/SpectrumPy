@@ -8,8 +8,8 @@ Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 """
 
 import re
-import sys
-import random
+# import sys
+# import random
 
 import pandas as pd
 import numpy as np
@@ -19,13 +19,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import exponnorm
 from RSF_test import line_appear
 from utils import create_fracs
+from peakdecayscript import generate_noise
 
 # Improve figure resolution
 plt.rcParams["figure.figsize"] = [7.50, 3.50]
 plt.rcParams["figure.autolayout"] = True
 plt.style.use("seaborn-bright")
 
-sys.path.insert(0, "/Users/ethanayari/Desktop/Peridot_Jan_'21")
+# sys.path.insert(0, "/Users/ethanayari/Desktop/Peridot_Jan_'21")
 
 
 # %%WRAPPER FOR EVERY SPECTRA
@@ -412,7 +413,6 @@ def rms_val(signal):
 
 # %%ADD REALISTIC NOISE TO A SIGNAL
 def add_real_noise(signal, SNR):
-    from peakdecayscript import generate_noise
     noise = generate_noise().astype(float)
     scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
     for k in range(len(signal)):
@@ -498,7 +498,7 @@ if __name__ == "__main__":
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
     SNRarr = []
-    SNRchoice = [2, 50, 100, 200]
+    # SNRchoice = [2, 50, 100, 200]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
@@ -523,7 +523,8 @@ if __name__ == "__main__":
         # min_name = "Peridot"
         # min_name = str(min_name)
         # print(min_name)
-        vel = 18*random.uniform(0, 1)+7
+        # vel = 18*random.uniform(0, 1)+7
+        vel = 20.0
         velarr.append(vel)
         # print(vel)
 
@@ -542,7 +543,8 @@ if __name__ == "__main__":
 
         # print(ForSpec.pres_min)
 
-        SNR_tmp = np.random.choice(SNRchoice, size=1)
+        # SNR_tmp = np.random.choice(SNRchoice, size=1)
+        SNR_tmp = 40.0
         SNRarr.append(SNR_tmp)
         y = add_real_noise(y, SNR_tmp)
         # noise = np.random.normal(0, 10e-20, len(y))

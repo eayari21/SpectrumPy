@@ -35,7 +35,7 @@ min_two_abundance = tk.Scale(window, label="Abundance Two",
                              from_=0, to=100)
 min_two_abundance.set(50)
 
-fig = plt.figure(figsize=(8, 4))
+fig = plt.figure(figsize=(10, 6))
 ax = plt.axes()
 # ax = plt.axes()
 # Display spectrum in log
@@ -45,8 +45,13 @@ ax.set_ylabel("Amplitude", fontsize=15)
 ax.set_facecolor("white")
 
 canvas = FigureCanvasTkAgg(fig, master=window)
-# creating the Matplotlib toolbar
-toolbar = NavigationToolbar2Tk(canvas, window)
+canvas.get_tk_widget().grid(row=0, column=0)  # , ipadx=40, ipady=20)
+
+# navigation toolbar
+toolbarFrame = tk.Frame(master=window)
+toolbarFrame.grid(row=2, column=0)
+toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+# toolbar = NavigationToolbar2Tk(canvas, window)
 
 
 # %%FETCH MINERAL ELEMENTAL ABUNDNCES
@@ -91,10 +96,13 @@ def display_els(ForSpec):
 
 # %%COMMAND TO ADD NOISE
 def noise_switch():
-    if(noise_present):
+
+    if(noise_present.get()):
         print("Noise has been turned on")
     else:
         print("Noise has been turned off")
+        ax.clear()
+        ax.set_yscale('log')
     # noise_present.set(True)
     generate_spectra()
 
@@ -102,7 +110,7 @@ def noise_switch():
 # %%UPDATE INTERACTIVE PLOT
 def generate_spectra():
     try:
-        canvas.get_tk_widget().pack_forget()
+        canvas.get_tk_widget().grid_forget()
     except AttributeError:
         pass
     one_name = min_one_name.get()
@@ -142,11 +150,11 @@ def generate_spectra():
     canvas.draw()
 
     # placing the canvas on the Tkinter window
-    canvas.get_tk_widget().pack()
+    canvas.get_tk_widget().grid(row=0, column=0)
     toolbar.update()
 
     # placing the toolbar on the Tkinter window
-    canvas.get_tk_widget().pack()
+    # canvas.get_tk_widget().pack()
 
 
 # %%GENERATE BASIC GUI
@@ -203,6 +211,7 @@ def basic_gui():
                          bg="orange")
 
     snr_entry = tk.Entry(window, textvariable=snr_val,
+                         validate="focusout", validatecommand=generate_spectra,
                          font=('calibre', 20, 'normal'), fg="blue",
                          bg="orange")
     # placing the label and entry in the required position using grid method
@@ -212,21 +221,32 @@ def basic_gui():
     # name_two_entry.grid(row=1, column=1)
     # sub_btn.grid(row=2, column=1)
 
-    name_one_label.pack(side="left")
-    name_one_entry.pack(side="left")
-    min_two_abundance.pack(side="right")
+    # name_one_label.pack(side="left")
+    # name_one_entry.pack(side="left")
+    # min_two_abundance.pack(side="right")
+    name_one_label.grid(row=3, column=1)
+    name_one_entry.grid(row=3, column=2)
+    name_two_label.grid(row=4, column=1)
+    name_two_entry.grid(row=4, column=2)
+    min_one_abundance.grid(row=3, column=4)
+    min_two_abundance.grid(row=4, column=4)
 
-    name_two_entry.pack(side="right")
-    name_two_label.pack(side="right")
+    # name_two_entry.pack(side="right")
+    # name_two_label.pack(side="right")
 
-    snr_label.pack(side="top", anchor="e")
-    snr_entry.pack(side="top", anchor="e")
+    # snr_label.pack(side="top", anchor="e")
+    # snr_entry.pack(side="top", anchor="e")
+    snr_label.grid(row=5, column=1)
+    snr_entry.grid(row=5, column=2)
 
-    sub_btn.pack(side="bottom", anchor="n", fill="both")
-    min_one_abundance.pack(side="left")
+    # sub_btn.pack(side="bottom", anchor="n", fill="both")
+    # min_one_abundance.pack(side="left")
+    sub_btn.grid(row=7, column=1)
+    noise_btn.grid(row=5, column=4)
 
-    quit_button.pack(side="bottom", anchor="s", fill="both")
-    noise_btn.pack(side="top", anchor="w")
+    # quit_button.pack(side="bottom", anchor="s", fill="both")
+    # noise_btn.pack(side="top", anchor="w")
+    quit_button.grid(row=8, column=0)
 
     window.mainloop()
 
