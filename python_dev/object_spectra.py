@@ -206,7 +206,8 @@ class Spectra():
 
         peak_times = []
         for lp in range(len(self.iso_mass)):
-            peak_times.append((stretch*np.sqrt(self.iso_mass[lp]+shift)).astype(float))
+            peak_times.append((stretch*np.sqrt(self.iso_mass[lp] +
+                                               shift)).astype(float))
             # in nanoseconds
         peak_times = np.array(peak_times)
 
@@ -263,6 +264,8 @@ class Spectra():
         domain = (((np.arange(10000)*2)-shift)/stretch)**2.0
         spec_max = max(real_spectrum_t)
         real_spectrum_t = real_spectrum_t/spec_max
+        real_spectrum_t = real_spectrum_t[:-62]
+        real_spectrum_t = real_spectrum_t - min(real_spectrum_t)
 
         self.domain, self.mass_spectrum = domain, real_spectrum_t
 
@@ -366,6 +369,51 @@ class Spectra():
             else:
                 self.iso_names.append(twosym)
 
+# %%SPLIT A SIGNAL INTO HIGH, MIDDLE & LOW CHANNELS
+    def split_into_gstages(self, Plot=False, Verbose=False):
+        low = self.mass_spectrum
+        mid = self.mass_spectrum
+        high = self.mass_spectrum
+        maxspec = max(high)
+
+        if(maxspec != 1.0):
+            high = self.mass_spectrum/maxspec
+
+        midcut = np.where(high <= 0.7)
+        highremain = np.where(high > 0.7)
+        lowcut = np.where(high <= 0.4)
+        midremain = np.where(high > 0.4)
+
+        if(Verbose):
+            print("Midcut = ", midcut)
+            print("Lowcut = ", lowcut)
+
+        mid[midcut] = high[midcut]
+        mid[highremain] = .7
+        low[lowcut] = high[lowcut]
+        low[midremain] = .4
+
+        if(Plot):
+            # Display the spectrum with high-resolution
+            # plt.style.use('dark_background')
+            fig = plt.figure(dpi=2000)
+            fig = plt.figure()
+            ax = fig.add_subplot()
+            # Display spectrum in log
+            # ax.set_yscale('log')
+            ax.set_xlabel("Mass(u)", fontsize=15)
+            ax.set_ylabel("Amplitude", fontsize=15)
+            ax.set_title("Split TOF",
+                         font="Times New Roman", fontweight="bold",
+                         fontsize=20)
+            ax.set_facecolor("white")
+            ax.plot(self.domain, low, lw=3, c='g', label="Low channel")
+            ax.plot(self.domain, mid, lw=1, c='b', label="Middle channel")
+            ax.plot(self.domain, high, lw=1, c='r', label="High channel")
+            plt.grid(b=None)
+            plt.legend(loc="upper right")
+        return low, mid, high
+
 
 # %%AVOID DIVISION BY ZERO
 def safe_div(x, y):
@@ -378,7 +426,14 @@ def safe_div(x, y):
 
 # %%FETCH ISOTOPIC ABUNDANCES
 def fetch_abundances():
-    # Get full list of all elements and their corresponding
+    """
+    Parameters
+    ----------
+    Returns
+    -------
+    A database of isotopic ratios.
+    """
+    # Get full list of all isotopes and their corresponding
     # symbols, masses and abundances
     eleabund = pd.read_csv("elementabundances.csv", header=0)
     return eleabund
@@ -386,6 +441,13 @@ def fetch_abundances():
 
 # %%FETCH RELATIVE SENSITIVITY FACTORS
 def fetch_rsfs():
+    """
+    Parameters
+    ----------
+    Returns
+    -------
+    A database of TOF_SIMS relative sensitivity factors.
+    """
     # Retreve Hillier Relative Sensitivity Factors (Taken from TOF-SIMS)
     rsfs = pd.read_csv("rel_sens_fac.csv")
     rsfs.columns = ['Name', 'Sensitivity Factor']
@@ -394,6 +456,13 @@ def fetch_rsfs():
 
 # %%FETCH MINERAL ELEMENTAL ABUNDNCES
 def fetch_rocks():
+    """
+    Parameters
+    ----------
+    Returns
+    -------
+    A database of minerals and their added abundances.
+    """
     # Retrieve the available elements from the heidelberg experiment and
     # their compositions (up to 8 elements)
     rocks = pd.read_csv("rocks.csv", header=0)
@@ -407,12 +476,36 @@ def fetch_rocks():
 
 # %%FETCH MINERAL ELEMENTAL ABUNDNCES
 def rms_val(signal):
+    """
+    Parameters
+    ----------
+    signal : Float64 Array
+        An initial numerical spectra free from noise.
+    Returns
+    -------
+    The RMS average value of the input signal.
+    """
     rms = np.sqrt(np.mean(signal**2))
     return rms
 
 
 # %%ADD REALISTIC NOISE TO A SIGNAL
 def add_real_noise(signal, SNR):
+    """
+    Parameters
+    ----------
+    signal : Float64 Array
+        An initial numerical spectra free from noise.
+    SNR : Float64
+        A perscribed sigal-to-noise ratio for the added nosie
+    Returns
+    -------
+    A synthetic TOF or mass spectra with  background noise added
+    throughout. This noise has the same frequency and amplitude
+    space as the instrument electronics.
+    This bakcground noise was derived via fourier analysis of Peridot impact
+    spectra on the Hyperdust instrument.
+    """
     noise = generate_noise().astype(float)
     scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
     for k in range(len(signal)):
@@ -480,7 +573,7 @@ if __name__ == "__main__":
     ==========================================================================
     """
 """
-    N_spectra = 200
+    N_spectra = 1
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -538,15 +631,13 @@ if __name__ == "__main__":
 
         # The spectrum is another accesible attribute
         y = ForSpec.mass_spectrum
-        y = y[:-62]
-        y = y - min(y)
 
         # print(ForSpec.pres_min)
 
         # SNR_tmp = np.random.choice(SNRchoice, size=1)
         SNR_tmp = 40.0
         SNRarr.append(SNR_tmp)
-        y = add_real_noise(y, SNR_tmp)
+        # y = add_real_noise(y, SNR_tmp)
         # noise = np.random.normal(0, 10e-20, len(y))
 
         # for k in range(len(y)):
@@ -569,6 +660,8 @@ if __name__ == "__main__":
         ax.plot(x, y, lw=1, c='r')
         plt.grid(b=None)
         plt.savefig(min_name+str(k+1)+".eps", dpi=1200)
+
+        low, mid, high = ForSpec.split_into_gstages(Plot=True)
 
         x = np.array(x)  # .transpose()
         y = np.array(y)  # .transpose()
