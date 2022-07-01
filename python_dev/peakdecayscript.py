@@ -131,12 +131,12 @@ def read_all_hdf5(path):
 
 
 # %%
-def compute_power_spectrum(fft, freq, n, plot=False):
+def compute_power_spectrum(fft, freq, n, ax=None, plot=False):
     psd = np.real(fft * np.conj(fft))/n  # Compute power spectrum
 
     if(plot):
-        plt.plot(freq, psd, 'r', label="Spectral Power Density")
-        plt.plot(freq, filter_psd(psd), 'g', label='Filtered SPD')
+        ax.plot(freq, psd, 'r', label="Spectral Power Density")
+        ax.plot(freq, filter_psd(psd), 'g', label='Filtered SPD')
         plt.xlabel('Frequency (Hz)')
         plt.ylabel(r"$\frac{ion numer^{2}}{Hz}$")
         # plt.yscale('log')
@@ -178,7 +178,7 @@ def filter_psd(psd):
 
 
 # %%
-def reconstruct_time_series(psd, n, delta, plot=False):
+def reconstruct_time_series(psd, n, delta, ax=None, plot=False):
 
     # bigfreq = freq[np.where(psd == max(psd))]
 
@@ -189,7 +189,10 @@ def reconstruct_time_series(psd, n, delta, plot=False):
     psd_real = psd_real[psd_real < .4]  # Delete zero frequency value
 
     if(plot):
-        plt.plot(idxs_half, psd_real)
+        if(ax is not None):
+            ax[0].plot(idxs_half, psd_real)
+        else:
+            plt.plot(idxs_half, psd_real)
         plt.xlabel('Frequency (Hz)')
         plt.ylabel(r"$\frac{ion numer^{2}}{Hz}$")
         plt.title("Half of Filtered PSD", fontweight='bold', fontsize=20)
@@ -204,7 +207,10 @@ def reconstruct_time_series(psd, n, delta, plot=False):
     dom = np.linspace(0, len(reco2)-1, len(reco2))
 
     if(plot):
-        plt.plot(dom, reco2)
+        if(ax[1] is not None):
+            ax.plot(dom, reco2)
+        else:
+            plt.plot(dom, reco2)
         plt.xlabel(r'Time ($\mu s$)')
         plt.ylabel("ion number")
         plt.title("Reconstructed Time Series", fontweight='bold', fontsize=20)
@@ -213,8 +219,9 @@ def reconstruct_time_series(psd, n, delta, plot=False):
 
 
 # %%
-def generate_noise():
-    # times, mass, amps = read_all_hdf5("/Users/ethanayari/Desktop/Peridot_Jan_'21/run580(11-10).h5")
+def generate_noise(axs=None, Plot=False):
+    # times, mass, amps = read_all_hdf5("/Users/ethanayari/Desktop/
+    # Peridot_Jan_'21/run580(11-10).h5")
     times, mass, amps = read_all_hdf5("run580(11-10).h5")
     slices = []
     for amp in amps:
@@ -224,8 +231,12 @@ def generate_noise():
     n = len(noise)  # Sample size
     fhat = np.fft.fft(noise)  # computes the fft
     fft_fre = np.fft.fftfreq(n=noise.size, d=delta)
-    psd = compute_power_spectrum(fhat, fft_fre, n, plot=False)
-    reco = reconstruct_time_series(psd, n, delta, plot=False)
+    if(axs is not None):
+        psd = compute_power_spectrum(fhat, fft_fre, n, axs[1], plot=Plot)
+        reco = reconstruct_time_series(psd, n, delta, axs[2], plot=Plot)
+    else:
+        psd = compute_power_spectrum(fhat, fft_fre, n, plot=Plot)
+        reco = reconstruct_time_series(psd, n, delta, plot=Plot)
     return reco
 
 

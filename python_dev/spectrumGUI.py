@@ -12,13 +12,19 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
+import peakdecayscript as pds
 
 from PIL import ImageTk, Image
 from object_spectra import Spectra, add_real_noise
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
+min_w = 50  # Minimum width of the frame
+max_w = 200  # Maximum width of the frame
+cur_width = min_w  # Increasing width of the frame
+expanded = False  # Check if it is completely exanded
 
 
+# %%GUI MASTER CLASS
 class SpectrumPYApp():
     def __init__(self):
         super().__init__()
@@ -26,6 +32,30 @@ class SpectrumPYApp():
         self.window = tk.Tk()
 
         self.window.geometry('')
+
+        # Define the icons to be shown and resize it
+        self.home = ImageTk.PhotoImage(Image.open('home.png').resize((30, 30),
+                                                                     Image.ANTIALIAS))
+        self.settings = ImageTk.PhotoImage(Image.open('settings.png').resize((30, 30),
+                                                                     Image.ANTIALIAS))
+        self.ring = ImageTk.PhotoImage(Image.open('ring.png').resize((30, 30),
+                                                                     Image.ANTIALIAS))
+
+        menubar = tk.Menu(self.window)
+        filemenu = tk.Menu(menubar, tearoff=0)
+        filemenu.add_command(label="New Project", command=self.donothing)
+        filemenu.add_command(label="Open Scope File", command=self.donothing)
+        filemenu.add_command(label="Save Plot", command=self.donothing)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.window.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+
+        helpmenu = tk.Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="Help Index", command=self.donothing)
+        helpmenu.add_command(label="About...", command=self.donothing)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+
+        self.window.config(menu=menubar)
 
         self.window.attributes('-fullscreen', False)
 
@@ -91,6 +121,7 @@ class SpectrumPYApp():
 
         self.snr_val = tk.StringVar()
         self.vel_val = tk.StringVar()
+        self.vel_val.set("20.0")
 
         self.noise_present = tk.BooleanVar()
         self.noise_present.set(False)
@@ -116,6 +147,12 @@ class SpectrumPYApp():
         # Button that will call the generate_spectra function
         self.sub_btn = tk.Button(self.window, text='Generate Spectra',
                                  command=self.generate_spectra, font=(
+                                     'calibre', 20, 'bold'),
+                                 fg="blue",
+                                 bg="red")
+
+        self.fft_btn = tk.Button(self.window, text='Noise Panel',
+                                 command=self.analyze_noise, font=(
                                      'calibre', 20, 'bold'),
                                  fg="blue",
                                  bg="red")
@@ -177,14 +214,48 @@ class SpectrumPYApp():
         self.ax.set_facecolor("white")
 
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.window)
-        self.canvas.get_tk_widget().grid(row=0, column=0, sticky="W")
+        self.canvas.get_tk_widget().grid(row=0, column=1, sticky="W")
 
         # navigation self.toolbar
         self.toolbarFrame = tk.Frame(master=self.window)
-        self.toolbarFrame.grid(row=2, column=0)
+        # self.toolbarFrame.grid(row=2, column=1)
         self.toolbar = NavigationToolbar2Tk(self.canvas,
                                             self.toolbarFrame)
         self.basic_gui()
+
+        # %%RENDER NOISE ANALYSIS PANE
+    def analyze_noise(self):
+        win = tk.Toplevel()
+        win.wm_title("SpectrumPY Noise Manager")
+        fig, axs = plt.subplots(2)
+        fig.suptitle('Vertically stacked subplots')
+
+        # Display spectrum in log
+        # ax.set_yscale('log')
+        # ax.set_xlabel("Mass(u)", fontsize=15)
+        # ax.set_ylabel("Amplitude", fontsize=15)
+        # ax.set_facecolor("white")
+        pds.generate_noise(True)
+        canvas = FigureCanvasTkAgg(fig, master=win)
+        canvas.get_tk_widget().grid(row=0, column=1, sticky="W")
+
+        # navigation self.toolbar
+        toolbarFrame = tk.Frame(master=win)
+        toolbarFrame.grid(row=1, column=1)
+        toolbar = NavigationToolbar2Tk(canvas, toolbarFrame)
+
+        b = tk.Button(win, text="Close and return to main menu",
+                      command=win.destroy)
+        b.grid(row=2, column=0)
+        canvas.draw()
+
+        # placing the self.canvas on the Tkinter self.window
+        canvas.get_tk_widget().grid(row=0, column=1)
+        toolbar.update()
+
+    # %%PLACEHOLDER FUCNTION
+    def donothing(self):
+        pass
 
         # %%UPDATE INTERACTIVE PLOT
     def generate_spectra(self):
@@ -239,7 +310,7 @@ class SpectrumPYApp():
         self.canvas.draw()
 
         # placing the self.canvas on the Tkinter self.window
-        self.canvas.get_tk_widget().grid(row=0, column=0)
+        self.canvas.get_tk_widget().grid(row=0, column=1)
         self.toolbar.update()
 
         # %%COMMAND TO ADD NOISE
@@ -269,41 +340,100 @@ class SpectrumPYApp():
     # %%GENERATE BASIC GUI
     def basic_gui(self):
         # placing the label and entry in position using grid method
-        self.logolabel.grid(row=0, column=2, sticky="NE")
+        # self.logolabel.grid(row=0, column=3, sticky="NE")
         # self.lasplogolabel.grid(row=0, column=2, sticky="EW")
         # self.imaplogolabel.grid(row=0, column=1, sticky="EW")
 
         self.vel_label.grid(row=1, column=1, sticky="news")
         self.vel_entry.grid(row=1, column=2, sticky="news")
 
-        self.name_one_label.grid(row=3, column=1)
-        self.name_one_entry.grid(row=3, column=2)
-        self.name_two_label.grid(row=4, column=1)
-        self.name_two_entry.grid(row=4, column=2)
+        self.name_one_label.grid(row=2, column=1)
+        self.name_one_entry.grid(row=2, column=2)
+        self.name_two_label.grid(row=3, column=1)
+        self.name_two_entry.grid(row=3, column=2)
 
-        self.min_one_abundance.grid(row=3, column=3, sticky="news")
-        self.min_two_abundance.grid(row=4, column=3, sticky="news")
+        self.min_one_abundance.grid(row=2, column=3, sticky="news")
+        self.min_two_abundance.grid(row=3, column=3, sticky="news")
 
         # self.name_two_entry.pack(side="right")
         # self.name_two_label.pack(side="right")
 
         # self.snr_label.pack(side="top", anchor="e")
         # self.snr_entry.pack(side="top", anchor="e")
-        self.snr_label.grid(row=5, column=1, sticky="news")
-        self.snr_entry.grid(row=5, column=2, sticky="news")
+        self.snr_label.grid(row=4, column=1, sticky="news")
+        self.snr_entry.grid(row=4, column=2, sticky="news")
 
         # self.sub_btn.pack(side="bottom", anchor="n", fill="both")
         # self.min_one_abundance.pack(side="left")
-        self.sub_btn.grid(row=7, column=1, sticky="news")
-        self.noise_btn.grid(row=5, column=3, sticky="news")
+        self.sub_btn.grid(row=6, column=1, sticky="news")
+        self.fft_btn.grid(row=6, column=2, sticky="news")
+        self.noise_btn.grid(row=4, column=3, sticky="news")
 
-        self.gainsplit_btn.grid(row=1, column=3, sticky="news")
+        self.gainsplit_btn.grid(row=0, column=3, sticky="news")
 
         # self.quit_button.pack(side="bottom", anchor="s", fill="both")
         # self.noise_btn.pack(side="top", anchor="w")
-        self.quit_button.grid(row=8, column=0, sticky="news")
+        self.quit_button.grid(row=7, column=1, sticky="news")
+        # self.window.update()  # For the width to get updated
+        self.frame = tk.Frame(self.window, bg='orange', width=40,
+                              height=self.window.winfo_height())
+        self.frame.grid(row=0, column=0)
 
+        # Make the buttons with the icons to be shown
+        self.home_b = tk.Button(self.frame, image=self.home, bg='orange',
+                                relief='flat')
+        self.set_b = tk.Button(self.frame, image=self.settings, bg='orange',
+                               relief='flat')
+        self.ring_b = tk.Button(self.frame, image=self.ring, bg='orange',
+                                relief='flat')
+
+        # Put them on the frame
+        self.home_b.grid(row=0, column=0, pady=10, sticky='E')
+        self.set_b.grid(row=1, column=0, pady=40, sticky='E')
+        self.ring_b.grid(row=2, column=0, sticky='E')
+
+        # Bind to the frame, if entered or left
+        self.frame.bind('<Enter>', lambda e: self.expand())
+        self.frame.bind('<Leave>', lambda e: self.contract())
+
+        # So that it does not depend on the widgets inside the frame
+        self.frame.grid_propagate(True)
         self.window.mainloop()
+
+    # %%EXPAND SIDEBAR
+    def expand(self):
+        global cur_width, expanded
+        cur_width += 10  # Increase the width by 10
+        rep = self.window.after(1, self.expand)  # Repeat this func every ms
+        self.frame.config(width=cur_width)  # Change the width
+        if cur_width >= max_w:  # If width is greater than maximum width
+            expanded = True  # Frame is expended
+            self.window.after_cancel(rep)  # Stop repeating the func
+            self.fill()
+
+    # %%CONTRACT SIDEBAR
+    def contract(self):
+        global cur_width, expanded
+        cur_width -= 10  # Reduce the width by 10
+        rep = self.window.after(5, self.contract)  # Call this func every 5 ms
+        self.frame.config(width=cur_width)  # Reduce width
+        if cur_width <= min_w:  # If it is back to normal width
+            expanded = False  # Frame is not expanded
+            self.window.after_cancel(rep)  # Stop repeating the func
+            self.fill()
+
+    # %%FILL SIDEBAR
+    def fill(self):
+        if expanded:  # If the frame is exanded
+            # Show a text, and remove the image
+            self.home_b.config(text='Home', image='', font=(0, 21))
+            self.set_b.config(text='Settings', image='', font=(0, 21))
+            self.ring_b.config(text='Bell Icon', image='', font=(0, 21))
+        else:
+            # Bring the image back
+            self.home_b.config(image=self.home, font=(0, 21))
+            self.set_b.config(image=self.settings, font=(0, 21))
+            self.ring_b.config(image=self.ring, font=(0, 21))
 
 
 # %%FETCH MINERAL ELEMENTAL ABUNDNCES
@@ -366,4 +496,4 @@ if __name__ == "__main__":
     9. Spinel
     ==========================================================================
 """
-    basicGUI = SpectrumPYApp()
+    bGUI = SpectrumPYApp()

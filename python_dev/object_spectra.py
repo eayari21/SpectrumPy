@@ -5,6 +5,8 @@
 This is a python rendition of Jon Hillier's synthetic spectra IDL script
 __author__      = Ethan Ayari,
 Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+Works with Python 3.8.10
 """
 
 import re
@@ -379,19 +381,19 @@ class Spectra():
         if(maxspec != 1.0):
             high = self.mass_spectrum/maxspec
 
-        midcut = np.where(high <= 0.7)
-        highremain = np.where(high > 0.7)
-        lowcut = np.where(high <= 0.4)
-        midremain = np.where(high > 0.4)
+        midcut = np.where(high <= 0.25)
+        highremain = np.where(high > 0.25)
+        lowcut = np.where(high <= 0.15)
+        midremain = np.where(high > 0.15)
 
         if(Verbose):
             print("Midcut = ", midcut)
             print("Lowcut = ", lowcut)
 
         mid[midcut] = high[midcut]
-        mid[highremain] = .7
+        mid[highremain] = .25
         low[lowcut] = high[lowcut]
-        low[midremain] = .4
+        low[midremain] = .15
 
         if(Plot):
             # Display the spectrum with high-resolution
@@ -407,9 +409,12 @@ class Spectra():
                          font="Times New Roman", fontweight="bold",
                          fontsize=20)
             ax.set_facecolor("white")
-            ax.plot(self.domain, low, lw=3, c='g', label="Low channel")
-            ax.plot(self.domain, mid, lw=1, c='b', label="Middle channel")
-            ax.plot(self.domain, high, lw=1, c='r', label="High channel")
+            plt.plot(self.domain, low, color='green', lw=1,
+                     label="Low channel")
+            plt.plot(self.domain, mid, color='blue', lw=1,
+                     label="Middle channel")
+            plt.plot(self.domain, high, color='red', lw=3,
+                     label="High channel")
             plt.grid(b=None)
             plt.legend(loc="upper right")
         return low, mid, high
@@ -507,7 +512,8 @@ def add_real_noise(signal, SNR):
     spectra on the Hyperdust instrument.
     """
     noise = generate_noise().astype(float)
-    scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
+    # scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
+    scaling = np.abs(max(signal)/max(noise))/(SNR**2)
     for k in range(len(signal)):
         if(signal[k] < .2):
             signal[k] += np.random.choice(noise*scaling, size=1)
@@ -572,8 +578,8 @@ if __name__ == "__main__":
     11. Silica
     ==========================================================================
     """
-"""
-    N_spectra = 1
+
+    N_spectra = 200
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -591,17 +597,39 @@ if __name__ == "__main__":
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
     SNRarr = []
-    # SNRchoice = [2, 50, 100, 200]
+    SNRchoice = [.5, .2, .1, 1.0]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
-            min_name = mineral_names[9]
+            min_name = mineral_names[4]
+            if(k <= 24):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[1]
         elif(k <= 99):
-            min_name = mineral_names[9]
+            min_name = mineral_names[4]
+
+            if(k <= 74):
+                SNR_tmp = SNRchoice[2]
+            else:
+                SNR_tmp = SNRchoice[3]
+
         elif(k <= 149):
-            min_name = mineral_names[10]
+            min_name = mineral_names[7]
+
+            if(k <= 124):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[1]
+
         elif(k <= 199):
-            min_name = mineral_names[10]
+            min_name = mineral_names[7]
+
+            if(k <= 174):
+                SNR_tmp = SNRchoice[2]
+            else:
+                SNR_tmp = SNRchoice[3]
+
         elif(k <= 249):
             min_name = mineral_names[4]
         elif(k <= 299):
@@ -635,14 +663,9 @@ if __name__ == "__main__":
         # print(ForSpec.pres_min)
 
         # SNR_tmp = np.random.choice(SNRchoice, size=1)
-        SNR_tmp = 40.0
+        # SNR_tmp = .9
         SNRarr.append(SNR_tmp)
-        # y = add_real_noise(y, SNR_tmp)
-        # noise = np.random.normal(0, 10e-20, len(y))
-
-        # for k in range(len(y)):
-        #    if(k % 15 == 0):
-        #        y[k] = y[k]+noise[k]
+        y = add_real_noise(y, SNR_tmp)
 
         # Display the spectrum with high-resolution
         # plt.style.use('dark_background')
@@ -659,9 +682,9 @@ if __name__ == "__main__":
         ax.set_facecolor("white")
         ax.plot(x, y, lw=1, c='r')
         plt.grid(b=None)
-        plt.savefig(min_name+str(k+1)+".eps", dpi=1200)
+        # plt.savefig(min_name+str(k+1)+".eps", dpi=1200)
 
-        low, mid, high = ForSpec.split_into_gstages(Plot=True)
+        # low, mid, high = ForSpec.split_into_gstages(Plot=True)
 
         x = np.array(x)  # .transpose()
         y = np.array(y)  # .transpose()
@@ -683,4 +706,3 @@ np.savetxt("SignaltoNoise.txt", SNRarr)
 # call(['cp', '/Users/ethanayari/Documents/GitHub/SpectrumPy
 # copy/python_dev/*{1..450}*', '/Users/ethanayari/Dropbox/IDEX
 # Pipeline/python/Training_Sets/trainingset4'])
-"""
