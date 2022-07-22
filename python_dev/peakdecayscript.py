@@ -103,8 +103,8 @@ def read_hdf5(path):
         pass
 
     # change this to whatever you want to extract
-    mass = f["/Spectra/32: ADDB276D-1CE5-4344-8DF1-343FAE747B9A/Mass"]
-    amp = f["/Spectra/32: ADDB276D-1CE5-4344-8DF1-343FAE747B9A/AmplitudeDenoised"]
+    mass = f["/Spectra/47: 9CE8F380-E65A-4A40-9BA1-BC5E21778DF5/Time"]
+    amp = f["/Spectra/47: 9CE8F380-E65A-4A40-9BA1-BC5E21778DF5/AmplitudeDenoised"]
     return mass[()], amp[()]
 
 
@@ -389,6 +389,7 @@ def main():
 # %%
 if __name__ == '__main__':
     # main()
+    """
     times, mass, amps = read_all_hdf5("run580(11-10).h5")
 
     timearr = []
@@ -423,15 +424,19 @@ if __name__ == '__main__':
     # freq = (1/(delta*n)) * np.arange(n)  # frequency array
     # Take one half of the power spectrum, assum the square root of the
     # integral is the RMS value of the random noise
-
-
 """
-    df = 1 / timearr.max()                  # Determine frequency resolution
-    fNQ = 1 / delta / 2                     # Determine Nyquist frequency
-    faxis = np.arange(0, fNQ, df)           # Construct frequency axis
-    """
-"""
-    SpecFrame = pd.DataFrame({"Time (microseconds)": timearr,
-                              "Amplitude (ion number)": noise})
-    SpecFrame.to_csv("AmpvsTime.csv", sep=",")
-    """
+    times, amps = read_hdf5("run580(11-10).h5")
+    timearr = []
+    for time in times:
+        # print(time)
+        timearr.append(time)
+    # timearr = np.concatenate(np.array([timearr]), axis=0)
+
+    amparr = []
+    for amp in amps:
+        amparr.append(amp)
+    # amparr = np.concatenate(np.array(amparr), axis=0)
+    plt.plot(timearr, amparr)
+    SpecFrame = pd.DataFrame({r"Time seconds": timearr,
+                              "Amplitude (ion number)": amparr})
+    SpecFrame.to_csv("AmpvsMass.csv", sep=",")

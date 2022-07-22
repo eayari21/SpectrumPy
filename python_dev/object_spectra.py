@@ -513,7 +513,7 @@ def add_real_noise(signal, SNR):
     """
     noise = generate_noise().astype(float)
     # scaling = np.abs(rms_val(signal)/rms_val(noise))/(SNR**2)
-    scaling = np.abs(max(signal)/max(noise))/(SNR**2)
+    scaling = np.abs(max(signal)/max(noise))/(SNR)
     for k in range(len(signal)):
         if(signal[k] < .2):
             signal[k] += np.random.choice(noise*scaling, size=1)
@@ -579,7 +579,7 @@ if __name__ == "__main__":
     ==========================================================================
     """
 
-    N_spectra = 200
+    N_spectra = 1
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -597,11 +597,11 @@ if __name__ == "__main__":
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
     SNRarr = []
-    SNRchoice = [.5, .2, .1, 1.0]
+    SNRchoice = [1000.0, .2, .1, 1.0]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
-            min_name = mineral_names[4]
+            min_name = mineral_names[9]
             if(k <= 24):
                 SNR_tmp = SNRchoice[0]
             else:
@@ -676,7 +676,7 @@ if __name__ == "__main__":
         ax.set_yscale('log')
         ax.set_xlabel("Mass(u)", fontsize=15)
         ax.set_ylabel("Amplitude", fontsize=15)
-        ax.set_title(min_name,
+        ax.set_title(r"Peridot 1.6 $\frac{km}{s}$",
                      font="Times New Roman", fontweight="bold",
                      fontsize=20)
         ax.set_facecolor("white")
