@@ -10,7 +10,7 @@ import PyInstaller.__main__
 import shutil
 
 PyInstaller.__main__.run([
-    'qt-trial.py',
+    'windows-qt.py',
     '--icon=impact.ico',
     '--name=IDEXCalQuicklook',
     '--windowed',

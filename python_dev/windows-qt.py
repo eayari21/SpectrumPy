@@ -9,8 +9,10 @@ Works with Python 3.8.10
 """
 
 import sys
+import os
 
 
+from readTrcDoner import Trc
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import (
@@ -24,6 +26,7 @@ from PyQt6.QtWidgets import (
     QFileDialog,
     QVBoxLayout,
     QListWidget,
+    QInputDialog,
 )
 
 import matplotlib
@@ -33,8 +36,8 @@ from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg,
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
-plt.style.use('dark_background')
-matplotlib.use('qtagg')
+plt.style.use('seaborn-pastel')
+matplotlib.use('Agg')
 
 global traceNumber
 global traceList
@@ -49,11 +52,6 @@ traceList = []
 
 # %%SET UP INTERACTIVE PLOT
 class MplCanvas(FigureCanvasQTAgg):
-    """
-    !MplCanvas
-    ----------
-    A wrapper class to set up the interactive plot. ax represents the larger
-    (master) plot, while ax1-4 represent the smaller individual plots."""
 
     def __init__(self, parent=None, width=15, height=8, dpi=100):
         global traceNumber
@@ -72,10 +70,12 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax.spines['bottom'].set_color('none')
         self.ax.spines['left'].set_color('none')
         self.ax.spines['right'].set_color('none')
-        self.ax.tick_params(labelcolor='black', top=False, bottom=False,
+        self.ax.tick_params(labelcolor='white', top=False, bottom=False,
                             left=False, right=False)
-        self.ax.set_xlabel("Time [s]", labelpad=30)
-        self.ax.set_ylabel("Voltage [V]", labelpad=30)
+        self.ax.xaxis.set_ticklabels([])
+        self.ax.yaxis.set_ticklabels([])
+        self.ax.set_xlabel("Time [s]", fontsize=16, labelpad=20)
+        self.ax.set_ylabel("Voltage [V]", fontsize=12, labelpad=50)
         self.ax1.grid(True)
         self.ax2.grid(True)
         self.ax3.grid(True)
@@ -92,28 +92,24 @@ class MplCanvas(FigureCanvasQTAgg):
 # %%SET UP QT WINDOW OBJECT
 # Subclass QMainWindow to customize your application's main window
 class MainWindow(QMainWindow):
-    """
-    !Mainwindow
-    ----------
-    The master qt GUI window for all of SpectrumPY. An MplCanvas named sc is
-    introduced, alongside the trace file viewing tools."""
-
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("SpectrumPY Beta")
+        # self.setStyleSheet("background-color: blue;")
 
-        self.sc = MplCanvas(self, width=15, height=8, dpi=100)
-        # sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
-        trcdir = 'Anthracene_iron_7_13_2021_10kms_plus'
+        self.sc = MplCanvas(self, width=16, height=12, dpi=100)
+
         global times
         global amps
         global metas
         global traceList
         global traceNumber
-        times, amps, metas = readTRC(trcdir)
+        trcdir = QFileDialog.getExistingDirectory(self,
+                                                  'Please Select A Folder Containing Trace Files')
+        times, amps, metas = generalReadTRC(trcdir)
         self.tracelist_widget = QListWidget()
-        print(len(metas))
+
         for trace in traceList:
             self.tracelist_widget.insertItem(int(trace), str(trace))
         self.v_layout = QVBoxLayout()
@@ -130,14 +126,7 @@ class MainWindow(QMainWindow):
         self.show()
 
 # %%CREATE MENU BAR AND FILE DROP DOWN OPTIONS
-    # @classmethod
     def _createMenuBar(self):
-        """
-        !_createMenuBar
-        ----------
-        A menubar residing on top of the interactive plot. For now have this
-        mirror methods from the File, Edit etc. menus. Receive user input for
-        anything else."""
         toolbar = QToolBar("My main toolbar")
         toolbar.setIconSize(QSize(16, 16))
         self.addToolBar(toolbar)
@@ -179,13 +168,7 @@ class MainWindow(QMainWindow):
         view_menu.addAction(listTraces)
 
 # %%CREATE TOOLBAR OPTIONS
-    # @classmethod
     def _createActions(self):
-        """
-        !_createActions
-        ----------
-        Associate actions for each drop down method (or toolbar options) here.
-        """
         # Creating action using the first constructor
         self.newAction = QAction(self)
         self.newAction.setText("&New")
@@ -200,15 +183,7 @@ class MainWindow(QMainWindow):
         self.aboutAction = QAction("&About", self)
 
 # %%WRITE TIMES AND AMPS TO CSV
-    @classmethod
-    def exportScopeData(cls, s):
-        # @param self -> The mainwindow object pointer
-        # @param s -> The prompt for the user's choice of plot
-        """
-        !exportScopeData
-        ----------
-        Utilize the global times, amps and traceNumber variables to write a
-        .csv file containing a channel of your choosing."""
+    def exportScopeData(self, s):
         global times
         global amps
         global traceNumber
@@ -220,29 +195,23 @@ class MainWindow(QMainWindow):
 
 # %%CHANGE SHOT BEING VIEWED
     def chooseTrace(self, s):
-        # @param self -> The mainwindow object pointer
-        # @param s -> The prompt for the user's choice of trace files
-        """
-        !chooseTrace
-        ----------
-        Utilize the global times, amps, traceList, metas and traceNumber
-        variables to add the trace choosing widget to the layout."""
-
+        global traceList
+        global times
+        global amps
+        global metas
+        global traceNumber
         # traceNumber = str(self.tracelist_widget.currentItem().text())
 
         self.v_layout.addWidget(self.tracelist_widget)
 
 # %%UPDATE PLOT WITH CHOICE OF TRACE FILE
-    # @classmethod
     def updatePlot(self, s):
-        # @param self -> The mainwindow object pointer
-        # @param s -> The prompt for the user's choice of plot
         """
-        !updatePlot
-        ----------
-        Utilize the traceNumber global variable to change the interactive
-        plot's corresponding trace.
-        files."""
+        self.tracelist_widget = QListWidget(self)
+        for trace in traceList:
+            self.tracelist_widget.insertItem(int(trace), str(trace))
+        self.v_layout = QVBoxLayout()
+        """
         global traceNumber
         content = str(self.tracelist_widget.currentItem().text())  # .text()
         print(content)
@@ -270,10 +239,12 @@ class MainWindow(QMainWindow):
         self.sc.ax.spines['bottom'].set_color('none')
         self.sc.ax.spines['left'].set_color('none')
         self.sc.ax.spines['right'].set_color('none')
-        self.sc.ax.tick_params(labelcolor='black', top=False, bottom=False,
+        self.sc.ax.tick_params(labelcolor='white', top=False, bottom=False,
                                left=False, right=False)
-        self.sc.ax.set_xlabel("Time [s]", labelpad=30)
-        self.sc.ax.set_ylabel("Voltage [V]", labelpad=30)
+        self.sc.ax.xaxis.set_ticklabels([])
+        self.sc.ax.yaxis.set_ticklabels([])
+        self.sc.ax.set_xlabel("Time [s]", fontsize=16, labelpad=20)
+        self.sc.ax.set_ylabel("Voltage [V]", fontsize=12, labelpad=50)
 
         self.sc.ax1.set_ylabel('QD 2')
         self.sc.ax1.set_ylabel('Time [s]')
@@ -286,36 +257,62 @@ class MainWindow(QMainWindow):
         self.sc.draw()
 
 # %%OPEN A FILE DIALOG TO IMPORT SCOPE DATA
-    # @classmethod
     def importScopeData(self, s):
-        # @param self -> The mainwindow object pointer
-        # @param s -> The prompt for the user file dialog
-        """
-        !importScopeData
-        ----------
-        Open a simple folder dialog (by manipulating th filedialog qt method)
-        and load a set of trace files from the database."""
         fname = QFileDialog.getExistingDirectory(self, 'Select Folder')
-        times, amps, metas = readTRC(fname)
+        times, amps, metas = generalReadTRC(fname)
 
 
 # %%GENERAL TRACE READER
 def generalReadTRC(dataDir):
-    # @param dataDir -> Absolute path to the folder containing the trace files
-    """
-    !generalReadTRC
-    ----------
-    A general adaption of Alex Doner's readTRC method to extend to multiple
-    instruments' respective syntax for naming trace files, and n channels.
-    """
-    pass
+    # Iterate through all files in the folder and attempt to sort them 
+    parse = True
 
+    global times
+    global amps
+    global metas
+    times = []
+    amps = []
+    metas = []
+    shotKey = "00000"
+    while parse:
+        # Shot number must be given as a 5 digit number
+        # Initialize empty scope object
+        trc=Trc()
+        tmpTime = []
+        tmpAmp = []
+        tmpMeta = []
+        # Iterate through all files in passed directory
+        parsetwo=False
+        for filename in os.scandir(dataDir):
+            # Gather all channels for shotKey
+            if(str(filename).find(shotKey) != -1):
+                parsetwo = True
+                # print(filename)
+                try:
+                    t, y, meta = trc.open(str(filename.path))
+                    tmpTime.append(t)
+                    tmpAmp.append(y)
+                    tmpMeta.append(meta)
+
+                except FileNotFoundError:
+                    # We've found everything
+                    parse = False
+        if(parsetwo==False):
+            parse=False
+        times.append(tmpTime)
+        amps.append(tmpAmp)
+        metas.append(tmpMeta)
+        i = int(shotKey) + 1
+        shotKey = f'{i:05d}'
+
+    global traceList
+    traceList = list(range(1, len(times)-1))
+    return times, amps, metas
+                    
 
 # %%TRACE READER
 def readTRC(dataDir):
-    # Slight tweaks to Alex Doner's Multi-channel viewer
-
-    from readTrcDoner import Trc
+    # Alex Doner's Multi-channel viewer
 
     trcName1 = '/C1Fe'
     trcName2 = '/C2Fe'
@@ -354,8 +351,7 @@ def readTRC(dataDir):
 
         except FileNotFoundError:
             parse = False
-        # plt.waitforbuttonpress(0)
-        # plt.close(fig)
+
     # Update trace list
     global traceList
     traceList = list(range(1, len(times)+1))
@@ -364,17 +360,6 @@ def readTRC(dataDir):
 
 # %%TRACE FILE DISPLAY
 def displayTRC(times, amps, sc):
-    # @param times -> The array of all domain arrays
-    # @param amps -> The array of all signal amplitude arrays
-    # @param sc -> The matplotlib master canvas for the interactive plot
-    """
-    !displayTRC
-    ----------
-    Import the trace file data into the interactive matplotlib canvas. We
-    first assign a threshold baseline to our signal amplitudes in which all
-    amplitudes below 10^{-4} are raised to 10^{-4}. This is for viewing
-    purposes.
-    """
     import numpy as np
 
     print("Displaying oscilloscope output")
@@ -385,16 +370,16 @@ def displayTRC(times, amps, sc):
     amps[3] = -1*amps[3]
 
     for k in range(len(amps[2])):
-        if(amps[2][k] < 10**-4):
+        if(amps[2][k] <= 10**-4):
             amps[2][k] = 10**-4
-        if(amps[3][k] < 10**-4):
+        if(amps[3][k] <= 10**-4):
             amps[3][k] = 10**-4
 
     # ONE AXIS FOR REACH CHANNEL
-    sc.ax1.plot(times[0][i], amps[0][i], markersize=1.0)
-    sc.ax2.plot(times[1][i], amps[1][i], markersize=1.0)
-    sc.ax3.plot(times[2][i], amps[2][i], markersize=1.0)
-    sc.ax4.plot(times[3][i], amps[3][i], markersize=1.0)
+    sc.ax1.plot(times[0][i], amps[0][i], markersize=.5, lw=.5)
+    sc.ax2.plot(times[1][i], amps[1][i], markersize=.5, lw=.5)
+    sc.ax3.plot(times[2][i], amps[2][i], markersize=.5, lw=.5)
+    sc.ax4.plot(times[3][i], amps[3][i], markersize=.5, lw=.5)
     # plt.grid()
     sc.show()
 
