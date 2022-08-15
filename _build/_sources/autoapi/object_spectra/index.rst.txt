@@ -1,0 +1,238 @@
+:py:mod:`object_spectra`
+========================
+
+.. py:module:: object_spectra
+
+.. autoapi-nested-parse::
+
+   This is a python rendition of Jon Hillier's synthetic spectra IDL script
+   __author__ = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+   Works with Python 3.8.10
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   object_spectra.Spectra
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   object_spectra.safe_div
+   object_spectra.fetch_abundances
+   object_spectra.fetch_rsfs
+   object_spectra.fetch_rocks
+   object_spectra.rms_val
+   object_spectra.add_real_noise
+   object_spectra.add_gaussian_noise
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   object_spectra.N_spectra
+   object_spectra.velarr
+   object_spectra.SNRarr
+
+
+.. py:class:: Spectra(rockarray, percentarray, vel)
+
+   .. py:method:: unwrap_mins(rocks, elems_present, percentarray_s, rockarray_s)
+
+      Create elemental abundances from the user-provided list of minerals.
+
+      Args:
+          rocks (series): The output of
+          :func:'object_spectra.Spectra.fetch_rocks'. This is a
+          database of known minerals and their elemental abundances.
+
+          elems_present (float array): The relative abundance of each element
+          in the sample, calculated in the :mod:'Spectra' initialization.
+
+          percentarray_s (float array): A sorted array of mineral abundances
+          in the sample.
+
+          rockarray_s (str array): The names of minerals in the sample
+          ordered alphabetically.
+
+      Kwargs:
+         None
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: sort_isotopes(isotope_data)
+
+      Format the isotope labels and abundances properly for further
+      analysis.
+
+      Args:
+         isotope_data (float array): An array of isotopic ratios and labels,
+         the output of :func:'object_spectra.Spectra.fetch_abundances'
+
+      Kwargs:
+         None
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: create_isotope_pairs(Plot=False, Verbose=False)
+
+      Create a list of tuples (dictionary-style key: value pairs) to be
+      used for mass line labels.
+      Args:
+         None
+
+      Kwargs:
+         Plot (bool): A boolean indicating whether or not the user wants to
+         see a demonstration of the labels.
+
+         Verbose (bool): A boolean representing the user's choice of whether
+         or not they want real-time print statements of all relevant
+         quantities.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: split_into_gstages(Plot=False, Verbose=False)
+
+      Split the amplitudes of the TOF signal into low, middle and high
+      gain stages.
+
+      Args:
+         None
+
+      Kwargs:
+         Plot (bool): A boolean indicating whether or not the user wants to
+         see a demonstration of the labels.
+
+         Verbose (bool): A boolean representing the user's choice of whether
+         or not they want real-time print statements of all relevant
+         quantities.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+
+.. py:function:: safe_div(x, y)
+
+
+.. py:function:: fetch_abundances()
+
+   Parameters
+   ----------
+   Returns
+   -------
+   A database of isotopic ratios.
+
+
+.. py:function:: fetch_rsfs()
+
+   Parameters
+   ----------
+   Returns
+   -------
+   A database of TOF_SIMS relative sensitivity factors.
+
+
+.. py:function:: fetch_rocks()
+
+   Parameters
+   ----------
+   Returns
+   -------
+   A database of minerals and their added abundances.
+
+
+.. py:function:: rms_val(signal)
+
+   Parameters
+   ----------
+   signal : Float64 Array
+       An initial numerical spectra free from noise.
+   Returns
+   -------
+   The RMS average value of the input signal.
+
+
+.. py:function:: add_real_noise(signal, SNR)
+
+   Parameters
+   ----------
+   signal : Float64 Array
+       An initial numerical spectra free from noise.
+   SNR : Float64
+       A perscribed sigal-to-noise ratio for the added nosie
+   Returns
+   -------
+   A synthetic TOF or mass spectra with  background noise added
+   throughout. This noise has the same frequency and amplitude
+   space as the instrument electronics.
+   This bakcground noise was derived via fourier analysis of Peridot impact
+   spectra on the Hyperdust instrument.
+
+
+.. py:function:: add_gaussian_noise(signal)
+
+   Parameters
+   ----------
+   signal : Float64 Array
+       An initial numerical spectra free from noise.
+   Returns
+   -------
+   A synthetic TOF or mass spectra with  optional gaussian "white"
+   noise added throughout.
+   This white noise was derived via fourier analysis of Peridot impact
+   spectra on the Hyperdust instrument.
+
+
+.. py:data:: N_spectra
+   :annotation: = 1
+
+   
+
+.. py:data:: velarr
+   
+
+   
+
+.. py:data:: SNRarr
+   
+
+   
+

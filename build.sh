@@ -1,5 +1,6 @@
 source bin/activate
-pyinstaller src/windows-qt.py -F \
+pyinstaller src/IDEX-quicklook.py \
+--onedir \
 --windowed \
 --icon impact.icns \
 --name "SpectrumPY" \

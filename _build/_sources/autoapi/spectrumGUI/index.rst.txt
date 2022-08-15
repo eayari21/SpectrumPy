@@ -1,0 +1,108 @@
+:py:mod:`spectrumGUI`
+=====================
+
+.. py:module:: spectrumGUI
+
+.. autoapi-nested-parse::
+
+   This is a GUI wrapper for SpectrumPY
+   __author__      = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   spectrumGUI.SpectrumPYApp
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   spectrumGUI.fetch_rocks
+   spectrumGUI.display_els
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   spectrumGUI.min_w
+   spectrumGUI.max_w
+   spectrumGUI.cur_width
+   spectrumGUI.expanded
+   spectrumGUI.bGUI
+
+
+.. py:data:: min_w
+   :annotation: = 50
+
+   
+
+.. py:data:: max_w
+   :annotation: = 200
+
+   
+
+.. py:data:: cur_width
+   
+
+   
+
+.. py:data:: expanded
+   :annotation: = False
+
+   
+
+.. py:class:: SpectrumPYApp
+
+   .. py:method:: analyze_noise()
+
+
+   .. py:method:: donothing()
+
+
+   .. py:method:: generate_spectra()
+
+
+   .. py:method:: noise_switch()
+
+
+   .. py:method:: divide_into_gains()
+
+
+   .. py:method:: basic_gui()
+
+
+   .. py:method:: expand()
+
+
+   .. py:method:: contract()
+
+
+   .. py:method:: fill()
+
+
+
+.. py:function:: fetch_rocks()
+
+
+.. py:function:: display_els(ForSpec)
+
+
+.. py:data:: bGUI
+   
+
+   
+

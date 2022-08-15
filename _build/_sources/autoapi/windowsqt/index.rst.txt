@@ -1,0 +1,125 @@
+:py:mod:`windows-qt`
+====================
+
+.. py:module:: windows-qt
+
+.. autoapi-nested-parse::
+
+   A graphical interface for viewing and saving scope data
+   __author__      = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+   Works with Python 3.8.10
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   windows-qt.MplCanvas
+   windows-qt.MainWindow
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   windows-qt.generalReadTRC
+   windows-qt.readTRC
+   windows-qt.displayTRC
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   windows-qt.times
+   windows-qt.amps
+   windows-qt.metas
+   windows-qt.traceList
+   windows-qt.app
+
+
+.. py:data:: times
+   :annotation: = []
+
+   
+
+.. py:data:: amps
+   :annotation: = []
+
+   
+
+.. py:data:: metas
+   :annotation: = []
+
+   
+
+.. py:data:: traceList
+   :annotation: = []
+
+   
+
+.. py:class:: MplCanvas(parent=None, width=15, height=8, dpi=100)
+
+   Bases: :py:obj:`matplotlib.backends.backend_qtagg.FigureCanvasQTAgg`
+
+   The canvas the figure renders into.
+
+   Attributes
+   ----------
+   figure : `matplotlib.figure.Figure`
+       A high-level figure instance.
+
+
+.. py:class:: MainWindow
+
+   Bases: :py:obj:`PyQt6.QtWidgets.QMainWindow`
+
+   .. py:method:: _createMenuBar()
+
+
+   .. py:method:: _createActions()
+
+
+   .. py:method:: exportScopeData(s)
+
+
+   .. py:method:: chooseTrace(s)
+
+
+   .. py:method:: updatePlot(s)
+
+      self.tracelist_widget = QListWidget(self)
+      for trace in traceList:
+          self.tracelist_widget.insertItem(int(trace), str(trace))
+      self.v_layout = QVBoxLayout()
+
+
+   .. py:method:: importScopeData(s)
+
+
+
+.. py:function:: generalReadTRC(dataDir, verbose=True)
+
+
+.. py:function:: readTRC(dataDir)
+
+
+.. py:function:: displayTRC(times, amps, sc)
+
+
+.. py:data:: app
+   
+
+   
+

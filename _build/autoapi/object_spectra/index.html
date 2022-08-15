@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>object_spectra &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="../../index.html"
+          title="back to the documentation overview"><span>object_spectra</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">object_spectra</span></code></a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">object_spectra</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#object_spectra.Spectra">Spectra</a><ul>
+<li><a class="reference internal" href="#object_spectra.Spectra.unwrap_mins">unwrap_mins</a></li>
+<li><a class="reference internal" href="#object_spectra.Spectra.sort_isotopes">sort_isotopes</a></li>
+<li><a class="reference internal" href="#object_spectra.Spectra.create_isotope_pairs">create_isotope_pairs</a></li>
+<li><a class="reference internal" href="#object_spectra.Spectra.split_into_gstages">split_into_gstages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#object_spectra.safe_div">safe_div</a></li>
+<li><a class="reference internal" href="#object_spectra.fetch_abundances">fetch_abundances</a></li>
+<li><a class="reference internal" href="#object_spectra.fetch_rsfs">fetch_rsfs</a></li>
+<li><a class="reference internal" href="#object_spectra.fetch_rocks">fetch_rocks</a></li>
+<li><a class="reference internal" href="#object_spectra.rms_val">rms_val</a></li>
+<li><a class="reference internal" href="#object_spectra.add_real_noise">add_real_noise</a></li>
+<li><a class="reference internal" href="#object_spectra.add_gaussian_noise">add_gaussian_noise</a></li>
+<li><a class="reference internal" href="#object_spectra.N_spectra">N_spectra</a></li>
+<li><a class="reference internal" href="#object_spectra.velarr">velarr</a></li>
+<li><a class="reference internal" href="#object_spectra.SNRarr">SNRarr</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="module-object_spectra">
+<span id="object-spectra"></span><h1><a class="reference internal" href="#module-object_spectra" title="object_spectra"><code class="xref py py-mod docutils literal notranslate"><span class="pre">object_spectra</span></code></a><a class="headerlink" href="#module-object_spectra" title="Permalink to this heading">¶</a></h1>
+<p>This is a python rendition of Jon Hillier's synthetic spectra IDL script
+__author__ = Ethan Ayari,
+Institute for Modeling Plasmas, Atmospheres and Cosmic Dust</p>
+<p>Works with Python 3.8.10</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.Spectra" title="object_spectra.Spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Spectra</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.safe_div" title="object_spectra.safe_div"><code class="xref py py-obj docutils literal notranslate"><span class="pre">safe_div</span></code></a>(x, y)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#object_spectra.fetch_abundances" title="object_spectra.fetch_abundances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_abundances</span></code></a>()</p></td>
+<td><p>Parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.fetch_rsfs" title="object_spectra.fetch_rsfs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_rsfs</span></code></a>()</p></td>
+<td><p>Parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#object_spectra.fetch_rocks" title="object_spectra.fetch_rocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_rocks</span></code></a>()</p></td>
+<td><p>Parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.rms_val" title="object_spectra.rms_val"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rms_val</span></code></a>(signal)</p></td>
+<td><p>Parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#object_spectra.add_real_noise" title="object_spectra.add_real_noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_real_noise</span></code></a>(signal, SNR)</p></td>
+<td><p>Parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.add_gaussian_noise" title="object_spectra.add_gaussian_noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_gaussian_noise</span></code></a>(signal)</p></td>
+<td><p>Parameters</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.N_spectra" title="object_spectra.N_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">N_spectra</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#object_spectra.velarr" title="object_spectra.velarr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velarr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#object_spectra.SNRarr" title="object_spectra.SNRarr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SNRarr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="object_spectra.Spectra">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">Spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rockarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.Spectra" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="object_spectra.Spectra.unwrap_mins">
+<span class="sig-name descname"><span class="pre">unwrap_mins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rocks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elems_present</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentarray_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rockarray_s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.Spectra.unwrap_mins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create elemental abundances from the user-provided list of minerals.</p>
+<dl>
+<dt>Args:</dt><dd><p>rocks (series): The output of
+:func:'object_spectra.Spectra.fetch_rocks'. This is a
+database of known minerals and their elemental abundances.</p>
+<p>elems_present (float array): The relative abundance of each element
+in the sample, calculated in the :mod:'Spectra' initialization.</p>
+<p>percentarray_s (float array): A sorted array of mineral abundances
+in the sample.</p>
+<p>rockarray_s (str array): The names of minerals in the sample
+ordered alphabetically.</p>
+</dd>
+<dt>Kwargs:</dt><dd><p>None</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Raises:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="object_spectra.Spectra.sort_isotopes">
+<span class="sig-name descname"><span class="pre">sort_isotopes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">isotope_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.Spectra.sort_isotopes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the isotope labels and abundances properly for further
+analysis.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>isotope_data (float array): An array of isotopic ratios and labels,
+the output of :func:'object_spectra.Spectra.fetch_abundances'</p>
+</dd>
+<dt>Kwargs:</dt><dd><p>None</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Raises:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="object_spectra.Spectra.create_isotope_pairs">
+<span class="sig-name descname"><span class="pre">create_isotope_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.Spectra.create_isotope_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a list of tuples (dictionary-style key: value pairs) to be
+used for mass line labels.
+Args:</p>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<dl>
+<dt>Kwargs:</dt><dd><p>Plot (bool): A boolean indicating whether or not the user wants to
+see a demonstration of the labels.</p>
+<p>Verbose (bool): A boolean representing the user's choice of whether
+or not they want real-time print statements of all relevant
+quantities.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Raises:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="object_spectra.Spectra.split_into_gstages">
+<span class="sig-name descname"><span class="pre">split_into_gstages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.Spectra.split_into_gstages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split the amplitudes of the TOF signal into low, middle and high
+gain stages.</p>
+<dl>
+<dt>Args:</dt><dd><p>None</p>
+</dd>
+<dt>Kwargs:</dt><dd><p>Plot (bool): A boolean indicating whether or not the user wants to
+see a demonstration of the labels.</p>
+<p>Verbose (bool): A boolean representing the user's choice of whether
+or not they want real-time print statements of all relevant
+quantities.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None</p>
+</dd>
+<dt>Raises:</dt><dd><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.safe_div">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">safe_div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.safe_div" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.fetch_abundances">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">fetch_abundances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.fetch_abundances" title="Permalink to this definition">¶</a></dt>
+<dd><p>A database of isotopic ratios.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.fetch_rsfs">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">fetch_rsfs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.fetch_rsfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A database of TOF_SIMS relative sensitivity factors.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.fetch_rocks">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">fetch_rocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.fetch_rocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>A database of minerals and their added abundances.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.rms_val">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">rms_val</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.rms_val" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>signal<span class="classifier">Float64 Array</span></dt><dd><p>An initial numerical spectra free from noise.</p>
+</dd>
+</dl>
+<p>The RMS average value of the input signal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.add_real_noise">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">add_real_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SNR</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.add_real_noise" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>signal<span class="classifier">Float64 Array</span></dt><dd><p>An initial numerical spectra free from noise.</p>
+</dd>
+<dt>SNR<span class="classifier">Float64</span></dt><dd><p>A perscribed sigal-to-noise ratio for the added nosie</p>
+</dd>
+</dl>
+<p>A synthetic TOF or mass spectra with  background noise added
+throughout. This noise has the same frequency and amplitude
+space as the instrument electronics.
+This bakcground noise was derived via fourier analysis of Peridot impact
+spectra on the Hyperdust instrument.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="object_spectra.add_gaussian_noise">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">add_gaussian_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#object_spectra.add_gaussian_noise" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>signal<span class="classifier">Float64 Array</span></dt><dd><p>An initial numerical spectra free from noise.</p>
+</dd>
+</dl>
+<p>A synthetic TOF or mass spectra with  optional gaussian &quot;white&quot;
+noise added throughout.
+This white noise was derived via fourier analysis of Peridot impact
+spectra on the Hyperdust instrument.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="object_spectra.N_spectra">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">N_spectra</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#object_spectra.N_spectra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="object_spectra.velarr">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">velarr</span></span><a class="headerlink" href="#object_spectra.velarr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="object_spectra.SNRarr">
+<span class="sig-prename descclassname"><span class="pre">object_spectra.</span></span><span class="sig-name descname"><span class="pre">SNRarr</span></span><a class="headerlink" href="#object_spectra.SNRarr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+:py:mod:`IDEX-quicklook`
+========================
+
+.. py:module:: IDEX-quicklook
+
+.. autoapi-nested-parse::
+
+   A graphical interface for viewing and saving scope data
+   __author__      = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+   Works with Python 3.8.10
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   IDEX-quicklook.MplCanvas
+   IDEX-quicklook.MainWindow
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   IDEX-quicklook.generalReadTRC
+   IDEX-quicklook.readTRC
+   IDEX-quicklook.displayTRC
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   IDEX-quicklook.times
+   IDEX-quicklook.amps
+   IDEX-quicklook.metas
+   IDEX-quicklook.traceList
+   IDEX-quicklook.app
+
+
+.. py:data:: times
+   :annotation: = []
+
+   
+
+.. py:data:: amps
+   :annotation: = []
+
+   
+
+.. py:data:: metas
+   :annotation: = []
+
+   
+
+.. py:data:: traceList
+   :annotation: = []
+
+   
+
+.. py:class:: MplCanvas(parent=None, width=15, height=8, dpi=100)
+
+   Bases: :py:obj:`matplotlib.backends.backend_qtagg.FigureCanvasQTAgg`
+
+   The canvas the figure renders into.
+
+   Attributes
+   ----------
+   figure : `matplotlib.figure.Figure`
+       A high-level figure instance.
+
+
+.. py:class:: MainWindow
+
+   Bases: :py:obj:`PyQt6.QtWidgets.QMainWindow`
+
+   .. py:method:: _createMenuBar()
+
+      This function sets up the toolbar options located above the
+      interactive plot. For now, these options echo the menu options (file,
+      edit, view, etc.)
+
+      Args:
+         None
+
+      Kwargs:
+         None
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: _createActions()
+
+      Initializes the actions associated with the toolbar options.
+
+      Args:
+         None
+
+      Kwargs:
+         None
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: exportScopeData(s)
+
+      Action associated with the "export data" option. Pandas is imported
+      alone here since it can be time consuming. It takes the time and
+      amplitude arrays from the current trace shot being viewed and writes
+      them both as a two column csv.
+
+      Args:
+         None
+
+      Kwargs:
+         s (str): The destination filename for the csv data.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: chooseTrace(s)
+
+      A helper function that adds the trace chooser to the QT main window.
+
+      Args:
+         None
+
+      Kwargs:
+         s (str): The choice of trace provided by the user.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: updatePlot(s)
+
+      Update the matplotlib canvas with the user-provided choice of trace.
+
+      Args:
+         None
+
+      Kwargs:
+         s (str): The user's choice of trace.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+   .. py:method:: importScopeData(s)
+
+      Update the matplotlib canvas with the user-provided choice of trace.
+
+      Args:
+         None
+
+      Kwargs:
+         s (str): The user's choice of trace.
+
+      Returns:
+         None
+
+      Raises:
+         None
+         
+
+
+
+.. py:function:: generalReadTRC(dataDir, verbose=True)
+
+   A function to read in the binary trace files from the oscilloscopes. It
+   is general for different instruments and scope configurations. The number
+   of channels and shots is automatically detected and sorted.
+
+       Args:
+          dataDir (str): The folder containing the trace files. It doesn't
+          matter if there are other files in that directory. If you are
+          manually entering a path and encounter issues, try os.listdir() to
+          ensure things look right.'
+
+       Kwargs:
+          verbose (bool): A boolean representing the user's choice of whether
+          or not they want real-time print statements of all relevant
+          quantities.
+
+       Returns:
+          times (list): A 2 dimensional list containing the time arrays for
+          each shot.
+
+          amps (list): A 2 dimensional list containing the amplitude arrays
+          for each shot.
+
+          metas (list): A 2 dimensional list containing the metadata arrays
+          for each shot. **TODO** Figure out this format and make it a dict.
+
+       Exceptions:
+          FileNotFoundError: The cue to stop parsing the user-provuded
+          directory for any more trace files.
+
+           ZeroDivisionError: This will be reaised if there are no files
+           detected at all.
+          
+
+
+.. py:function:: readTRC(dataDir)
+
+
+.. py:function:: displayTRC(times, amps, sc)
+
+   Update the matplotlib canvas with the user-provided choice of trace.
+
+   Args:
+      times (list): The 2D list that gets returned from
+      :func:'IDEX-quicklook.generalReadTrc'
+
+      amps (list): The 2D list that gets returned from
+      :func:'IDEX-quicklook.generalReadTrc'
+
+      sc (FigureCanvasQTAgg): An instance of the :class:'MplCanvas' class
+      defined above.
+
+   Kwargs:
+      None
+
+   Returns:
+      None
+
+   Raises:
+      None
+      
+
+
+.. py:data:: app
+   
+
+   
+

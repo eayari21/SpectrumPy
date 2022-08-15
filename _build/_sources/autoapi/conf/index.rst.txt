@@ -1,0 +1,64 @@
+:py:mod:`conf`
+==============
+
+.. py:module:: conf
+
+
+Module Contents
+---------------
+
+.. py:data:: project
+   :annotation: = SpectrumPY
+
+   
+
+.. py:data:: copyright
+   :annotation: = 2022, Ethan Ayari
+
+   
+
+.. py:data:: author
+   :annotation: = Ethan Ayari
+
+   
+
+.. py:data:: release
+   :annotation: = 0.1
+
+   
+
+.. py:data:: extensions
+   :annotation: = ['sphinx.ext.autodoc', 'autoapi.extension', 'sphinx.ext.inheritance_diagram', 'autoapi.sphinx']
+
+   
+
+.. py:data:: autoapi_dirs
+   :annotation: = ['../src']
+
+   
+
+.. py:data:: templates_path
+   :annotation: = ['_templates']
+
+   
+
+.. py:data:: exclude_patterns
+   :annotation: = []
+
+   
+
+.. py:data:: language
+   :annotation: = y
+
+   
+
+.. py:data:: html_theme
+   :annotation: = alabaster
+
+   
+
+.. py:data:: html_static_path
+   :annotation: = ['_static']
+
+   
+

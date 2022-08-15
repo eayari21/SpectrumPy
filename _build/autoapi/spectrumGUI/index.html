@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>spectrumGUI &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="../../index.html"
+          title="back to the documentation overview"><span>spectrumGUI</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spectrumGUI</span></code></a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spectrumGUI</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#spectrumGUI.min_w">min_w</a></li>
+<li><a class="reference internal" href="#spectrumGUI.max_w">max_w</a></li>
+<li><a class="reference internal" href="#spectrumGUI.cur_width">cur_width</a></li>
+<li><a class="reference internal" href="#spectrumGUI.expanded">expanded</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp">SpectrumPYApp</a><ul>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.analyze_noise">analyze_noise</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.donothing">donothing</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.generate_spectra">generate_spectra</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.noise_switch">noise_switch</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.divide_into_gains">divide_into_gains</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.basic_gui">basic_gui</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.expand">expand</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.contract">contract</a></li>
+<li><a class="reference internal" href="#spectrumGUI.SpectrumPYApp.fill">fill</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spectrumGUI.fetch_rocks">fetch_rocks</a></li>
+<li><a class="reference internal" href="#spectrumGUI.display_els">display_els</a></li>
+<li><a class="reference internal" href="#spectrumGUI.bGUI">bGUI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="module-spectrumGUI">
+<span id="spectrumgui"></span><h1><a class="reference internal" href="#module-spectrumGUI" title="spectrumGUI"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spectrumGUI</span></code></a><a class="headerlink" href="#module-spectrumGUI" title="Permalink to this heading">¶</a></h1>
+<p>This is a GUI wrapper for SpectrumPY
+__author__      = Ethan Ayari,
+Institute for Modeling Plasmas, Atmospheres and Cosmic Dust</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrumGUI.SpectrumPYApp" title="spectrumGUI.SpectrumPYApp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpectrumPYApp</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrumGUI.fetch_rocks" title="spectrumGUI.fetch_rocks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_rocks</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spectrumGUI.display_els" title="spectrumGUI.display_els"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_els</span></code></a>(ForSpec)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrumGUI.min_w" title="spectrumGUI.min_w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_w</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spectrumGUI.max_w" title="spectrumGUI.max_w"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_w</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrumGUI.cur_width" title="spectrumGUI.cur_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cur_width</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spectrumGUI.expanded" title="spectrumGUI.expanded"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanded</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrumGUI.bGUI" title="spectrumGUI.bGUI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bGUI</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="spectrumGUI.min_w">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">min_w</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">50</span></em><a class="headerlink" href="#spectrumGUI.min_w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="spectrumGUI.max_w">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">max_w</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">200</span></em><a class="headerlink" href="#spectrumGUI.max_w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="spectrumGUI.cur_width">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">cur_width</span></span><a class="headerlink" href="#spectrumGUI.cur_width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="spectrumGUI.expanded">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">expanded</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#spectrumGUI.expanded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">SpectrumPYApp</span></span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.analyze_noise">
+<span class="sig-name descname"><span class="pre">analyze_noise</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.analyze_noise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.donothing">
+<span class="sig-name descname"><span class="pre">donothing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.donothing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.generate_spectra">
+<span class="sig-name descname"><span class="pre">generate_spectra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.generate_spectra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.noise_switch">
+<span class="sig-name descname"><span class="pre">noise_switch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.noise_switch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.divide_into_gains">
+<span class="sig-name descname"><span class="pre">divide_into_gains</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.divide_into_gains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.basic_gui">
+<span class="sig-name descname"><span class="pre">basic_gui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.basic_gui" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.expand" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.contract">
+<span class="sig-name descname"><span class="pre">contract</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.contract" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spectrumGUI.SpectrumPYApp.fill">
+<span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.SpectrumPYApp.fill" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spectrumGUI.fetch_rocks">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">fetch_rocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.fetch_rocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="spectrumGUI.display_els">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">display_els</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ForSpec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectrumGUI.display_els" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="spectrumGUI.bGUI">
+<span class="sig-prename descclassname"><span class="pre">spectrumGUI.</span></span><span class="sig-name descname"><span class="pre">bGUI</span></span><a class="headerlink" href="#spectrumGUI.bGUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

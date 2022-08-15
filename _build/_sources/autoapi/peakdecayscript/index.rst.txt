@@ -1,0 +1,113 @@
+:py:mod:`peakdecayscript`
+=========================
+
+.. py:module:: peakdecayscript
+
+.. autoapi-nested-parse::
+
+   Script for postprocessing spectrum exports.
+
+   __author__      = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   peakdecayscript.gaussian
+   peakdecayscript.gauss_fit
+   peakdecayscript.Ringingdecay
+   peakdecayscript.decay
+   peakdecayscript.savitzky_golay
+   peakdecayscript.read_hdf5
+   peakdecayscript.read_all_hdf5
+   peakdecayscript.compute_power_spectrum
+   peakdecayscript.compute_amplitude_spectrum
+   peakdecayscript.compute_phase_spectrum
+   peakdecayscript.filter_psd
+   peakdecayscript.reconstruct_time_series
+   peakdecayscript.generate_noise
+   peakdecayscript.end_to_end_amps
+   peakdecayscript.end_to_end_psd
+   peakdecayscript.take_autocorr
+   peakdecayscript.main
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   peakdecayscript.verbose
+   peakdecayscript.timearr
+
+
+.. py:data:: verbose
+   :annotation: = False
+
+   
+
+.. py:function:: gaussian(x, mean, amplitude, standard_deviation)
+
+
+.. py:function:: gauss_fit(bin_heights, bin_borders, Plot=False)
+
+
+.. py:function:: Ringingdecay(t, A, B, w, p)
+
+
+.. py:function:: decay(t, A, B)
+
+
+.. py:function:: savitzky_golay(y, window_size, order, deriv=0, rate=1)
+
+
+.. py:function:: read_hdf5(path)
+
+
+.. py:function:: read_all_hdf5(path)
+
+
+.. py:function:: compute_power_spectrum(fft, freq, n, ax=None, plot=False)
+
+
+.. py:function:: compute_amplitude_spectrum(fft, freq, delta, n, plot=False)
+
+
+.. py:function:: compute_phase_spectrum(fft, freq, plot=False)
+
+
+.. py:function:: filter_psd(psd)
+
+
+.. py:function:: reconstruct_time_series(psd, n, delta, ax=None, plot=False)
+
+
+.. py:function:: generate_noise(axs=None, Plot=False)
+
+
+.. py:function:: end_to_end_amps(amps, recon)
+
+
+.. py:function:: end_to_end_psd(freq, psd, reco, plot=False)
+
+
+.. py:function:: take_autocorr(timeseries, name)
+
+
+.. py:function:: main()
+
+
+.. py:data:: timearr
+   :annotation: = []
+
+   
+

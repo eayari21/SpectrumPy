@@ -1,0 +1,96 @@
+:py:mod:`readTrc`
+=================
+
+.. py:module:: readTrc
+
+.. autoapi-nested-parse::
+
+   Little helper class to load data from a .trc binary file.
+   This is the file format used by LeCroy oscilloscopes.
+   M. Betz 09/2015
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   readTrc.Trc
+
+
+
+
+.. py:class:: Trc
+
+   .. py:attribute:: _recTypes
+      :annotation: = ['single_sweep', 'interleaved', 'histogram', 'graph', 'filter_coefficient', 'complex',...
+
+      
+
+   .. py:attribute:: _processings
+      :annotation: = ['no_processing', 'fir_filter', 'interpolated', 'sparsed', 'autoscaled', 'no_result', 'rolling',...
+
+      
+
+   .. py:attribute:: _timebases
+      :annotation: = ['1_ps/div', '2_ps/div', '5_ps/div', '10_ps/div', '20_ps/div', '50_ps/div', '100_ps/div',...
+
+      
+
+   .. py:attribute:: _vCouplings
+      :annotation: = ['DC_50_Ohms', 'ground', 'DC_1MOhm', 'ground', 'AC,_1MOhm']
+
+      
+
+   .. py:attribute:: _vGains
+      :annotation: = ['1_uV/div', '2_uV/div', '5_uV/div', '10_uV/div', '20_uV/div', '50_uV/div', '100_uV/div',...
+
+      
+
+   .. py:method:: open(fName)
+
+      _readS .trc binary files from LeCroy Oscilloscopes.
+      Decoding is based on LECROY_2_3 template.
+      [More info]
+      (http://forums.ni.com/attachments/ni/60/4652/2/LeCroyWaveformTemplate_2_3.pdf)
+
+      Parameters
+      -----------
+      fName = filename of the .trc file
+
+      Returns
+      -----------
+      a tuple (x, y, d)
+
+      x: array with sample times [s],
+
+      y: array with sample  values [V],
+
+      d: dictionary with metadata
+
+      M. Betz 09/2015
+
+
+   .. py:method:: _readX(fmt, adr=None)
+
+      extract a byte / word / float / double from the binary file f 
+
+
+   .. py:method:: _readS(fmt='16s', adr=None)
+
+      read (and decode) a fixed length string 
+
+
+   .. py:method:: _readSamples()
+
+
+   .. py:method:: _getTimeStamp(adr)
+
+      extract a timestamp from the binary file 
+
+
+

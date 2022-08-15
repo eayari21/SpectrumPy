@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>readTrc &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="../../index.html"
+          title="back to the documentation overview"><span>readTrc</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">readTrc</span></code></a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">readTrc</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#readTrc.Trc">Trc</a><ul>
+<li><a class="reference internal" href="#readTrc.Trc._recTypes">_recTypes</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._processings">_processings</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._timebases">_timebases</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._vCouplings">_vCouplings</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._vGains">_vGains</a></li>
+<li><a class="reference internal" href="#readTrc.Trc.open">open</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._readX">_readX</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._readS">_readS</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._readSamples">_readSamples</a></li>
+<li><a class="reference internal" href="#readTrc.Trc._getTimeStamp">_getTimeStamp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="module-readTrc">
+<span id="readtrc"></span><h1><a class="reference internal" href="#module-readTrc" title="readTrc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">readTrc</span></code></a><a class="headerlink" href="#module-readTrc" title="Permalink to this heading">¶</a></h1>
+<p>Little helper class to load data from a .trc binary file.
+This is the file format used by LeCroy oscilloscopes.
+M. Betz 09/2015</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#readTrc.Trc" title="readTrc.Trc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Trc</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="readTrc.Trc">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">readTrc.</span></span><span class="sig-name descname"><span class="pre">Trc</span></span><a class="headerlink" href="#readTrc.Trc" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="readTrc.Trc._recTypes">
+<span class="sig-name descname"><span class="pre">_recTypes</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['single_sweep',</span> <span class="pre">'interleaved',</span> <span class="pre">'histogram',</span> <span class="pre">'graph',</span> <span class="pre">'filter_coefficient',</span> <span class="pre">'complex',...</span></em><a class="headerlink" href="#readTrc.Trc._recTypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readTrc.Trc._processings">
+<span class="sig-name descname"><span class="pre">_processings</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['no_processing',</span> <span class="pre">'fir_filter',</span> <span class="pre">'interpolated',</span> <span class="pre">'sparsed',</span> <span class="pre">'autoscaled',</span> <span class="pre">'no_result',</span> <span class="pre">'rolling',...</span></em><a class="headerlink" href="#readTrc.Trc._processings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readTrc.Trc._timebases">
+<span class="sig-name descname"><span class="pre">_timebases</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['1_ps/div',</span> <span class="pre">'2_ps/div',</span> <span class="pre">'5_ps/div',</span> <span class="pre">'10_ps/div',</span> <span class="pre">'20_ps/div',</span> <span class="pre">'50_ps/div',</span> <span class="pre">'100_ps/div',...</span></em><a class="headerlink" href="#readTrc.Trc._timebases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readTrc.Trc._vCouplings">
+<span class="sig-name descname"><span class="pre">_vCouplings</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['DC_50_Ohms',</span> <span class="pre">'ground',</span> <span class="pre">'DC_1MOhm',</span> <span class="pre">'ground',</span> <span class="pre">'AC,_1MOhm']</span></em><a class="headerlink" href="#readTrc.Trc._vCouplings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="readTrc.Trc._vGains">
+<span class="sig-name descname"><span class="pre">_vGains</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['1_uV/div',</span> <span class="pre">'2_uV/div',</span> <span class="pre">'5_uV/div',</span> <span class="pre">'10_uV/div',</span> <span class="pre">'20_uV/div',</span> <span class="pre">'50_uV/div',</span> <span class="pre">'100_uV/div',...</span></em><a class="headerlink" href="#readTrc.Trc._vGains" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readTrc.Trc.open">
+<span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#readTrc.Trc.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>_readS .trc binary files from LeCroy Oscilloscopes.
+Decoding is based on LECROY_2_3 template.
+[More info]
+(<a class="reference external" href="http://forums.ni.com/attachments/ni/60/4652/2/LeCroyWaveformTemplate_2_3.pdf">http://forums.ni.com/attachments/ni/60/4652/2/LeCroyWaveformTemplate_2_3.pdf</a>)</p>
+<p>fName = filename of the .trc file</p>
+<p>a tuple (x, y, d)</p>
+<p>x: array with sample times [s],</p>
+<p>y: array with sample  values [V],</p>
+<p>d: dictionary with metadata</p>
+<ol class="upperalpha simple" start="13">
+<li><p>Betz 09/2015</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readTrc.Trc._readX">
+<span class="sig-name descname"><span class="pre">_readX</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#readTrc.Trc._readX" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract a byte / word / float / double from the binary file f</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readTrc.Trc._readS">
+<span class="sig-name descname"><span class="pre">_readS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'16s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#readTrc.Trc._readS" title="Permalink to this definition">¶</a></dt>
+<dd><p>read (and decode) a fixed length string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readTrc.Trc._readSamples">
+<span class="sig-name descname"><span class="pre">_readSamples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#readTrc.Trc._readSamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="readTrc.Trc._getTimeStamp">
+<span class="sig-name descname"><span class="pre">_getTimeStamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#readTrc.Trc._getTimeStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract a timestamp from the binary file</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

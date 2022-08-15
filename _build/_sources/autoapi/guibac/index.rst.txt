@@ -1,0 +1,118 @@
+:py:mod:`gui-bac`
+=================
+
+.. py:module:: gui-bac
+
+.. autoapi-nested-parse::
+
+   This is a GUI wrapper for SpectrumPY
+   __author__      = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gui-bac.fetch_rocks
+   gui-bac.display_els
+   gui-bac.noise_switch
+   gui-bac.generate_spectra
+   gui-bac.basic_gui
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gui-bac.window
+   gui-bac.min_one_name
+   gui-bac.min_two_name
+   gui-bac.snr_val
+   gui-bac.noise_present
+   gui-bac.min_one_abundance
+   gui-bac.min_two_abundance
+   gui-bac.fig
+   gui-bac.ax
+   gui-bac.canvas
+   gui-bac.toolbar
+
+
+.. py:data:: window
+   
+
+   
+
+.. py:data:: min_one_name
+   
+
+   
+
+.. py:data:: min_two_name
+   
+
+   
+
+.. py:data:: snr_val
+   
+
+   
+
+.. py:data:: noise_present
+   
+
+   
+
+.. py:data:: min_one_abundance
+   
+
+   
+
+.. py:data:: min_two_abundance
+   
+
+   
+
+.. py:data:: fig
+   
+
+   
+
+.. py:data:: ax
+   
+
+   
+
+.. py:data:: canvas
+   
+
+   
+
+.. py:data:: toolbar
+   
+
+   
+
+.. py:function:: fetch_rocks()
+
+
+.. py:function:: display_els(ForSpec)
+
+
+.. py:function:: noise_switch()
+
+
+.. py:function:: generate_spectra()
+
+
+.. py:function:: basic_gui()
+
+

@@ -161,7 +161,7 @@ def compute_amplitude_spectrum(fft, freq, delta, n, plot=False):
 
 # %%
 def compute_phase_spectrum(fft, freq, plot=False):
-    fftphase = (180/np.pi)*np.arctan2(np.imag(fhat), np.real(fhat))
+    fftphase = (180/np.pi)*np.arctan2(np.imag(fft), np.real(fft))
     if(plot):
         plt.plot(freq, fftphase, 'g', label="Fourier Phase Spectrum")
         plt.xlabel('Frequency (MHz)')

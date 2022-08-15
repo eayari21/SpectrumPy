@@ -35,25 +35,35 @@ plt.style.use("seaborn-pastel")
 class Spectra():
     # %%INITIALIZE TOF OR MASS SPECTRA
     def __init__(self, rockarray, percentarray, vel):
-        """
-    Parameters
-    ----------
-    rockarray : String Array
-        A list of what minerals are contained in the sample
-    percentarray : Float Array
-        The relative abundance of each mineral in the sample
-    Returns
-    -------
-    A synthetic TOF or Mass spectra"""
+        """Creates a synthetic TOF of Mass Spectra. for a user-provided sample.
+
+        Args:
+           rockarray (str array): A user-provided list of what minerals are
+           contained in the sample. Example: [Ferrosilite, Peridot]
+
+            percentarray (float array): The relative abundance of each mineral
+            in the sample. Example: [50.0, 50.0]
+
+            vel (float): The impact velocity of the sample. Example: 15.6
+
+        Kwargs:
+           None
+
+        Returns:
+           None
+
+        Raises:
+           Exceptions will be raised for an invalid format of input parameters.
+           """
 
         # Check that each mineral has a specified abundance
         if(len(rockarray) != len(percentarray)):
-            print('ERROR - NUMBER OF ROCKS MUST MATCH PERCENTAGES')
+            raise Exception('ERROR - NUMBER OF ROCKS MUST MATCH PERCENTAGES')
             return None
 
         # Make sure these abundances sum to 100
         if(np.sum(percentarray) != 100):
-            print('ERROR - TOTAL PERCENTAGES MUST BE 100')
+            raise Exception('ERROR - TOTAL PERCENTAGES MUST BE 100')
             return None
 
         rockarray_s = np.sort(rockarray)
@@ -61,7 +71,7 @@ class Spectra():
 
         # Make sure each mineral is only entered once
         if(len(np.unique(rockarray)) != len(rockarray)):
-            print('ERROR - PLEASE ONLY USE EACH MINERAL ONCE!')
+            raise Exception('ERROR - PLEASE ONLY USE EACH MINERAL ONCE!')
             return None
 
         rocks = fetch_rocks()
@@ -273,6 +283,31 @@ class Spectra():
 
 # %%PROCESS MINERAL CSV
     def unwrap_mins(self, rocks, elems_present, percentarray_s, rockarray_s):
+        """Create elemental abundances from the user-provided list of minerals.
+
+        Args:
+            rocks (series): The output of
+            :func:'object_spectra.Spectra.fetch_rocks'. This is a
+            database of known minerals and their elemental abundances.
+
+            elems_present (float array): The relative abundance of each element
+            in the sample, calculated in the :mod:'Spectra' initialization.
+
+            percentarray_s (float array): A sorted array of mineral abundances
+            in the sample.
+
+            rockarray_s (str array): The names of minerals in the sample
+            ordered alphabetically.
+
+        Kwargs:
+           None
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
         # Unwrap mineral data
         for i in range(len(rockarray_s)):
             # Find what mineral(s) are present
@@ -300,17 +335,24 @@ class Spectra():
             tmp2 = re.sub(r'^.*?    ', "", tmp1)
             self.els.append(tmp2)
 
-        # print(self.els)
-        """
-        elstemp = pd.Series(elems_present)
-        for val in elstemp:
-            self.els.append(val)
-        print(self.els)
-        """
-
 # %%PROCESS ISOTOPE DATA
     def sort_isotopes(self, isotope_data):
+        """Format the isotope labels and abundances properly for further
+        analysis.
 
+        Args:
+           isotope_data (float array): An array of isotopic ratios and labels,
+           the output of :func:'object_spectra.Spectra.fetch_abundances'
+
+        Kwargs:
+           None
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
         self.iso_abun = []
         self.iso_mass = []
         self.iso_syms = []
@@ -373,6 +415,25 @@ class Spectra():
 
 # %%CREATE A HASH OF NAMES AND MASS INDICES
     def create_isotope_pairs(self, Plot=False, Verbose=False):
+        """Create a list of tuples (dictionary-style key: value pairs) to be
+        used for mass line labels.
+        Args:
+           None
+
+        Kwargs:
+           Plot (bool): A boolean indicating whether or not the user wants to
+           see a demonstration of the labels.
+
+           Verbose (bool): A boolean representing the user's choice of whether
+           or not they want real-time print statements of all relevant
+           quantities.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
         # Let's get the target material in the spectrum
         if 'Ag' not in self.iso_names:
             if Verbose:
@@ -384,7 +445,7 @@ class Spectra():
         # self.iso_mass = [i for i in self.iso_mass if i != 0]
         self.iso_dict = [(i, j) for i, j in zip(self.iso_names,
                                                 self.iso_mass)]
-        
+
         if Verbose:
             print("Isotopes present in the spectra: \n", self.iso_names)
             print("Isotopic masses: \n", self.iso_mass, '\n')
@@ -392,6 +453,26 @@ class Spectra():
 
 # %%SPLIT A SIGNAL INTO HIGH, MIDDLE & LOW CHANNELS
     def split_into_gstages(self, Plot=False, Verbose=False):
+        """Split the amplitudes of the TOF signal into low, middle and high
+        gain stages.
+
+        Args:
+           None
+
+        Kwargs:
+           Plot (bool): A boolean indicating whether or not the user wants to
+           see a demonstration of the labels.
+
+           Verbose (bool): A boolean representing the user's choice of whether
+           or not they want real-time print statements of all relevant
+           quantities.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
         low = self.mass_spectrum
         mid = self.mass_spectrum
         high = self.mass_spectrum

@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>RSF_test &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="../../index.html"
+          title="back to the documentation overview"><span>RSF_test</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">RSF_test</span></code></a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">RSF_test</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#RSF_test.atan_approx">atan_approx</a></li>
+<li><a class="reference internal" href="#RSF_test.mcnumber">mcnumber</a></li>
+<li><a class="reference internal" href="#RSF_test.find_nearest">find_nearest</a></li>
+<li><a class="reference internal" href="#RSF_test.nearest_idx">nearest_idx</a></li>
+<li><a class="reference internal" href="#RSF_test.line_appear">line_appear</a></li>
+<li><a class="reference internal" href="#RSF_test.vel">vel</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="module-RSF_test">
+<span id="rsf-test"></span><h1><a class="reference internal" href="#module-RSF_test" title="RSF_test"><code class="xref py py-mod docutils literal notranslate"><span class="pre">RSF_test</span></code></a><a class="headerlink" href="#module-RSF_test" title="Permalink to this heading">¶</a></h1>
+<p>Test code for velocity-dependent mass line appearance.</p>
+<p>__author__ = Ethan Ayari,
+Institute for Modeling Plasmas, Atmospheres and Cosmic Dust</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RSF_test.atan_approx" title="RSF_test.atan_approx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atan_approx</span></code></a>(E, a, b, c)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RSF_test.mcnumber" title="RSF_test.mcnumber"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mcnumber</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RSF_test.find_nearest" title="RSF_test.find_nearest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_nearest</span></code></a>(array, value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#RSF_test.nearest_idx" title="RSF_test.nearest_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nearest_idx</span></code></a>(array, value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RSF_test.line_appear" title="RSF_test.line_appear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_appear</span></code></a>(elem_name, vel)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#RSF_test.vel" title="RSF_test.vel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vel</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="RSF_test.atan_approx">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">atan_approx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RSF_test.atan_approx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RSF_test.mcnumber">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">mcnumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RSF_test.mcnumber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RSF_test.find_nearest">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">find_nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RSF_test.find_nearest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RSF_test.nearest_idx">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">nearest_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RSF_test.nearest_idx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RSF_test.line_appear">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">line_appear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RSF_test.line_appear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="RSF_test.vel">
+<span class="sig-prename descclassname"><span class="pre">RSF_test.</span></span><span class="sig-name descname"><span class="pre">vel</span></span><a class="headerlink" href="#RSF_test.vel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

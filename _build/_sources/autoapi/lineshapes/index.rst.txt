@@ -1,0 +1,106 @@
+:py:mod:`lineshapes`
+====================
+
+.. py:module:: lineshapes
+
+.. autoapi-nested-parse::
+
+   Created on Tue Feb 22 15:07:07 2022
+
+   @author: ethanayari
+
+
+
+Module Contents
+---------------
+
+.. py:data:: gx
+   
+
+   
+
+.. py:data:: x
+   
+
+   
+
+.. py:data:: amp
+   
+
+   
+
+.. py:data:: ring
+   
+
+   
+
+.. py:data:: A
+   :annotation: = 1
+
+   
+
+.. py:data:: B
+   :annotation: = 1
+
+   
+
+.. py:data:: w
+   :annotation: = 1
+
+   
+
+.. py:data:: p
+   :annotation: = 1
+
+   
+
+.. py:data:: t
+   
+
+   
+
+.. py:data:: ringnext
+   
+
+   
+
+.. py:data:: test2
+   
+
+   
+
+.. py:data:: sinc
+   
+
+   
+
+.. py:data:: sinc
+   
+
+   
+
+.. py:data:: x2
+   
+
+   
+
+.. py:data:: amp2
+   
+
+   
+
+.. py:data:: t2
+   
+
+   
+
+.. py:data:: test
+   
+
+   
+
+.. py:data:: h
+   
+
+   
+

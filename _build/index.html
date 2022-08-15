@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to SpectrumPY&#39;s documentation! &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="#"
+          title="back to the documentation overview"><span>Welcome to SpectrumPY&#39;s documentation!</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#">Welcome to SpectrumPY's documentation!</a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#">Welcome to SpectrumPY's documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="welcome-to-spectrumpy-s-documentation">
+<h1>Welcome to SpectrumPY's documentation!<a class="headerlink" href="#welcome-to-spectrumpy-s-documentation" title="Permalink to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/readTrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">readTrc</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/spectrumGUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">spectrumGUI</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/peakdecayscript/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">peakdecayscript</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/object_spectra/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">object_spectra</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/IDEXquicklook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">IDEX-quicklook</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/Installer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Installer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/lineshapes/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lineshapes</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/RSF_test/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">RSF_test</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/guibac/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gui-bac</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/conf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">conf</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+<section id="Getting Started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<ol type="I">
+  <li>To get started, launch the app (MacOS) or executable (Windows).</li>
+  <li>A file dialog should show up, prompting the user for the location of the trace files they want to view.</li>
+  <li>Included with the SpectrumPY installation should be a "traces" directory containing well-tested Hyperdust examples. <b>NOTE:</b> the user must specify the folder containing the trace files, not one of the trace files themselves.</li>
+  <li>Once a trace folder has been chosen, SpectrumPY automatically detects the number of channels and respective shots, and reads them in.</li>
+  <li>After reading in the traces, the main interactive plot window should display 4 channels by default.</li>
+  <li>If this was not the dataset you were after, navigate to the upper left menu and select File, Import Data, Import Scope Data (.trc), and go back to step 2.</li>
+  <li>If you would like to export the data to a .csv file, navigate to the upper left menu and select File, Export Data, Export to .csv. Then, find "SpecOutput.csv" in the same directory that SpectrumPY is installed in.</li>
+  <li>To change the trace file (or accelerator shot) that you're viewing, navigate to the upper left menu and select View, Choose Trace. A drop down list of all the auto detected traces will appear for the user to select. If for some reason the TOF channel is not displaying, please reimport your scope data. This issue is being looked into.</li>
+  <li>If you would like to alter the number of channels being displayed or which channels are being displayed, select View, Change Channels. This will bring up the external channel choosing window, where the user can select 1-4 channels for display. The order the checkboxes are selected is the order that the plots will be displayed in the main window. When finished selecting your channels, press submit plot and close the window. If the wrong number of channels is entered, the plot will revert to its default settings.</li>
+  <li>If you get stuck at any point, navigate to the upper left menu and select Help, then "Read the Docs" to bring up these html pages.</li>
+  <li>If there any bugs are encountered, please reach out the Ethan.Ayari@lasp.colorado.edu.</li>
+</ol>
+</ul>
+</section>
+
+
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

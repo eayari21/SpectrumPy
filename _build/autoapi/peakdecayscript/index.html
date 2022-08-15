@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html lang="y">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>peakdecayscript &#8212; SpectrumPY 0.1 documentation</title>
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/scrolls.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/theme_extras.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div id="content">
+      <div class="header">
+        <h1 class="heading"><a href="../../index.html"
+          title="back to the documentation overview"><span>peakdecayscript</span></a></h1>
+      </div>
+      <div class="relnav" role="navigation" aria-label="related navigation">
+        <a href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">peakdecayscript</span></code></a>
+      </div>
+      <div id="contentwrapper">
+        <div id="toc" role="navigation" aria-label="table of contents navigation">
+          <h3>Table of Contents</h3>
+          <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">peakdecayscript</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#peakdecayscript.verbose">verbose</a></li>
+<li><a class="reference internal" href="#peakdecayscript.gaussian">gaussian</a></li>
+<li><a class="reference internal" href="#peakdecayscript.gauss_fit">gauss_fit</a></li>
+<li><a class="reference internal" href="#peakdecayscript.Ringingdecay">Ringingdecay</a></li>
+<li><a class="reference internal" href="#peakdecayscript.decay">decay</a></li>
+<li><a class="reference internal" href="#peakdecayscript.savitzky_golay">savitzky_golay</a></li>
+<li><a class="reference internal" href="#peakdecayscript.read_hdf5">read_hdf5</a></li>
+<li><a class="reference internal" href="#peakdecayscript.read_all_hdf5">read_all_hdf5</a></li>
+<li><a class="reference internal" href="#peakdecayscript.compute_power_spectrum">compute_power_spectrum</a></li>
+<li><a class="reference internal" href="#peakdecayscript.compute_amplitude_spectrum">compute_amplitude_spectrum</a></li>
+<li><a class="reference internal" href="#peakdecayscript.compute_phase_spectrum">compute_phase_spectrum</a></li>
+<li><a class="reference internal" href="#peakdecayscript.filter_psd">filter_psd</a></li>
+<li><a class="reference internal" href="#peakdecayscript.reconstruct_time_series">reconstruct_time_series</a></li>
+<li><a class="reference internal" href="#peakdecayscript.generate_noise">generate_noise</a></li>
+<li><a class="reference internal" href="#peakdecayscript.end_to_end_amps">end_to_end_amps</a></li>
+<li><a class="reference internal" href="#peakdecayscript.end_to_end_psd">end_to_end_psd</a></li>
+<li><a class="reference internal" href="#peakdecayscript.take_autocorr">take_autocorr</a></li>
+<li><a class="reference internal" href="#peakdecayscript.main">main</a></li>
+<li><a class="reference internal" href="#peakdecayscript.timearr">timearr</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+        <div role="main">
+        
+  <section id="module-peakdecayscript">
+<span id="peakdecayscript"></span><h1><a class="reference internal" href="#module-peakdecayscript" title="peakdecayscript"><code class="xref py py-mod docutils literal notranslate"><span class="pre">peakdecayscript</span></code></a><a class="headerlink" href="#module-peakdecayscript" title="Permalink to this heading">¶</a></h1>
+<p>Script for postprocessing spectrum exports.</p>
+<p>__author__      = Ethan Ayari,
+Institute for Modeling Plasmas, Atmospheres and Cosmic Dust</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.gaussian" title="peakdecayscript.gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gaussian</span></code></a>(x, mean, amplitude, standard_deviation)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.gauss_fit" title="peakdecayscript.gauss_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gauss_fit</span></code></a>(bin_heights, bin_borders[, Plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.Ringingdecay" title="peakdecayscript.Ringingdecay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ringingdecay</span></code></a>(t, A, B, w, p)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.decay" title="peakdecayscript.decay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decay</span></code></a>(t, A, B)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.savitzky_golay" title="peakdecayscript.savitzky_golay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">savitzky_golay</span></code></a>(y, window_size, order[, deriv, rate])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.read_hdf5" title="peakdecayscript.read_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_hdf5</span></code></a>(path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.read_all_hdf5" title="peakdecayscript.read_all_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_all_hdf5</span></code></a>(path)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.compute_power_spectrum" title="peakdecayscript.compute_power_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_power_spectrum</span></code></a>(fft, freq, n[, ax, plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.compute_amplitude_spectrum" title="peakdecayscript.compute_amplitude_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_amplitude_spectrum</span></code></a>(fft, freq, delta, n[, plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.compute_phase_spectrum" title="peakdecayscript.compute_phase_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phase_spectrum</span></code></a>(fft, freq[, plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.filter_psd" title="peakdecayscript.filter_psd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_psd</span></code></a>(psd)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.reconstruct_time_series" title="peakdecayscript.reconstruct_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconstruct_time_series</span></code></a>(psd, n, delta[, ax, plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.generate_noise" title="peakdecayscript.generate_noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_noise</span></code></a>([axs, Plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.end_to_end_amps" title="peakdecayscript.end_to_end_amps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_to_end_amps</span></code></a>(amps, recon)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.end_to_end_psd" title="peakdecayscript.end_to_end_psd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">end_to_end_psd</span></code></a>(freq, psd, reco[, plot])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.take_autocorr" title="peakdecayscript.take_autocorr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">take_autocorr</span></code></a>(timeseries, name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.main" title="peakdecayscript.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#peakdecayscript.verbose" title="peakdecayscript.verbose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbose</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#peakdecayscript.timearr" title="peakdecayscript.timearr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timearr</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="peakdecayscript.verbose">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#peakdecayscript.verbose" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.gaussian">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.gaussian" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.gauss_fit">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">gauss_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bin_heights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_borders</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.gauss_fit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.Ringingdecay">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">Ringingdecay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.Ringingdecay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.decay">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">decay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.decay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.savitzky_golay">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">savitzky_golay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.savitzky_golay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.read_hdf5">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">read_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.read_hdf5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.read_all_hdf5">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">read_all_hdf5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.read_all_hdf5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.compute_power_spectrum">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">compute_power_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.compute_power_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.compute_amplitude_spectrum">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">compute_amplitude_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.compute_amplitude_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.compute_phase_spectrum">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">compute_phase_spectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fft</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.compute_phase_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.filter_psd">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">filter_psd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.filter_psd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.reconstruct_time_series">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">reconstruct_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.reconstruct_time_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.generate_noise">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">generate_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.generate_noise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.end_to_end_amps">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">end_to_end_amps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.end_to_end_amps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.end_to_end_psd">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">end_to_end_psd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reco</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.end_to_end_psd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.take_autocorr">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">take_autocorr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeseries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.take_autocorr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="peakdecayscript.main">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#peakdecayscript.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="peakdecayscript.timearr">
+<span class="sig-prename descclassname"><span class="pre">peakdecayscript.</span></span><span class="sig-name descname"><span class="pre">timearr</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#peakdecayscript.timearr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Ethan Ayari.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.0.2.
+    </div>
+  </body>
+</html>

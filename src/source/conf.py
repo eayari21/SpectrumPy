@@ -16,9 +16,12 @@ release = '0.1'
 
 extensions = [
     'sphinx.ext.autodoc',
+    'autoapi.extension',
     'sphinx.ext.inheritance_diagram',
     'autoapi.sphinx'
 ]
+
+autoapi_dirs = ['../src']
 
 templates_path = ['_templates']
 exclude_patterns = []

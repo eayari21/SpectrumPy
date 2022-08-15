@@ -1,0 +1,59 @@
+:py:mod:`RSF_test`
+==================
+
+.. py:module:: RSF_test
+
+.. autoapi-nested-parse::
+
+   Test code for velocity-dependent mass line appearance.
+
+   __author__ = Ethan Ayari,
+   Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   RSF_test.atan_approx
+   RSF_test.mcnumber
+   RSF_test.find_nearest
+   RSF_test.nearest_idx
+   RSF_test.line_appear
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   RSF_test.vel
+
+
+.. py:function:: atan_approx(E, a, b, c)
+
+
+.. py:function:: mcnumber()
+
+
+.. py:function:: find_nearest(array, value)
+
+
+.. py:function:: nearest_idx(array, value)
+
+
+.. py:function:: line_appear(elem_name, vel)
+
+
+.. py:data:: vel
+   
+
+   
+

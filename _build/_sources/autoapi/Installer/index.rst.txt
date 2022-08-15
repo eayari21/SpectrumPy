@@ -1,0 +1,13 @@
+:py:mod:`Installer`
+===================
+
+.. py:module:: Installer
+
+.. autoapi-nested-parse::
+
+   Created on Fri Jul 22 10:57:12 2022
+
+   @author: ethanayari
+
+
+

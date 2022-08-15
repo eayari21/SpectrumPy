@@ -1,0 +1,21 @@
+API Reference
+=============
+
+This page contains auto-generated API reference documentation [#f1]_.
+
+.. toctree::
+   :titlesonly:
+
+   /autoapi/readTrc/index
+   /autoapi/spectrumGUI/index
+   /autoapi/peakdecayscript/index
+   /autoapi/object_spectra/index
+   /autoapi/IDEXquicklook/index
+   /autoapi/Installer/index
+   /autoapi/lineshapes/index
+   /autoapi/utils/index
+   /autoapi/RSF_test/index
+   /autoapi/guibac/index
+   /autoapi/conf/index
+
+.. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_
