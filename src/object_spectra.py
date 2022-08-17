@@ -11,13 +11,14 @@ Works with Python 3.8.10
 
 import re
 # import sys
-# import random
+import random
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
 # from subprocess import call
+from decimal import *
 from scipy.stats import exponnorm
 from RSF_test import line_appear
 from utils import create_fracs
@@ -34,7 +35,8 @@ plt.style.use("seaborn-pastel")
 # %%WRAPPER FOR EVERY SPECTRA
 class Spectra():
     # %%INITIALIZE TOF OR MASS SPECTRA
-    def __init__(self, rockarray, percentarray, vel):
+    def __init__(self, rockarray, percentarray, vel, stretch=1800.0,
+                 shift=0.0):
         """Creates a synthetic TOF of Mass Spectra. for a user-provided sample.
 
         Args:
@@ -212,7 +214,7 @@ class Spectra():
         srate = 2.0  # Sampling rate in ns
 
         # Create TOF
-        spectrum_t = np.zeros(10000)
+        spectrum_t = np.zeros(10_000)
         self.iso_mass = np.array(self.iso_mass).flatten().transpose()
         # iso_mass MUST be a 1-D Numpy array
 
@@ -271,9 +273,16 @@ class Spectra():
         sinc[0] = 1.0
         # test = t2[4]*sinc
         #  h = np.concatenate((t2[0], t2[1], t2[2], t2[3], test))
-        real_spectrum_t = np.convolve(spectrum_t, gx) + 2.0
 
-        domain = (((np.arange(10000)*2)-shift)/stretch)**2.0
+        # Create TOF Spectrum
+        real_spectrum_t = np.convolve(spectrum_t, gx) + 2.0
+        self.time_spectrum = (real_spectrum_t/max(real_spectrum_t))[:-62]
+        self.time_spectrum = self.time_spectrum - min(self.time_spectrum)
+
+        timeBase = np.arange(10_000)*2
+        tmpCalc = [Decimal(x.item()) for x in timeBase]
+        domain = [((a - Decimal(shift))/Decimal(stretch))**Decimal(2.0) for a
+                  in tmpCalc]
         spec_max = max(real_spectrum_t)
         real_spectrum_t = real_spectrum_t/spec_max
         real_spectrum_t = real_spectrum_t[:-62]
@@ -679,7 +688,7 @@ if __name__ == "__main__":
     ==========================================================================
     """
 
-    N_spectra = 1
+    N_spectra = 50
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -697,7 +706,8 @@ if __name__ == "__main__":
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
     velarr = []
     SNRarr = []
-    SNRchoice = [10000.0, .2, .1, 1.0]
+    stretchArr = []
+    SNRchoice = [10_000.0, .2, .1, 1.0]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
@@ -707,7 +717,7 @@ if __name__ == "__main__":
             else:
                 SNR_tmp = SNRchoice[1]
         elif(k <= 99):
-            min_name = mineral_names[4]
+            min_name = mineral_names[9]
 
             if(k <= 74):
                 SNR_tmp = SNRchoice[2]
@@ -749,33 +759,38 @@ if __name__ == "__main__":
         velarr.append(vel)
         # print(vel)
 
+        # Define shift with experimental deviation
+        stretchTmp = 1350.00 + random.uniform(-5.0, 5.0)
+        stretchArr.append(stretchTmp)
+        print("Stretch parameter $\alpha = $", stretchTmp)
         # Render spectrum object
-        ForSpec = Spectra([min_name], [100], 20.0)
+        ForSpec = Spectra([min_name], [100], 20.0, stretchTmp)
         # ForSpec = Spectra(["Fayalite", "Spinel"], [50.0, 50.0], vel)
         # ForSpec = Spectra(["Fayalite"],[100.0], 22.0)
 
         # One spectra object attribute is a suitable domain for plotting
         x = ForSpec.domain
-
+        # print("Domain (amu) = ", x)
         # The spectrum is another accesible attribute
         y = ForSpec.mass_spectrum
-
+        # print("Mass Spectrum: \n", len(y), '\n', "TOF Spectrum\n",
+        #      len(ForSpec.time_spectrum))
         # print(ForSpec.pres_min)
 
         # SNR_tmp = np.random.choice(SNRchoice, size=1)
         # SNR_tmp = .9
         SNRarr.append(SNR_tmp)
-        y = add_real_noise(y, SNR_tmp)
+        # y = add_real_noise(y, SNR_tmp)
 
         # Display the spectrum with high-resolution
         # plt.style.use('dark_background')
-        fig = plt.figure(dpi=20000)
+        # fig = plt.figure(dpi=20_000)
         fig = plt.figure()
         ax = fig.add_subplot()
         # Display spectrum in log
         ax.set_yscale('log')
-        plt.xlim(15.5, 60)
-        plt.ylim(1.0e-5, 1.0)
+        # plt.xlim(15.5, 60)
+        # plt.ylim(1.0e-5, 1.0)
         ax.set_xlabel("Mass(u)", fontsize=15)
         ax.set_ylabel("Log Amplitude", fontsize=15)
         ax.set_title(r"Peridot 1.6 $\frac{km}{s}$", pad=10.0,
@@ -789,16 +804,24 @@ if __name__ == "__main__":
         xmin, xmax = ax.get_xlim()
         for val in ForSpec.iso_dict:
             if(xmin <= val[1] and xmax >= val[1]):
-                plt.axvline(val[1]+.35, color='green', lw=1.0, ls=':')
-                title = r"$^{{{}}}${}".format(str(round(val[1])),
-                                              str(val[0]))
-                # print(title)
-                plt.text(val[1]-.25, 1.75, title, color='green', fontsize=18,
-                         rotation=90.0)
+                if(val[1] != 0):
+                    plt.axvline(val[1]+.35, color='green', lw=1.0, ls=':')
+                    title = r"$^{{{}}}${}".format(str(round(val[1])),
+                                                  str(val[0]))
+                    # print(title)
+                    plt.text(val[1]-.25, 1.75, title, color='green',
+                             fontsize=18, rotation=90.0)
 
         # plt.grid(b=None)
         plt.grid(color='gray', linewidth=.5)
         fig.patch.set_facecolor('#ECECEC')
+        plt.show()
+
+        # Plot TOF Spectrum if desired
+        plt.plot(2*np.arange(10_000), ForSpec.time_spectrum)
+        plt.xlabel(r"TOF ($\mu s$)")
+        plt.ylabel("Amplitude")
+        plt.yscale('log')
         plt.show()
         # plt.savefig(min_name+str(k+1)+".eps", dpi=1200)
 
@@ -810,7 +833,9 @@ if __name__ == "__main__":
         # print("x= ", x, "y= ", y)
         # Save Spectra as a csv as well
         SpecDict = {"Mass": x, "Amplitude": y}
-        SpecFrame = pd.DataFrame({"Mass": x, "Amplitude": y})
+        SpecFrame = pd.DataFrame({"Mass (amu)": x, r"Time (microseconds)":
+                                  2*np.arange(10_000),
+                                  "Amplitude": y})
 
         spec_save = str(k+1) + ".csv"
         SpecFrame.to_csv(spec_save, sep=",")
@@ -819,6 +844,8 @@ velarr = np.array(velarr)
 np.savetxt("Velocities.txt", velarr)
 SNRarr = np.array(SNRarr)
 np.savetxt("SignaltoNoise.txt", SNRarr)
+stretchArr = np.array(stretchArr)
+np.savetxt("Stretch Parameter Values", stretchArr)
 
 # Copy every file with a spectra number in its name
 # call(['cp', '/Users/ethanayari/Documents/GitHub/SpectrumPy
