@@ -235,6 +235,7 @@ class Spectra():
         for lp in range(len(lama_abund)):
             spectrum_t[self.peak_positions[lp].astype(int)] = lama_abund[lp]
 
+        spectrum_t = [i+i*random.uniform(-1,1)/np.sqrt(2) for i in spectrum_t]
         # Regular Gaussian sample (taken from IDL's gaussian_function)
         gx = np.array([0.0081887, 0.011109, 0.0149208, 0.0198411, 0.0261214,
                        0.0340475, 0.0439369, 0.0561348, 0.0710054, 0.0889216,
@@ -685,10 +686,13 @@ if __name__ == "__main__":
     9. Spinel
     10. Peridot
     11. Silica
+    12. Diopside
+    13. Bronzite
+    14. Ferrocene
     ==========================================================================
     """
 
-    N_spectra = 50
+    N_spectra = 500
     mineral_names = np.array(['Albite',
                               'Anorthite',
                               'Enstatite',
@@ -699,57 +703,125 @@ if __name__ == "__main__":
                               'Magnesiohornblende',
                               'Spinel',
                               'Peridot',
-                              'Silica'])
+                              'Silica',
+                              'Diopside',
+                              'Bronzite',
+                              'Ferrocene'])
 
     # x,y = Spectra(['Albite','Anorthite'],[200/3,100/3])
 
     # ForSpec = Spectra(['Forsterite','Anorthite'],[200/3,100/3])
+
     velarr = []
     SNRarr = []
     stretchArr = []
-    SNRchoice = [10_000.0, .2, .1, 1.0]
+    SNRchoice = [.1, .3, 1, 3, 10.0]
     min_name = ""
     for k in range(N_spectra):
         if(k <= 49):
-            min_name = mineral_names[9]
+            min_name = mineral_names[0]
             if(k <= 24):
                 SNR_tmp = SNRchoice[0]
             else:
-                SNR_tmp = SNRchoice[1]
+                SNR_tmp = SNRchoice[0]
         elif(k <= 99):
-            min_name = mineral_names[9]
+            min_name = mineral_names[1]
 
             if(k <= 74):
-                SNR_tmp = SNRchoice[2]
+                SNR_tmp = SNRchoice[0]
             else:
-                SNR_tmp = SNRchoice[3]
+                SNR_tmp = SNRchoice[0]
 
         elif(k <= 149):
-            min_name = mineral_names[7]
+            min_name = mineral_names[2]
 
             if(k <= 124):
                 SNR_tmp = SNRchoice[0]
             else:
-                SNR_tmp = SNRchoice[1]
+                SNR_tmp = SNRchoice[0]
 
         elif(k <= 199):
-            min_name = mineral_names[7]
+            min_name = mineral_names[3]
 
             if(k <= 174):
-                SNR_tmp = SNRchoice[2]
+                SNR_tmp = SNRchoice[0]
             else:
-                SNR_tmp = SNRchoice[3]
+                SNR_tmp = SNRchoice[0]
 
         elif(k <= 249):
             min_name = mineral_names[4]
+
+            if(k <= 224):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+
         elif(k <= 299):
             min_name = mineral_names[5]
+
+            if(k <= 274):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+
         elif(k <= 349):
             min_name = mineral_names[6]
+
+            if(k <= 324):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+
         elif(k <= 399):
             min_name = mineral_names[7]
+
+            if(k <= 374):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+
         elif(k <= 449):
             min_name = mineral_names[8]
+
+            if(k <= 424):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+        elif(k <= 499):
+            min_name = mineral_names[9]
+
+            if(k <= 474):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+        elif(k <= 549):
+            min_name = mineral_names[10]
+
+            if(k <= 524):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+        elif(k <= 599):
+            min_name = mineral_names[11]
+
+            if(k <= 574):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+        elif(k <= 649):
+            min_name = mineral_names[12]
+
+            if(k <= 624):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
+        elif(k <= 699):
+            min_name = mineral_names[13]
+
+            if(k <= 674):
+                SNR_tmp = SNRchoice[0]
+            else:
+                SNR_tmp = SNRchoice[0]
         # min_name = "Fayalite-Spinel"
         # min_name = "Peridot"
         # min_name = str(min_name)
@@ -760,11 +832,11 @@ if __name__ == "__main__":
         # print(vel)
 
         # Define shift with experimental deviation
-        stretchTmp = 1350.00 + random.uniform(-5.0, 5.0)
-        stretchArr.append(stretchTmp)
-        print("Stretch parameter $\alpha = $", stretchTmp)
+        # stretchTmp = 1350.00 + random.uniform(-5.0, 5.0)
+        # stretchArr.append(stretchTmp)
+        # print("Stretch parameter $\alpha = $", stretchTmp)
         # Render spectrum object
-        ForSpec = Spectra([min_name], [100], 20.0, stretchTmp)
+        ForSpec = Spectra([min_name], [100], 20.0)
         # ForSpec = Spectra(["Fayalite", "Spinel"], [50.0, 50.0], vel)
         # ForSpec = Spectra(["Fayalite"],[100.0], 22.0)
 
@@ -780,7 +852,7 @@ if __name__ == "__main__":
         # SNR_tmp = np.random.choice(SNRchoice, size=1)
         # SNR_tmp = .9
         SNRarr.append(SNR_tmp)
-        # y = add_real_noise(y, SNR_tmp)
+        y = add_real_noise(y, SNR_tmp)
 
         # Display the spectrum with high-resolution
         # plt.style.use('dark_background')
@@ -793,7 +865,9 @@ if __name__ == "__main__":
         # plt.ylim(1.0e-5, 1.0)
         ax.set_xlabel("Mass(u)", fontsize=15)
         ax.set_ylabel("Log Amplitude", fontsize=15)
-        ax.set_title(r"Peridot 1.6 $\frac{km}{s}$", pad=10.0,
+        ax.set_title(r"{} at {} ".format(min_name,
+                                         str(vel)) + r"$\frac{km}{s}$",
+                     pad=10.0,
                      font="Times New Roman", fontweight="bold",
                      fontsize=20)
         ax.set_facecolor("white")
@@ -818,11 +892,11 @@ if __name__ == "__main__":
         plt.show()
 
         # Plot TOF Spectrum if desired
-        plt.plot(2*np.arange(10_000), ForSpec.time_spectrum)
-        plt.xlabel(r"TOF ($\mu s$)")
-        plt.ylabel("Amplitude")
-        plt.yscale('log')
-        plt.show()
+        # plt.plot(2*np.arange(10_000), ForSpec.time_spectrum)
+        # plt.xlabel(r"TOF ($\mu s$)")
+        # plt.ylabel("Amplitude")
+        # plt.yscale('log')
+        # plt.show()
         # plt.savefig(min_name+str(k+1)+".eps", dpi=1200)
 
         # low, mid, high = ForSpec.split_into_gstages(Plot=True)

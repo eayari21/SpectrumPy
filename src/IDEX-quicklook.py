@@ -977,6 +977,7 @@ def is_ready(something):
 # %%EXECUTABLE CODE BELOW
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     w = MainWindow()
     w.show()
     app.exec()
