@@ -8,9 +8,11 @@ Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 Works with Python 3.8.10
 """
 
+# %%DEPENDENCIES
 import sys
 import os
 import matplotlib
+import datetime
 import numpy as np
 import qtawesome as qta
 
@@ -19,6 +21,7 @@ from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg,
                                                NavigationToolbar)
 
 from readTrc import Trc
+from ImpactSQLConnector import SQLWindow
 from PyQt6.QtCore import QSize  # , Qt
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtWidgets import (
@@ -40,10 +43,11 @@ from PyQt6.QtWidgets import (
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
+# %%PRETTY PLOTS
 matplotlib.use('Agg')
 plt.style.use('seaborn-pastel')
 
-
+# %%INITIALIZE (AND/OR DECLARE) GLOBAL VARIABLES
 global traceNumber
 global traceList
 global times
@@ -58,6 +62,41 @@ amps = []
 metas = []
 traceList = []
 
+# %%DO OUR BEST TO SET THE BASE DIRECTORY
+abspath = os.path.abspath(sys.argv[0])
+dname = os.path.dirname(abspath)
+try:
+    os.chdir(dname)
+except FileNotFoundError:
+    pass
+if getattr(sys, 'frozen', False):
+    try:
+        Current_Path = os.path.dirname(sys.executable)
+    except FileNotFoundError:
+        pass
+else:
+    try:
+        Current_Path = str(os.path.dirname(__file__))
+    except FileNotFoundError:
+        pass
+
+try:
+    os.chdir("../traces/")
+except FileNotFoundError:
+    try:
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        os.chdir("../traces/")
+    except FileNotFoundError:
+        pass
+
+# %%SPECIFY WINDOWS ENVIRONMENT
+try:
+    from ctypes import windll # Only accessible on Windows OS
+    myappid = "IMPACT.SpectrumPy.0.1"
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
+except ImportError:
+    pass
 
 # %%SET UP INTERACTIVE PLOT
 class MplCanvas(FigureCanvasQTAgg):
@@ -91,7 +130,7 @@ class MplCanvas(FigureCanvasQTAgg):
         self.numDisplay = numDisplay
         self.fig = Figure(figsize=(width, height), dpi=dpi)
 
-        self.fig.suptitle("Hyperdust Scope Trace #" + str(traceNumber),
+        self.fig.suptitle("Scope Trace #" + str(traceNumber),
                           fontsize=20)
 
         if(self.numDisplay == 1):
@@ -217,6 +256,23 @@ class MainWindow(QMainWindow):
                                                   Folder Containing Trace
                                                   Files''')
         times, amps, metas = generalReadTRC(trcdir)
+
+
+        self.timeStamps = []
+
+        for k in range(len(metas)-1):
+
+            timeArr = metas[k][0]['TRIGGER_TIME']
+            # print(timeArr)
+            date_time = 1000 * \
+                datetime.datetime.timestamp(datetime.datetime(*timeArr))
+
+            # print(time)
+            # this is in yyyymmddhhmmss.ms format
+            self.timeStamps.append(int(date_time))
+        # print(timeStamps)
+        # sql_win = SQLWindow(timeStamps)
+        # sql_win.show()
         channelNames = []
 
         # Check to see if the channels are predefined
@@ -261,7 +317,7 @@ class MainWindow(QMainWindow):
         # Call channel choosing window
         numDisplay = 4
         displayDex = [0, 1, 2, 3]
-        print("numDisplay: ", numDisplay)
+        # print("numDisplay: ", numDisplay)
         self.tracelist_widget = QListWidget()
 
         for trace in traceList:
@@ -273,10 +329,7 @@ class MainWindow(QMainWindow):
         self._createMenuBar()
         self._createActions()
 
-        print(self.renderPlot)
-
-        # wait(lambda: is_ready(self.channelWin.complete), timeout_seconds=2,
-        #     waiting_for="something to be ready")
+        # print(self.renderPlot)
 
         # if(self.channelWin.complete):
         self.sc = MplCanvas(self, width=16, height=12, dpi=100)
@@ -287,7 +340,33 @@ class MainWindow(QMainWindow):
         self.v_layout.addWidget(self.toolbar)
         self.sc.setLayout(self.v_layout)
 
+
         self.show()
+
+        # %%HANDLER FUNCTION TO PROMPT USER TO SAVE AND EXIT SAFELY
+    def closeEvent(self, event):
+ 
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle("Close window")
+        dlg.setText(("Do you want to save before exiting SpectrumPY?"))
+        dlg.setStandardButtons(QMessageBox.StandardButton.Yes |
+                               QMessageBox.StandardButton.No)
+        dlg.setIcon(QMessageBox.Icon.Question)
+        button = dlg.exec()
+
+        if button == QMessageBox.StandardButton.Yes:
+            global times
+            global amps
+            global traceNumber
+            import pandas as pd
+            a = times[traceNumber]
+            b = amps[traceNumber]
+            df = pd.DataFrame({"Time (s)": a, "Amplitude": b})
+            df.to_csv("Specoutput.csv", index=False)
+            event.accept()
+
+        else:
+            event.accept()
 
 # %%CREATE MENU BAR AND FILE DROP DOWN OPTIONS
     def _createMenuBar(self):
@@ -338,6 +417,14 @@ class MainWindow(QMainWindow):
         changeChannels = QAction(channelChangeIcon, "&Change Channels", self)
         changeChannels.triggered.connect(self.changeChannel)
 
+        QDIcon = qta.icon("mdi.speedometer")
+        fitQD = QAction(QDIcon, "&Fit QD Waveform", self)
+        fitQD.triggered.connect(self.fitQD)
+
+        SQLIcon = qta.icon("fa.database")
+        viewSQL = QAction(SQLIcon, "&View SQL Data", self)
+        viewSQL.triggered.connect(self.viewSQLWindow)
+
         self.setStatusBar(QStatusBar(self))
 
         menu = self.menuBar()
@@ -354,6 +441,10 @@ class MainWindow(QMainWindow):
         view_menu = menu.addMenu("&View")
         view_menu.addAction(listTraces)
         view_menu.addAction(changeChannels)
+
+        run_menu = menu.addMenu("&Run")
+        run_menu.addAction(fitQD)
+        run_menu.addAction(viewSQL)
 
         help_menu = menu.addMenu("&Help")
         help_menu.addAction(getHelp)
@@ -469,9 +560,48 @@ class MainWindow(QMainWindow):
            None
            """
         import webbrowser
-        filename = '../_build/index.html'
+        filename = dname + '../_build/index.html'
         webbrowser.open('file://' + os.path.realpath(filename))
         # webbrowser.open_new_tab("../_build/index.html")
+
+# %%FIT EXISTING QD WAVEFORMS
+    def fitQD(self, s):
+        """A function to obtain the charge and speed of an impactor using the QD waveform.
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The choice of trace provided by the user.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        print("Fitting QD Waveforms")
+
+# %%BRING UP MATCHED SQL DATA
+    def viewSQLWindow(self, s):
+        """A function to view the accelerator metadata in an interactive window.
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The choice of trace provided by the user.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        print("Viewing SQL Data")
+        self.sqlwindow = SQLWindow(self.timeStamps)
+        self.sqlwindow.show()
+
 
 # %%UPDATE PLOT WITH CHOICE OF TRACE FILE
     def updatePlot(self, s):
@@ -491,6 +621,10 @@ class MainWindow(QMainWindow):
            """
         global traceNumber
         global displayDex
+        global times
+        global amps
+        global metas
+
         if(displayDex == []):
             displayDex = [0, 1, 2, 3]
         print("Updating Plot...")
@@ -562,11 +696,32 @@ class MainWindow(QMainWindow):
            """
         global channelNames
         global traceList
+        global times
+        global amps
+        global metas
         trcdir = QFileDialog.getExistingDirectory(self, ''''Please select a
                                                  folder containing trace
                                                  files.''')
+        times = None
+        amps = None
+        metas = None
+        channelNames = []
         times, amps, metas = generalReadTRC(trcdir)
 
+        self.timeStamps = []
+
+        for k in range(len(metas)-1):
+
+            timeArr = metas[k][0]['TRIGGER_TIME']
+
+            date_time = 1000 * \
+                datetime.datetime.timestamp(datetime.datetime(*timeArr))
+
+
+            # this is in yyyymmddhhmmss.ms format
+            self.timeStamps.append(int(date_time))
+
+        channelNames = []
         # Check to see if the channels are predefined
         if(os.path.exists(trcdir + "/settings.txt")):
             settingsFile = open(trcdir + '/settings.txt', 'r')
@@ -607,7 +762,7 @@ class MainWindow(QMainWindow):
                 settingsFile.close()
 
         # Call channel choosing window
-        self.show_new_window()
+        # self.show_new_window()
 
         self.tracelist_widget = QListWidget()
 
@@ -675,6 +830,7 @@ class ChannelChoosingWindow(QWidget):
     def Selected_Value(self):
         global numDisplay
         global displayDex
+        global channelNames
 
         # print("Selected: ", self.sender().isChecked(),
         #      "  Name: ", self.sender().text())
@@ -689,7 +845,7 @@ class ChannelChoosingWindow(QWidget):
             numDisplay -= 1
             displayDex.remove(channelNames.index(self.sender().text()))
             # self.displayChannels.remove(self.sender().text())
-        print("Number of displays: ", numDisplay)
+        # print("Number of displays: ", numDisplay)
         # super().numDisplay = numDisplay
         self.label.setText('You have selected \n' + self.lblText)
         # for disp in self.displayChannels:
@@ -701,6 +857,9 @@ class ChannelChoosingWindow(QWidget):
 # %%DEFINE FUNCTION TO READ THE USER'S INPUT
     def Submit_Plot(self):
         global traceNumber
+        global times
+        global amps
+        global metas
 
         self.parent.sc = MplCanvas(self.parent, width=16, height=12, dpi=100)
         self.parent.toolbar.setParent(None)
@@ -921,6 +1080,7 @@ def displayTRC(times, amps, sc):
     global nChannels
     global numDisplay
     global displayDex
+    # print("amps: ", len(amps))
     # print(displayDex)
     # print("Displaying oscilloscope output")
     if(displayDex == []):
