@@ -1,0 +1,8 @@
+QD Low
+QD High
+Velocity Grid
+Ion Grid
+Target
+TOF High
+TOF Mid
+TOF Low
