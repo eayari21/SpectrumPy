@@ -57,10 +57,14 @@ global nChannels
 global channelNames
 global numDisplay
 global displayDex
+global mass
+global velocity
 times = []
 amps = []
 metas = []
 traceList = []
+mass = []
+velocity = []
 
 # %%DO OUR BEST TO SET THE BASE DIRECTORY
 abspath = os.path.abspath(sys.argv[0])
@@ -126,11 +130,14 @@ class MplCanvas(FigureCanvasQTAgg):
         global channelNames
         global numDisplay
         global displayDex
+        global mass
+        global velocity
         traceNumber = 1
         self.numDisplay = numDisplay
         self.fig = Figure(figsize=(width, height), dpi=dpi)
 
-        self.fig.suptitle("Scope Trace #" + str(traceNumber),
+        self.fig.suptitle("Trace Number " + str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
+                             round(velocity[traceNumber], 2)),
                           fontsize=20)
 
         if(self.numDisplay == 1):
@@ -249,6 +256,8 @@ class MainWindow(QMainWindow):
         global traceNumber
         global numDisplay
         global displayDex
+        global mass
+        global velocity
 
         self.renderPlot = False
         self.setWindowTitle("SpectrumPY Beta Main Window")
@@ -270,9 +279,23 @@ class MainWindow(QMainWindow):
             # print(time)
             # this is in yyyymmddhhmmss.ms format
             self.timeStamps.append(int(date_time))
-        # print(timeStamps)
-        # sql_win = SQLWindow(timeStamps)
-        # sql_win.show()
+        self.sql_win = SQLWindow(self.timeStamps)
+
+
+        # Associate all SQL quantities, remember:
+        # ||"Estimate Quality",
+        # ||"Time",
+        # ||"Velocity (km/s)",
+        # ||"Mass (kg)",
+        # ||"Charge (C)",
+        # ||"Radius (m)"
+        self.Mass = self.sql_win.df["Mass (kg)"]
+        self.Velocity = self.sql_win.df["Velocity (km/s)"]
+        self.Charge = self.sql_win.df["Charge (C)"]
+        self.Size = self.sql_win.df["Radius (m)"]
+        mass = self.sql_win.df["Mass (kg)"]
+        velocity = self.sql_win.df["Velocity (km/s)"]
+
         channelNames = []
 
         # Check to see if the channels are predefined
@@ -348,7 +371,7 @@ class MainWindow(QMainWindow):
  
         dlg = QMessageBox(self)
         dlg.setWindowTitle("Close window")
-        dlg.setText(("Do you want to save before exiting SpectrumPY?"))
+        dlg.setText(("Are you sure you want to quit SpectrumPY?"))
         dlg.setStandardButtons(QMessageBox.StandardButton.Yes |
                                QMessageBox.StandardButton.No)
         dlg.setIcon(QMessageBox.Icon.Question)
@@ -366,7 +389,7 @@ class MainWindow(QMainWindow):
             event.accept()
 
         else:
-            event.accept()
+            pass
 
 # %%CREATE MENU BAR AND FILE DROP DOWN OPTIONS
     def _createMenuBar(self):
@@ -500,10 +523,21 @@ class MainWindow(QMainWindow):
         global times
         global amps
         global traceNumber
+        global displayDex
         import pandas as pd
-        a = times[traceNumber]
-        b = amps[traceNumber]
-        df = pd.DataFrame({"Time (s)": a, "Amplitude": b})
+        # dec = 1  # The factor of decimation (Makes plotting faster)
+        dec = 312  # for low rate ADC's  (1/sampling rate)
+        # dec = 38 for high rate ADC's
+        i = dec*np.array(range(int(len(times[int(traceNumber)][displayDex[0]])/dec)))
+        print(i)
+        ionTime = times[int(traceNumber)][displayDex[0]][i]
+        ionAmp = amps[int(traceNumber)][displayDex[0]][i]
+        targetAmp = amps[int(traceNumber)][displayDex[1]][i]
+        # ionTime = times[displayDex[0]][int(traceNumber)][i]
+        # ionAmp = amps[displayDex[0]][int(traceNumber)][i]
+        # targetAmp = amps[displayDex[1]][int(traceNumber)][i]
+
+        df = pd.DataFrame({"Time (s)": ionTime, "Ion Grid Amplitude (V)": ionAmp, "Target Amplitude (V)": targetAmp})
         df.to_csv("Specoutput.csv", index=False)
 
 # %%CHANGE SHOT BEING VIEWED
@@ -599,8 +633,9 @@ class MainWindow(QMainWindow):
            None
            """
         print("Viewing SQL Data")
-        self.sqlwindow = SQLWindow(self.timeStamps)
-        self.sqlwindow.show()
+        # self.sqlwindow = SQLWindow(self.timeStamps)
+        # self.sqlWindow.show()
+        self.sql_win.show()
 
 
 # %%UPDATE PLOT WITH CHOICE OF TRACE FILE
@@ -624,6 +659,9 @@ class MainWindow(QMainWindow):
         global times
         global amps
         global metas
+        global mass
+        global velocity
+    
 
         if(displayDex == []):
             displayDex = [0, 1, 2, 3]
@@ -633,7 +671,8 @@ class MainWindow(QMainWindow):
         traceNumber = int(content)
 
         # self.sc = MplCanvas(self, width=16, height=12, dpi=100)
-        self.sc.fig.suptitle("Hyperdust Scope Trace #" + str(traceNumber),
+        self.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
+                             round(velocity[traceNumber], 2)),
                              fontsize=20)
         # Clear all axes
         # self.sc.ax.cla()
@@ -860,6 +899,8 @@ class ChannelChoosingWindow(QWidget):
         global times
         global amps
         global metas
+        global mass
+        global velocity
 
         self.parent.sc = MplCanvas(self.parent, width=16, height=12, dpi=100)
         self.parent.toolbar.setParent(None)
@@ -872,8 +913,9 @@ class ChannelChoosingWindow(QWidget):
         traceNumber = 2
         displayTRC(times[int(traceNumber)], amps[int(traceNumber)],
                    self.parent.sc)
-        self.parent.sc.fig.suptitle("Hyperdust Scope Trace #" +
-                                    str(traceNumber), fontsize=20)
+        self.fig.suptitle("Trace Number " +str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
+                             round(velocity[traceNumber], 2)),
+                          fontsize=20)
         self.parent.updatePlot
         self.parent.sc.draw()
 
@@ -1085,8 +1127,8 @@ def displayTRC(times, amps, sc):
     # print("Displaying oscilloscope output")
     if(displayDex == []):
         displayDex = [0, 1, 2, 3]
-    dec = 1  # The factor of decimation (Makes plotting faster)
-    i = dec*np.array(range(int(len(times[1])/dec)))
+    dec = 312  # The factor of decimation (Makes plotting faster)
+    i = dec*np.array(range(int(len(times[displayDex[0]])/dec)))
 
     # Format the channel properly if it is a TOF channel
     for name in range(len(channelNames)):
