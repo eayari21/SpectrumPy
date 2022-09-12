@@ -7,46 +7,66 @@ Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 
 Works with Python 3.8.10
 """
+import logging
+import datetime
+# %%CREATE LOGGER
+logging.basicConfig(filename='SpectrumPY{}.log'.format(str(datetime.datetime.now())), filemode='w', 
+level=logging.DEBUG)
 
 # %%DEPENDENCIES
-import sys
-import os
-import matplotlib
-import datetime
-import numpy as np
-import qtawesome as qta
+numLib = 0
+try:
+    import sys
+    numLib +=1
+    import os
+    numLib +=1
+    import matplotlib
+    numLib +=1
+    import numpy as np
+    numLib +=1
+    import qtawesome as qta
+    numLib +=1
 
-from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg,
-                                               NavigationToolbar2QT as
-                                               NavigationToolbar)
+    from matplotlib.backends.backend_qtagg import (FigureCanvasQTAgg,
+                                                NavigationToolbar2QT as
+                                                NavigationToolbar)
+    numLib +=1
+    from readTrc import Trc
+    numLib +=1
+    from ImpactSQLConnector import SQLWindow
+    numLib +=1
+    from PyQt6.QtCore import QSize  # , Qt
+    numLib +=1
+    from PyQt6.QtGui import QAction, QIcon
+    numLib +=1
+    from PyQt6.QtWidgets import (
+        QApplication,
+        QMainWindow,
+        QStatusBar,
+        QToolBar,
+        QFileDialog,
+        QVBoxLayout,
+        QListWidget,
+        QInputDialog,
+        QMessageBox,
+        QWidget,
+        QLabel,
+        QCheckBox,
+        QPushButton,
+    )
+    numLib +=1
 
-from readTrc import Trc
-from ImpactSQLConnector import SQLWindow
-from PyQt6.QtCore import QSize  # , Qt
-from PyQt6.QtGui import QAction, QIcon
-from PyQt6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QStatusBar,
-    QToolBar,
-    QFileDialog,
-    QVBoxLayout,
-    QListWidget,
-    QInputDialog,
-    QMessageBox,
-    QWidget,
-    QLabel,
-    QCheckBox,
-    QPushButton,
-)
-
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+    from matplotlib.figure import Figure
+    numLib +=1
+    import matplotlib.pyplot as plt
+    numLib +=1
+except ImportError:
+    logging.debug("Import failed on library %s"%(numLib))
 
 # %%PRETTY PLOTS
 matplotlib.use('Agg')
 plt.style.use('seaborn-pastel')
-
+logging.debug("Plotting settings loaded.")
 # %%INITIALIZE (AND/OR DECLARE) GLOBAL VARIABLES
 global traceNumber
 global traceList
@@ -67,6 +87,7 @@ mass = []
 velocity = []
 
 # %%DO OUR BEST TO SET THE BASE DIRECTORY
+"""
 abspath = os.path.abspath(sys.argv[0])
 dname = os.path.dirname(abspath)
 try:
@@ -92,6 +113,31 @@ except FileNotFoundError:
         os.chdir("../traces/")
     except FileNotFoundError:
         pass
+    """
+try:
+    basePath = __file__
+except NameError:
+    try:
+        basePath = sys.argv[0]
+        os.chdir(os.path.join(sys.argv[0]))
+    except FileNotFoundError:
+        basePath = None
+
+
+logging.debug("Initial basepath attempt complete. Basepath = %s"%(basePath))
+basePath = os.path.abspath(basePath)
+
+if getattr(sys, 'frozen', False):
+    if hasattr(sys, "_MEIPASS"):
+        application_path = os.path.join(sys._MEIPASS)
+else:
+    application_path = os.path.dirname(basePath)
+logging.debug("All basepath attempts complete. application_path = %s"%(application_path))
+
+try:
+    os.chdir(application_path + '/../traces')
+except FileNotFoundError:
+    logging.debug("Trace directory doesn't exist, path tried = %s %s"%(basePath))
 
 # %%SPECIFY WINDOWS ENVIRONMENT
 try:
