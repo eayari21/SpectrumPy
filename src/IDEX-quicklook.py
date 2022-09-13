@@ -435,7 +435,7 @@ class MainWindow(QMainWindow):
             event.accept()
 
         else:
-            pass
+            event.ignore()
 
 # %%CREATE MENU BAR AND FILE DROP DOWN OPTIONS
     def _createMenuBar(self):
@@ -707,10 +707,12 @@ class MainWindow(QMainWindow):
         global metas
         global mass
         global velocity
+        global numDisplay
     
 
         if(displayDex == []):
             displayDex = [0, 1, 2, 3]
+            numDisplay = 4
         print("Updating Plot...")
         content = str(self.tracelist_widget.currentItem().text())
         # print(content)
@@ -722,8 +724,8 @@ class MainWindow(QMainWindow):
                              fontsize=20)
         # Clear all axes
         # self.sc.ax.cla()
-        if(self.sc.numDisplay == 1):
-            self.sc.ax.cla()
+        # if(numDisplay == 1):
+        #     self.sc.ax.cla()
         if hasattr(self.sc, 'ax1'):
             self.sc.ax1.cla()
             self.sc.ax1.grid(True)
@@ -784,6 +786,9 @@ class MainWindow(QMainWindow):
         global times
         global amps
         global metas
+        global displayDex
+        global mass
+        global velocity
         trcdir = QFileDialog.getExistingDirectory(self, ''''Please select a
                                                  folder containing trace
                                                  files.''')
@@ -791,6 +796,7 @@ class MainWindow(QMainWindow):
         amps = None
         metas = None
         channelNames = []
+        displayDex = [0, 1, 2, 3]
         times, amps, metas = generalReadTRC(trcdir)
 
         self.timeStamps = []
@@ -855,6 +861,10 @@ class MainWindow(QMainWindow):
             self.tracelist_widget.insertItem(int(trace), str(trace))
         self.tracelist_widget.clicked.connect(self.updatePlot)
         self.updatePlot
+        self.sql_win = SQLWindow(self.timeStamps)
+        mass = self.sql_win.df["Mass (kg)"]
+        velocity = self.sql_win.df["Velocity (km/s)"]
+        self.sql_win.show()
 
 
 # %%SET UP QT POPUP WINDOW OBJECT
@@ -959,7 +969,7 @@ class ChannelChoosingWindow(QWidget):
         traceNumber = 2
         displayTRC(times[int(traceNumber)], amps[int(traceNumber)],
                    self.parent.sc)
-        self.fig.suptitle("Trace Number " +str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
+        self.parent.sc.fig.suptitle("Trace Number " +str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
                              round(velocity[traceNumber], 2)),
                           fontsize=20)
         self.parent.updatePlot
@@ -1178,7 +1188,7 @@ def displayTRC(times, amps, sc):
 
     # Format the channel properly if it is a TOF channel
     for name in range(len(channelNames)):
-        if('Low' in channelNames[name] or 'High' in channelNames[name]):
+        if('Low' in channelNames[name] or 'High' in channelNames[name] or 'Mid' in channelNames[name]):
             amps[name] = -1*amps[name]
             for k in range(len(amps[name])):
                 if(amps[name][k] <= 10**-4):
