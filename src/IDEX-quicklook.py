@@ -7,11 +7,12 @@ Institute for Modeling Plasmas, Atmospheres and Cosmic Dust
 
 Works with Python 3.8.10
 """
-import logging
+# import logging
 import datetime
+import time
 # %%CREATE LOGGER
-logging.basicConfig(filename='SpectrumPY{}.log'.format(str(datetime.datetime.now())), filemode='w', 
-level=logging.DEBUG)
+# logging.basicConfig(filename='SpectrumPY{}.log'.format(str(datetime.datetime.now())), filemode='w', 
+# level= logging.debug)
 
 # %%DEPENDENCIES
 numLib = 0
@@ -61,12 +62,14 @@ try:
     import matplotlib.pyplot as plt
     numLib +=1
 except ImportError:
-    logging.debug("Import failed on library %s"%(numLib))
+    # logging.debug("Import failed on library %s"%(numLib))
+    print("Import failed on library %s"%(numLib))
+    pass
 
 # %%PRETTY PLOTS
 matplotlib.use('Agg')
 plt.style.use('seaborn-pastel')
-logging.debug("Plotting settings loaded.")
+# logging.debug("Plotting settings loaded.")
 # %%INITIALIZE (AND/OR DECLARE) GLOBAL VARIABLES
 global traceNumber
 global traceList
@@ -79,6 +82,7 @@ global numDisplay
 global displayDex
 global mass
 global velocity
+global trcdir
 times = []
 amps = []
 metas = []
@@ -124,7 +128,7 @@ except NameError:
         basePath = None
 
 
-logging.debug("Initial basepath attempt complete. Basepath = %s"%(basePath))
+# logging.debug("Initial basepath attempt complete. Basepath = %s"%(basePath))
 basePath = os.path.abspath(basePath)
 
 if getattr(sys, 'frozen', False):
@@ -132,12 +136,13 @@ if getattr(sys, 'frozen', False):
         application_path = os.path.join(sys._MEIPASS)
 else:
     application_path = os.path.dirname(basePath)
-logging.debug("All basepath attempts complete. application_path = %s"%(application_path))
+# logging.debug("All basepath attempts complete. application_path = %s"%(application_path))
 
 try:
     os.chdir(application_path + '/../traces')
 except FileNotFoundError:
-    logging.debug("Trace directory doesn't exist, path tried = %s %s"%(basePath))
+    pass
+    # logging.debug("Trace directory doesn't exist, path tried = %s %s"%(basePath))
 
 # %%SPECIFY WINDOWS ENVIRONMENT
 try:
@@ -304,6 +309,7 @@ class MainWindow(QMainWindow):
         global displayDex
         global mass
         global velocity
+        global trcdir
 
         self.renderPlot = False
         self.setWindowTitle("SpectrumPY Beta Main Window")
@@ -318,13 +324,15 @@ class MainWindow(QMainWindow):
         for k in range(len(metas)-1):
 
             timeArr = metas[k][0]['TRIGGER_TIME']
-            # print(timeArr)
-            date_time = 1000 * \
-                datetime.datetime.timestamp(datetime.datetime(*timeArr))
+            print(*timeArr)
+            date_time = datetime.datetime(*timeArr)
+            date_time = date_time.timestamp()
+            # date_time = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
+            # date_time = datetime.datetime.strptime(datetime.datetime(*timeArr, '%Y %m %d %h %s %ms')).timestamp()
 
-            # print(time)
+            print(date_time)
             # this is in yyyymmddhhmmss.ms format
-            self.timeStamps.append(int(date_time))
+            self.timeStamps.append(1000*int(date_time))
         self.sql_win = SQLWindow(self.timeStamps)
 
 
@@ -570,21 +578,34 @@ class MainWindow(QMainWindow):
         global amps
         global traceNumber
         global displayDex
+        global trcdir
         import pandas as pd
-        # dec = 1  # The factor of decimation (Makes plotting faster)
-        dec = 312  # for low rate ADC's  (1/sampling rate)
+        dec = 1  # The factor of decimation (Makes plotting faster)
+        # dec = 312  # for low rate ADC's  (1/sampling rate)
         # dec = 38 for high rate ADC's
         i = dec*np.array(range(int(len(times[int(traceNumber)][displayDex[0]])/dec)))
-        print(i)
-        ionTime = times[int(traceNumber)][displayDex[0]][i]
-        ionAmp = amps[int(traceNumber)][displayDex[0]][i]
-        targetAmp = amps[int(traceNumber)][displayDex[1]][i]
-        # ionTime = times[displayDex[0]][int(traceNumber)][i]
-        # ionAmp = amps[displayDex[0]][int(traceNumber)][i]
-        # targetAmp = amps[displayDex[1]][int(traceNumber)][i]
+        # print(i)
+        traceName = os.path.basename(os.path.normpath(trcdir))
+        folder = os.path.join(trcdir, "SPY_OUT_{}".format(str(traceName)))
+        os.mkdir(folder)
 
-        df = pd.DataFrame({"Time (s)": ionTime, "Ion Grid Amplitude (V)": ionAmp, "Target Amplitude (V)": targetAmp})
-        df.to_csv("Specoutput.csv", index=False)
+        for count, traceNumber in enumerate(amps):
+            Time = times[int(count)][0][i]  # Assume this is the same for each channel
+            QDLowAmp = amps[int(count)][0][i]
+            QDHighAmp = amps[int(count)][1][i]
+            TOFLowAmp = amps[int(count)][2][i]
+            TOFMidAmp = amps[int(count)][3][i]
+            TOFHighAmp = amps[int(count)][4][i]
+            IonGridAmp = amps[int(count)][5][i]
+            TargetLowAmp = amps[int(count)][6][i]
+            TargetHighAmp = amps[int(count)][7][i]
+            df = pd.DataFrame({"Time (s)": Time, "QD Pickup Tube Low Amplitude (V)": QDLowAmp, "QD Pickup Tube High Amplitude (V)": QDHighAmp, "TOF Low Amplitude (V)": TOFLowAmp, "TOF Mid Amplitude (V)": TOFMidAmp, "TOF High Amplitude (V)": TOFHighAmp,  "Ion Grid Amplitude (V)": IonGridAmp, "Target Low Amplitude (V)": TargetLowAmp, "Target High Amplitude (V)": TargetHighAmp})
+            df.to_csv(os.path.join(folder, "{}.csv".format(str(count))), index=False)
+
+
+
+        self.sql_win.df.to_csv("Accelerator_SQL_Output.csv")
+
 
 # %%CHANGE SHOT BEING VIEWED
     def chooseTrace(self, s):
@@ -789,6 +810,7 @@ class MainWindow(QMainWindow):
         global displayDex
         global mass
         global velocity
+        global trcdir
         trcdir = QFileDialog.getExistingDirectory(self, ''''Please select a
                                                  folder containing trace
                                                  files.''')
@@ -804,6 +826,7 @@ class MainWindow(QMainWindow):
         for k in range(len(metas)-1):
 
             timeArr = metas[k][0]['TRIGGER_TIME']
+            print(timeArr)
 
             date_time = 1000 * \
                 datetime.datetime.timestamp(datetime.datetime(*timeArr))
@@ -942,12 +965,14 @@ class ChannelChoosingWindow(QWidget):
             # self.displayChannels.remove(self.sender().text())
         # print("Number of displays: ", numDisplay)
         # super().numDisplay = numDisplay
-        self.label.setText('You have selected \n' + self.lblText)
+        if self.lblText :
+            self.label.setText('You have selected \n' + self.lblText)
         # for disp in self.displayChannels:
         #    displayDex.append(channelNames.index(disp))
         # self.parent.updatePlot
         # print(self.parent.__dict__)
         # self.parent.updatePlot
+        print(displayDex)
 
 # %%DEFINE FUNCTION TO READ THE USER'S INPUT
     def Submit_Plot(self):
@@ -1183,16 +1208,18 @@ def displayTRC(times, amps, sc):
     # print("Displaying oscilloscope output")
     if(displayDex == []):
         displayDex = [0, 1, 2, 3]
-    dec = 312  # The factor of decimation (Makes plotting faster)
+    dec = 1  # The factor of decimation (Makes plotting faster)
     i = dec*np.array(range(int(len(times[displayDex[0]])/dec)))
 
     # Format the channel properly if it is a TOF channel
     for name in range(len(channelNames)):
         if('Low' in channelNames[name] or 'High' in channelNames[name] or 'Mid' in channelNames[name]):
-            amps[name] = -1*amps[name]
+            # amps[name] = -1*amps[name]
+            pass
             for k in range(len(amps[name])):
                 if(amps[name][k] <= 10**-4):
-                    amps[name][k] = 10**-4
+                    # amps[name][k] = 10**-4
+                    pass
 
     # ONE AXIS FOR REACH CHANNEL
     if(numDisplay == 1):
