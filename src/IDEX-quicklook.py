@@ -687,7 +687,7 @@ class MainWindow(QMainWindow):
         folder = os.path.join(trcdir, "SPY_OUT_{}".format(str(traceName)))
         os.mkdir(folder)
 
-        for count, traceNumber in enumerate(amps):
+        for count, tracenum in enumerate(amps):
             Time = times[int(count)][0][i]  # Assume this is the same for each channel
             QDLowAmp = amps[int(count)][0][i]
             QDHighAmp = amps[int(count)][1][i]

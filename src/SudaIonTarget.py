@@ -127,6 +127,7 @@ class ImpactEvent:
         ionAmp = np.array(self.y.apply(lambda x: float(x)))
 
         param, param_cov = curve_fit(IDEXTarget, ionTime, ionAmp, p0=[t0, c, b, s, A, t1, t2])
+        self.parameters = param
 
         self.TargetAmp = param[4]
         self.TargettRise = param[5]
@@ -157,6 +158,9 @@ class ImpactEvent:
         plt.title("Ion Grid Signal Fit number {}".format(str(self.traceNum+1)), fontweight='bold', fontsize=20)
         plt.legend(loc='best')
         plt.savefig("IonGrid{}.png".format(str(self.traceNum+1)))
+        with open("IonFitResults.txt", "w") as f1:
+            f1.write("[t0, c, b, s, A, t1, t2] = ", self.parameters)
+            f1.write('\n')
 
     # %%
     def plotTargetSignalFit(self):
