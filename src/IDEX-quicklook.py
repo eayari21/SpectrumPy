@@ -10,6 +10,7 @@ Works with Python 3.8.10
 # import logging
 import datetime
 import time
+import shutil
 # %%CREATE LOGGER
 # logging.basicConfig(filename='SpectrumPY{}.log'.format(str(datetime.datetime.now())), filemode='w', 
 # level= logging.debug)
@@ -648,7 +649,13 @@ class MainWindow(QMainWindow):
         global trcdir
         traceName = os.path.basename(os.path.normpath(trcdir))
         folder = os.path.join(trcdir, "SQL_{}".format(str(traceName)))
-        os.mkdir(folder)
+
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        else:
+            shutil.rmtree(folder)           # Removes all the subdirectories!
+            os.mkdir(folder)
+
         self.sql_win.df.to_csv(os.path.join(folder, "{}_SQL.csv".format(str(traceName))))
 
 
@@ -685,7 +692,11 @@ class MainWindow(QMainWindow):
         # print(i)
         traceName = os.path.basename(os.path.normpath(trcdir))
         folder = os.path.join(trcdir, "SPY_OUT_{}".format(str(traceName)))
-        os.mkdir(folder)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        else:
+            shutil.rmtree(folder)           # Removes all the subdirectories!
+            os.mkdir(folder)
 
         for count, tracenum in enumerate(amps):
             Time = times[int(count)][0][i]  # Assume this is the same for each channel
@@ -955,7 +966,11 @@ class MainWindow(QMainWindow):
         from SudaIonTarget import ImpactEvent
         traceName = os.path.basename(os.path.normpath(trcdir))
         folder = os.path.join(trcdir, "{}_IonGridFits".format(str(traceName)))
-        os.mkdir(folder)
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        else:
+            shutil.rmtree(folder)           # Removes all the subdirectories!
+            os.mkdir(folder)
         os.chdir(folder)
         dec = 1  # The factor of decimation (Makes plotting faster)
         i = dec*np.array(range(int(len(times[0][displayDex[0]])/dec)))
@@ -966,6 +981,7 @@ class MainWindow(QMainWindow):
             IonEvent = ImpactEvent(Time, IonGridAmp, str(count))
             IonEvent.fitIonSignal()
             IonEvent.plotIonSignalFit()
+        
         
 
 

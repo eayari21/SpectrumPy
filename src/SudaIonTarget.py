@@ -10,6 +10,7 @@ Works with Python 3.9
 
 # %%DEPENDENCIES
 from decimal import DivisionByZero
+from scipy.optimize import curve_fit
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -72,10 +73,11 @@ class ImpactEvent:
         self.ionErrorVector = pd.DataFrame([np.nan] * len(self.yBaseline))
         self.ionMean = self.yBaseline.mean()
         self.yBaseline -= self.ionMean
+        self.parameters = []
 
     # %%
     def fitIonSignal(self):
-        from scipy.optimize import curve_fit
+
         # %% Initial Guess for the parameters of the ion grid signal
         t0 = 0.0                         # P[0] time of impact
         c = 0.                           # P[1] Constant offset
@@ -93,6 +95,7 @@ class ImpactEvent:
         ionAmp = np.array(self.y.apply(lambda x: float(x)))
 
         param, param_cov = curve_fit(AlterIDEXIonGrid, ionTime, ionAmp, p0=[t0, c, b, s, A, t1, t2])
+        self.parameters = param
         self.IonAmp = param[4]
         self.IontRise = param[5]
         self.IontDecay = param[6]
@@ -101,7 +104,7 @@ class ImpactEvent:
 
     # %%
     def fitTargetSignal(self):
-        from scipy.optimize import curve_fit
+
         # %% Initial Guess for the parameters of the target signal
         t0 = 0.0                          # P[0] time of impact
         c = self.yBaseline + self.ionMean # P[1] Constant offset
@@ -158,8 +161,9 @@ class ImpactEvent:
         plt.title("Ion Grid Signal Fit number {}".format(str(self.traceNum+1)), fontweight='bold', fontsize=20)
         plt.legend(loc='best')
         plt.savefig("IonGrid{}.png".format(str(self.traceNum+1)))
-        with open("IonFitResults.txt", "w") as f1:
-            f1.write("[t0, c, b, s, A, t1, t2] = ", self.parameters)
+        print(self.parameters)
+        with open("IonFitResults.txt", "a") as f1:
+            f1.write("Trace {}: t0={} s, c={} V, b={} V, s={} s, A={} V, t1={} s, t2={} s \n".format(str(self.traceNum+1), self.parameters[0], self.parameters[1], self.parameters[2], self.parameters[3], self.parameters[4], self.parameters[5], self.parameters[6]))
             f1.write('\n')
 
     # %%
