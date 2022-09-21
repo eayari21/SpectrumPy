@@ -69,6 +69,8 @@ except ImportError:
 # %%PRETTY PLOTS
 matplotlib.use('Agg')
 plt.style.use('seaborn-pastel')
+
+
 # logging.debug("Plotting settings loaded.")
 # %%INITIALIZE (AND/OR DECLARE) GLOBAL VARIABLES
 global traceNumber
@@ -89,6 +91,7 @@ metas = []
 traceList = []
 mass = []
 velocity = []
+traceNumber = 1
 
 # %%DO OUR BEST TO SET THE BASE DIRECTORY
 """
@@ -187,12 +190,13 @@ class MplCanvas(FigureCanvasQTAgg):
         self.numDisplay = numDisplay
         self.fig = Figure(figsize=(width, height), dpi=dpi)
 
-        self.fig.suptitle("Trace Number " + str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
-                             round(velocity[traceNumber], 2)),
-                          fontsize=20)
+        self.fig.suptitle("Trace Number " + str(traceNumber) + ": {:.2e} kg Particle @ {:.2e} km/s".format(mass[traceNumber-1],
+                             velocity[traceNumber-1]),
+                             fontsize=20)
 
         if(self.numDisplay == 1):
             self.ax = self.fig.add_subplot(111)
+            self.ax.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
             self.ax.set_xlabel("Time [s]", fontsize=16, labelpad=40)
             self.ax.set_ylabel("Voltage [V]", fontsize=12, labelpad=70)
             self.ax.grid(True)
@@ -203,6 +207,9 @@ class MplCanvas(FigureCanvasQTAgg):
             self.ax = self.fig.add_subplot(111)
             self.ax1 = self.fig.add_subplot(211)
             self.ax2 = self.fig.add_subplot(212, sharex=self.ax1)
+            self.ax.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax1.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax2.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
 
             self.ax.spines['top'].set_color('none')
             self.ax.spines['bottom'].set_color('none')
@@ -225,6 +232,10 @@ class MplCanvas(FigureCanvasQTAgg):
             self.ax1 = self.fig.add_subplot(311)
             self.ax2 = self.fig.add_subplot(312, sharex=self.ax1)
             self.ax3 = self.fig.add_subplot(313, sharex=self.ax1)
+            self.ax.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax1.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax2.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax3.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
 
             self.ax.spines['top'].set_color('none')
             self.ax.spines['bottom'].set_color('none')
@@ -250,6 +261,11 @@ class MplCanvas(FigureCanvasQTAgg):
             self.ax2 = self.fig.add_subplot(412, sharex=self.ax1)
             self.ax3 = self.fig.add_subplot(413, sharex=self.ax1)
             self.ax4 = self.fig.add_subplot(414, sharex=self.ax1)
+            self.ax.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax1.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax2.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax3.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
+            self.ax4.ticklabel_format(style='sci', axis='both', scilimits=(0,0), useMathText=True)
 
             self.ax.spines['top'].set_color('none')
             self.ax.spines['bottom'].set_color('none')
@@ -324,13 +340,13 @@ class MainWindow(QMainWindow):
         for k in range(len(metas)-1):
 
             timeArr = metas[k][0]['TRIGGER_TIME']
-            print(*timeArr)
+            # print(*timeArr)
             date_time = datetime.datetime(*timeArr)
             date_time = date_time.timestamp()
             # date_time = dt.replace(tzinfo=datetime.timezone.utc).timestamp()
             # date_time = datetime.datetime.strptime(datetime.datetime(*timeArr, '%Y %m %d %h %s %ms')).timestamp()
 
-            print(date_time)
+            # print(date_time)
             # this is in yyyymmddhhmmss.ms format
             self.timeStamps.append(1000*int(date_time))
         self.sql_win = SQLWindow(self.timeStamps)
@@ -402,7 +418,7 @@ class MainWindow(QMainWindow):
 
         self.v_layout = QVBoxLayout()
         self.tracelist_widget.clicked.connect(self.updatePlot)
-
+        self.tracelist_widget.setCurrentRow(traceNumber)
         self._createMenuBar()
         self._createActions()
 
@@ -466,21 +482,46 @@ class MainWindow(QMainWindow):
         toolbar = QToolBar("My main toolbar")
         toolbar.setIconSize(QSize(16, 16))
         self.addToolBar(toolbar)
+        scopecsvIcon = qta.icon("mdi6.application-export")
+        scopeImport = qta.icon("mdi.file-import")
+        traceupIcon = qta.icon("ei.arrow-up")
+        tracedownIcon = qta.icon("ei.arrow-down")
 
-        button_action = QAction(QIcon("bug.png"), "&Import Scope Data (.trc)",
+        trace_up = QAction(traceupIcon, "&View Next Trace",
                                 self)
-        button_action.setStatusTip("This is your button")
+        trace_up.setStatusTip("Import Scope Data (*.trc)")
+        trace_up.triggered.connect(self.upTrace)
+        # trace_up.setCheckable(True)
+        toolbar.addAction(trace_up)
+        toolbar.addSeparator()
+
+        trace_down = QAction(tracedownIcon, "&View Previous Trace",
+                                self)
+        trace_down.setStatusTip("Import Scope Data (*.trc)")
+        trace_down.triggered.connect(self.downTrace)
+        # trace_down.setCheckable(True)
+        toolbar.addAction(trace_down)
+        toolbar.addSeparator()
+
+        button_action = QAction(scopeImport, "&Import Scope Data (.trc)",
+                                self)
+        button_action.setStatusTip("Import Scope Data (*.trc)")
         button_action.triggered.connect(self.importScopeData)
-        button_action.setCheckable(True)
+        # button_action.setCheckable(True)
         toolbar.addAction(button_action)
 
         toolbar.addSeparator()
 
-        button_action2 = QAction(QIcon("bug.png"), "&Export to .csv", self)
-        button_action2.setStatusTip("This is your button2")
+
+        button_action2 = QAction(scopecsvIcon, "&Export Scope Data to .csv", self)
+        button_action2.setStatusTip("Export Dataset (*.csv)")
         button_action2.triggered.connect(self.exportScopeData)
-        button_action2.setCheckable(True)
+        # button_action2.setCheckable(True)
         toolbar.addAction(button_action2)
+
+        sqlwriteIcon = qta.icon("mdi6.database-export")
+        sql_write_action = QAction(sqlwriteIcon, "&Export SQL Data to .csv", self)
+        sql_write_action.triggered.connect(self.writeSQL)
 
         traceIcon = qta.icon("fa5s.list-ol")
         listTraces = QAction(traceIcon, "&Choose Trace", self)
@@ -498,9 +539,35 @@ class MainWindow(QMainWindow):
         fitQD = QAction(QDIcon, "&Fit QD Waveform", self)
         fitQD.triggered.connect(self.fitQD)
 
+        IonIcon = qta.icon("mdi.square-wave")
+        fitIon = QAction(IonIcon, "&Fit Ion Grid Signal", self)
+        fitIon.triggered.connect(self.fitIon)
+
         SQLIcon = qta.icon("fa.database")
         viewSQL = QAction(SQLIcon, "&View SQL Data", self)
         viewSQL.triggered.connect(self.viewSQLWindow)
+
+        toolbar.addAction(listTraces)
+        toolbar.addSeparator()
+
+        toolbar.addAction(changeChannels)
+        toolbar.addSeparator()
+
+        toolbar.addAction(viewSQL)
+        toolbar.addSeparator()
+
+        toolbar.addAction(sql_write_action)
+        toolbar.addSeparator()
+
+        toolbar.addAction(fitIon)
+        toolbar.addSeparator()
+
+        toolbar.addAction(fitQD)
+        toolbar.addSeparator()
+
+        toolbar.addAction(getHelp)
+        toolbar.addSeparator()
+
 
         self.setStatusBar(QStatusBar(self))
 
@@ -514,13 +581,17 @@ class MainWindow(QMainWindow):
         # file_menu.addAction(button_action2)
         export_submenu = file_menu.addMenu("Export Data")
         export_submenu.addAction(button_action2)
+        export_submenu.addAction(sql_write_action)
 
         view_menu = menu.addMenu("&View")
         view_menu.addAction(listTraces)
         view_menu.addAction(changeChannels)
+        view_menu.addAction(trace_up)
+        view_menu.addAction(trace_down)
 
         run_menu = menu.addMenu("&Run")
         run_menu.addAction(fitQD)
+        run_menu.addAction(fitIon)
         run_menu.addAction(viewSQL)
 
         help_menu = menu.addMenu("&Help")
@@ -554,6 +625,33 @@ class MainWindow(QMainWindow):
         self.cutAction = QAction("C&ut", self)
         self.helpContentAction = QAction("&Help Content", self)
         self.aboutAction = QAction("&About", self)
+
+# %%WRITE TIMES AND AMPS TO CSV
+    def writeSQL(self, s):
+        """Action associated with the "export data" option. Pandas is imported
+        alone here since it can be time consuming. It takes the time and
+        amplitude arrays from the current trace shot being viewed and writes
+        them both as a two column csv.
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The destination filename for the csv data.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        global trcdir
+        traceName = os.path.basename(os.path.normpath(trcdir))
+        folder = os.path.join(trcdir, "SQL_{}".format(str(traceName)))
+        os.mkdir(folder)
+        self.sql_win.df.to_csv(os.path.join(folder, "{}_SQL.csv".format(str(traceName))))
+
+
 
 # %%WRITE TIMES AND AMPS TO CSV
     def exportScopeData(self, s):
@@ -604,8 +702,173 @@ class MainWindow(QMainWindow):
 
 
 
-        self.sql_win.df.to_csv("Accelerator_SQL_Output.csv")
+        # self.sql_win.df.to_csv("Accelerator_SQL_Output.csv")
 
+
+# %%CHANGE SHOT BEING VIEWED
+    def upTrace(self, s):
+        """A helper function that updates the plot to
+        tracenum+1
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The choice of trace provided by the user.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        global traceNumber
+        self.tracelist_widget.setCurrentRow(traceNumber)
+        print("Trace Number = {}".format(traceNumber))
+
+        for i in range(self.tracelist_widget.count()):
+            if((traceNumber+1) == i+1):
+                print("Shifting trace up.")
+                traceNumber += 1
+
+        global displayDex
+        global times
+        global amps
+        global metas
+        global mass
+        global velocity
+        global numDisplay
+    
+
+        if(displayDex == []):
+            displayDex = [0, 1, 2, 3]
+            numDisplay = 4
+        # print("Updating Plot...")
+
+        self.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {:.2e} kg Particle @ {:.2e} km/s".format(mass[traceNumber-1],
+                             velocity[traceNumber-1]),
+                             fontsize=20)
+
+        if hasattr(self.sc, 'ax1'):
+            self.sc.ax1.cla()
+            self.sc.ax1.grid(True)
+            self.sc.ax1.set_ylabel(str(channelNames[displayDex[0]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax2'):
+            self.sc.ax2.cla()
+            self.sc.ax2.grid(True)
+            self.sc.ax2.set_ylabel(str(channelNames[displayDex[1]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax3'):
+            self.sc.ax3.cla()
+            self.sc.ax3.grid(True)
+            self.sc.ax3.set_ylabel(str(channelNames[displayDex[2]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax4'):
+            self.sc.ax4.cla()
+            self.sc.ax4.grid(True)
+            self.sc.ax4.set_xticks([])
+            self.sc.ax4.set_ylabel(str(channelNames[displayDex[3]]),
+                                   labelpad=4)
+
+        self.setCentralWidget(self.sc)
+        self.v_layout.addStretch()
+        self.v_layout.addWidget(self.toolbar)
+        self.sc.setLayout(self.v_layout)
+
+        # Load new data into the interactive plot.
+        displayTRC(times[traceNumber], amps[traceNumber], self.sc)
+
+        # Get rid of the trace choosing widget
+        self.tracelist_widget.setParent(None)
+        self.tracelist_widget.setParent(self)
+        self.sc.draw()
+        self.show()
+
+# %%CHANGE SHOT BEING VIEWED
+    def downTrace(self, s):
+        """A helper function that updates the plot to
+        tracenum-1
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The choice of trace provided by the user.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        global traceNumber
+        for i in range(self.tracelist_widget.count()):
+            if((traceNumber-1) == i+1):
+                print("Shifting trace down.")
+                traceNumber -= 1
+
+        global displayDex
+        global times
+        global amps
+        global metas
+        global mass
+        global velocity
+        global numDisplay
+    
+
+        if(displayDex == []):
+            displayDex = [0, 1, 2, 3]
+            numDisplay = 4
+        # print("Updating Plot...")
+
+
+        # self.sc = MplCanvas(self, width=16, height=12, dpi=100)
+        self.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {:.2e} kg Particle @ {:.2e} km/s".format(mass[traceNumber-1],
+                             velocity[traceNumber-1]),
+                             fontsize=20)
+
+        if hasattr(self.sc, 'ax1'):
+            self.sc.ax1.cla()
+            self.sc.ax1.grid(True)
+            self.sc.ax1.set_ylabel(str(channelNames[displayDex[0]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax2'):
+            self.sc.ax2.cla()
+            self.sc.ax2.grid(True)
+            self.sc.ax2.set_ylabel(str(channelNames[displayDex[1]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax3'):
+            self.sc.ax3.cla()
+            self.sc.ax3.grid(True)
+            self.sc.ax3.set_ylabel(str(channelNames[displayDex[2]]),
+                                   labelpad=4)
+
+        if hasattr(self.sc, 'ax4'):
+            self.sc.ax4.cla()
+            self.sc.ax4.grid(True)
+            self.sc.ax4.set_xticks([])
+            self.sc.ax4.set_ylabel(str(channelNames[displayDex[3]]),
+                                   labelpad=4)
+
+        self.setCentralWidget(self.sc)
+        self.v_layout.addStretch()
+        self.v_layout.addWidget(self.toolbar)
+        self.sc.setLayout(self.v_layout)
+
+        # Load new data into the interactive plot.
+        displayTRC(times[traceNumber], amps[traceNumber], self.sc)
+
+        # Get rid of the trace choosing widget
+        self.tracelist_widget.setParent(None)
+        self.tracelist_widget.setParent(self)
+        self.sc.draw()
+        self.show()
 
 # %%CHANGE SHOT BEING VIEWED
     def chooseTrace(self, s):
@@ -664,6 +927,47 @@ class MainWindow(QMainWindow):
         filename = dname + '../_build/index.html'
         webbrowser.open('file://' + os.path.realpath(filename))
         # webbrowser.open_new_tab("../_build/index.html")
+
+# %%FIT EXISTING QD WAVEFORMS
+    def fitIon(self, s):
+        """A function to obtain the charge and speed of an impactor using the QD waveform.
+
+        Args:
+           None
+
+        Kwargs:
+           s (str): The choice of trace provided by the user.
+
+        Returns:
+           None
+
+        Raises:
+           None
+           """
+        global channelNames
+        global amps
+        global times
+        global displayDex
+        global trcdir
+
+        print("Fitting Ion Grid Waveforms")
+        import pandas as pd
+        from SudaIonTarget import ImpactEvent
+        traceName = os.path.basename(os.path.normpath(trcdir))
+        folder = os.path.join(trcdir, "{}_IonGridFits".format(str(traceName)))
+        os.mkdir(folder)
+        os.chdir(folder)
+        dec = 1  # The factor of decimation (Makes plotting faster)
+        i = dec*np.array(range(int(len(times[0][displayDex[0]])/dec)))
+
+        for count, traceNumber in enumerate(amps):
+            Time = pd.Series(times[int(count)][0][i])  # Assume this is the same for each channel
+            IonGridAmp = pd.Series(amps[int(count)][5][i])
+            IonEvent = ImpactEvent(Time, IonGridAmp, str(count))
+            IonEvent.fitIonSignal()
+            IonEvent.plotIonSignalFit()
+        
+
 
 # %%FIT EXISTING QD WAVEFORMS
     def fitQD(self, s):
@@ -740,8 +1044,8 @@ class MainWindow(QMainWindow):
         traceNumber = int(content)
 
         # self.sc = MplCanvas(self, width=16, height=12, dpi=100)
-        self.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
-                             round(velocity[traceNumber], 2)),
+        self.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {:.2e} kg Particle @ {:.2e} km/s".format(mass[traceNumber-1],
+                             velocity[traceNumber-1]),
                              fontsize=20)
         # Clear all axes
         # self.sc.ax.cla()
@@ -826,7 +1130,7 @@ class MainWindow(QMainWindow):
         for k in range(len(metas)-1):
 
             timeArr = metas[k][0]['TRIGGER_TIME']
-            print(timeArr)
+            # print(timeArr)
 
             date_time = 1000 * \
                 datetime.datetime.timestamp(datetime.datetime(*timeArr))
@@ -994,9 +1298,9 @@ class ChannelChoosingWindow(QWidget):
         traceNumber = 2
         displayTRC(times[int(traceNumber)], amps[int(traceNumber)],
                    self.parent.sc)
-        self.parent.sc.fig.suptitle("Trace Number " +str(traceNumber)   + ": {} kg Particle @ {} km/s".format(mass[traceNumber],
-                             round(velocity[traceNumber], 2)),
-                          fontsize=20)
+        self.parent.sc.fig.suptitle("Trace Number " + str(traceNumber) + ": {:.2e} kg Particle @ {:.2e} km/s".format(mass[traceNumber-1],
+                             velocity[traceNumber-1]),
+                             fontsize=20)
         self.parent.updatePlot
         self.parent.sc.draw()
 

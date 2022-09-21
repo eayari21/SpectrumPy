@@ -94,7 +94,7 @@ class SQLWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("SpectrumPY Beta Accelerator Window")
 
         self.table = QtWidgets.QTableView()
-        db_connection_str = 'mysql+pymysql://root:Loucet59@localhost/impact091322'
+        db_connection_str = 'mysql+pymysql://root:Loucet59@localhost/impact092022'
         db_connection = create_engine(db_connection_str)
 
         self.df = pd.DataFrame()
